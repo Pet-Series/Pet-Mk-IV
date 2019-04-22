@@ -10,6 +10,7 @@ project(test_pkg)
 find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
+  rosserial_python
 )
 
 ## System dependencies are found with CMake's conventions
