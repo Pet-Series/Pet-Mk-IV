@@ -3,4 +3,7 @@
     <param name="port" value="/dev/ttyACM0"/>
     <param name="baud" value="57600"/>
   </node>
+
+  <include file="$(find pet_mk_iv_path_planner)/launch/controller.launch"/>
+
 </launch>
