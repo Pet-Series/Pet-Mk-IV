@@ -22,10 +22,14 @@ void enginesSetup() {
   digitalWrite(RightSpeedPin, LOW);
   digitalWrite(RightForwardPin, LOW);
   digitalWrite(RightReversePin, LOW);
+  
+  nh.subscribe(engineCommandSub);
 }
 
+
 void enginesUpdate() {
-  if (engineCommandMsg.header.stamp.toSec() + 1.0 > nh.now().toSec()) {
+
+  if (true) { //engineCommandMsg.header.stamp.toSec() + 1.0 > nh.now().toSec()
     if (engineCommandMsg.left_direction == engineCommandMsg.FORWARD) {
       digitalWrite(LeftReversePin, LOW);
       digitalWrite(LeftForwardPin, HIGH);

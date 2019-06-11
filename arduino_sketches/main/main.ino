@@ -29,5 +29,5 @@ void loop()
   enginesUpdate();
   
   nh.spinOnce();
-  delay(1000);
+  delay(100);
 }
