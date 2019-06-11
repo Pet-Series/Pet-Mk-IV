@@ -2,17 +2,20 @@
 #define lineFollowerMiddlePin 3
 #define lineFollowerRightPin 4
 
+pet_mk_iv_msgs::TripleBoolean lineFollowerMsg;
+ros::Publisher lineFollowerPub("line_followers", &lineFollowerMsg);
 
 void lineFollowerSetup() {
   pinMode(lineFollowerLeftPin, INPUT);
   pinMode(lineFollowerMiddlePin, INPUT);
   pinMode(lineFollowerRightPin, INPUT);
-  
-  //lineFollowerMsg.header.frame_id = "line_followers";
+
+  lineFollowerMsg.header.frame_id = "line_followers";
+  nh.advertise(lineFollowerPub);
 }
 
 void lineFollowerUpdate() {
-  //lineFollowerMsg.header.stamp = nh.now();
+  lineFollowerMsg.header.stamp = nh.now();
   
   lineFollowerMsg.left = digitalRead(lineFollowerLeftPin);
   lineFollowerMsg.middle = digitalRead(lineFollowerMiddlePin);

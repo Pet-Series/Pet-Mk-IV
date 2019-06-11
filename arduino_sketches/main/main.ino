@@ -6,36 +6,27 @@
 
 #include <ros.h>
 #include <ros/time.h>
-#include <std_msgs/String.h>
-#include <test_pkg/TripleBoolean.h>
+
+
+#include "pet_mk_iv_msgs/EngineCommand.h"
+#include "pet_mk_iv_msgs/TripleBoolean.h"
 
 ros::NodeHandle nh;
-
-std_msgs::String strMsg;
-ros::Publisher chatterPub("chatter", &strMsg);
-
-test_pkg::TripleBoolean lineFollowerMsg;
-ros::Publisher lineFollowerPub("line_followers", &lineFollowerMsg);
-
-char hello[13] = "hello world!";
 
 void setup()
 {
   nh.initNode();
-  
-  nh.advertise(chatterPub);
-  nh.advertise(lineFollowerPub);
 
   lineFollowerSetup();
-
+  enginesSetup();
+  
 }
 
 void loop()
 {
-  strMsg.data = hello;
-  chatterPub.publish(&strMsg);
   
   lineFollowerUpdate();
+  enginesUpdate();
   
   nh.spinOnce();
   delay(1000);
