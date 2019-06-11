@@ -1,0 +1,7 @@
+1. Define+build custom message as normal.
+2. Source devel space (resource .bash or restart terminal).
+3. If applicable, remove the old libraries/ros_lib directory.
+4. Run in terminal: "rosrun rosserial_client make_libraries /home/pi/Arduino/libraries/" 
+5. Copy directory with same name as your package and paste in libraries/Rosserial_Arduino_Library/src
+6. ???
+7. Profit
