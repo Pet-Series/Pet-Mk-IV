@@ -3,5 +3,8 @@
 3. If applicable, remove the old libraries/ros_lib directory.
 4. Run in terminal: "rosrun rosserial_client make_libraries /home/pi/Arduino/libraries/" 
 5. Copy directory with same name as your package and paste in libraries/Rosserial_Arduino_Library/src
-6. ???
-7. Profit
+6. Include "ArduinoIncludes.h" to the newly created custom message files
+7. Add "PSTR" to the message definition and the checksum at the bottom of the file.
+   PSTR( "package_name/message_name" ) and PSTR( "some_checksum" ).
+8. ???
+9. Profit
