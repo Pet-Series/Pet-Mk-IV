@@ -5,6 +5,8 @@
 #define RightForwardPin 11
 #define RightReversePin 12
 
+const ros::Duration ENGINE_TIMEOUT(0, 0.5e9);
+
 pet_mk_iv_msgs::EngineCommand engineCommandMsg;
 ros::Subscriber<pet_mk_iv_msgs::EngineCommand> engineCommandSub("engine_command", &engineCommandCb);
 
@@ -28,8 +30,7 @@ void enginesSetup() {
 
 
 void enginesUpdate() {
-
-  if (true) { //engineCommandMsg.header.stamp.toSec() + 1.0 > nh.now().toSec()
+  if (nh.now() < engineCommandMsg.header.stamp + ENGINE_TIMEOUT) { //engineCommandMsg.header.stamp.toSec() + 1.0 > nh.now().toSec()
     if (engineCommandMsg.left_direction == engineCommandMsg.FORWARD) {
       digitalWrite(LeftReversePin, LOW);
       digitalWrite(LeftForwardPin, HIGH);
