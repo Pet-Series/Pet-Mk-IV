@@ -1,9 +1,18 @@
 <launch>
+  <arg name="teleop" default="false"/>
+
   <node pkg="rosserial_python" type="serial_node.py" name="arduino" output="screen">
     <param name="port" value="/dev/ttyACM0"/>
     <param name="baud" value="57600"/>
   </node>
 
+  <!-- Teleop -->
+  <group if="$(arg teleop)">
+    <remap from="key_vel" to="vel_cmd"/>
+    <include file="$(find pet_mk_iv_path_planner)/launch/teleop.launch"/>
+  </group>
+  
+  <!-- Engine controller -->
   <include file="$(find pet_mk_iv_path_planner)/launch/controller.launch"/>
 
 </launch>

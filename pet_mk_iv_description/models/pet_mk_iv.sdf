@@ -1,0 +1,25 @@
+<?xml version='1.0'?>
+<sdf version='1.4'>
+  <model name="pet_mk_iv">
+    <static>true</static>
+    <link name='chassis'>
+      <pose>0 0 .05 0 0 0</pose>
+
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>.2 .1 .1</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name="vision">
+        <geometry>
+          <box>
+            <size>.2 .1 .1</size>
+          </box>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>
