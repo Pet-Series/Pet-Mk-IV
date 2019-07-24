@@ -1,8 +1,0 @@
-<launch>
-  <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <!--arg name="world_name" value="$(find gazebo_ros)/worlds/empty.world"/-->
-  </include>
-
-  <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(find pet_mk_iv_description)/models/pet_mk_iv.sdf -model Pet-Mk-IV" />
-
-</launch>
