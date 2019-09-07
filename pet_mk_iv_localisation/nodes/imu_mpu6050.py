@@ -17,13 +17,13 @@ class ImuMpu6050(object):
     ACCEL_XOUT = 0x3B
     ACCEL_YOUT = 0x3D
     ACCEL_ZOUT = 0x3F
-    GYRO_XOUT = 0x43
-    GYRO_YOUT = 0x45
-    GYRO_ZOUT = 0x47
+    GYRO_XOUT  = 0x43
+    GYRO_YOUT  = 0x45
+    GYRO_ZOUT  = 0x47
 
     def __init__(self):
         rospy.init_node("imu")
-        self._publish_rate = rospy.Rate(100)
+        self._publish_rate = rospy.Rate(40)
 
         # Initialise hardware
         self._init_imu()
@@ -37,7 +37,7 @@ class ImuMpu6050(object):
             linear_acc, angular_vel = self._read_data()
 
             # Create msg
-            msg = Imu
+            msg = Imu()
             msg.header.stamp = rospy.Time.now()
             msg.header.frame_id = "imu_frame"
 
@@ -61,12 +61,12 @@ class ImuMpu6050(object):
         self._bus.write_byte_data(self.I2C_ADRESS, self.PWR_MGMT_1, 0)
 
     def _read_data(self):
-        linear_acc = []*3
+        linear_acc = [0]*3
         linear_acc[0] = self._read_word(self.ACCEL_XOUT)
         linear_acc[1] = self._read_word(self.ACCEL_YOUT)
         linear_acc[2] = self._read_word(self.ACCEL_ZOUT)
 
-        angular_vel = []*3
+        angular_vel = [0]*3
         angular_vel[0] = self._read_word(self.GYRO_XOUT)
         angular_vel[1] = self._read_word(self.GYRO_YOUT)
         angular_vel[2] = self._read_word(self.GYRO_ZOUT)
