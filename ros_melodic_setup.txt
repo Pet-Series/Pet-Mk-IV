@@ -1,0 +1,67 @@
+# Commands for installing ROS on Raspberry Pi.
+
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+
+sudo apt-get update
+sudo apt-get upgrade
+
+sudo apt-get install -y python-rosdep python-rosinstall-generator python-wstool python-rosinstall build-essential cmake
+
+sudo rosdep init
+rosdep update
+
+mkdir -p ~/ros_install_ws
+cd ~/ros_install_ws
+
+rosinstall_generator ros_comm --rosdistro melodic --deps --wet-only > melodic-ros_comm-wet.rosinstall
+wstool init src melodic-ros_comm-wet.rosinstall
+
+# Install system dependencies to ros_comm.
+rosdep install -y --from-paths ~/ros_installed_ws/src --ignore-src --rosdistro melodic -r --os=debian:buster
+
+# Build bare-bones ROS into install space.
+# Can run out of memory even with -j2 flag. Running the command again should solve it.
+sudo ./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release --install-space /opt/ros/melodic -j2
+
+# Add installation path to global environment.
+source /opt/ros/melodic/setup.bash
+echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+
+###
+# Now bare-bones ROS is installed. What follows is installing our custom packages.
+###
+
+# Create seperate workspace with your custom packages. Example using git clone.
+mkdir -p ~/ros_ws/src
+cd ~/ros_ws/src
+git clone <link-to-git-repo>
+
+# Move back to ros_install_ws before generating dependencies.
+cd ~/ros_install_ws
+
+# Will warn about non-ROS dependencies e.g. "packages/stacks will be ignored: python-smbus". They will be resolved by 'rosdep install'-command later.
+rosinstall_generator $(rosdep keys --from-paths ~/ros_ws/src --ignore-src) --rosdistro melodic --deps --wet-only > melodic-pet_mk_iv-deps.rosinstall
+
+wstool merge -t src melodic-pet_mk_iv-deps.rosinstall
+wstool update -t src
+
+# Install system dependencies to dependencies to custom packages.
+rosdep install -y --from-paths ~/ros_installed_ws/src --ignore-src --rosdistro melodic -r --os=debian:buster
+
+# Build dependencies to custom packages into install space.
+sudo ./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release --install-space /opt/ros/melodic -j2
+
+# Is sourcing again needed?
+source /opt/ros/melodic/setup.bash
+
+# Install system dependencies to custom packages.
+rosdep install -y --from-paths ~/ros_ws/src --ignore-src --rosdistro melodic -r --os=debian:buster
+
+# Build custom packages locally.
+cd ~/ros_ws
+catkin_make_isolated
+
+# Add built custom packages to global environment.
+source ~/ros_ws/devel_isolated/setup.bash
+echo "source ~/ros_ws/devel_isolated/setup.bash" >> ~/.bashrc
