@@ -2,7 +2,10 @@ Inline-style:
 
 ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
 [![GitHub issues](https://img.shields.io/github/issues/kullken/Pet-Mk-IV)](https://github.com/kullken/Pet-Mk-IV/issues)
+
 https://img.shields.io/github/issues/kullken/Pet-Mk-IV
+
+https://img.shields.io/bitbucket/issues-raw/SeniorKullken/Pet-Mk-IV
 
 <h1 align="center">Welcome to the Pet-Mk-IV repository👋</h1>
 <p align="center">
