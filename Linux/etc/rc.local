@@ -1,0 +1,17 @@
+#!/bin/bash
+# /etc/rc.local
+# This script will be executed at the end of the boot procedure
+#
+# Edit:  $ sudo nano /etc/rc.local
+# View:  $ cat /etc/rc.local
+# Tst.run: $ sudo /etc/rc.local
+# Debug  : ...see instructions below
+#
+# Debug: Sending output to a loggfile /tmp/rc.local.log
+# Enable/Disable one of the following lines.
+#exec > /tmp/rc.local.log 2>&1;set -x
+#exec > /tmp/rc.local.log
+# View debugg-loggfile:  $ cat /tmp/rc.local.log
+#
+/home/pi/ros_ws/src/Pet-Mk-IV/Linux/BootTimeShowNodeIP-LCD.py
+exit 0;
