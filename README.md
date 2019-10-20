@@ -5,6 +5,7 @@
 ### External references
 - SeniorKullkens OneNote: https://1drv.ms/u/s!Aq6kdS_u7ZDZ5REO5Ms1MWFe0tBR
 - ROS.org http://wiki.ros.org/
+- Git command line cheat sheet https://education.github.com/git-cheat-sheet-education.pdf
 
 ## Prerequisites
 ### Developing Enviroment
