@@ -52,3 +52,6 @@ CATKIN_IGNORE
 
 # VSCode
 .vscode/*
+
+# Get repository stuff... No need to be cloned to local/target systems
+/Project_stuff
