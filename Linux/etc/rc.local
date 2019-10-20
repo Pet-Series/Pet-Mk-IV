@@ -1,6 +1,7 @@
 #!/bin/bash
 # /etc/rc.local
 # This script will be executed at the end of the boot procedure
+# git --global user.name="SeniorKullken"
 #
 # Edit:  $ sudo nano /etc/rc.local
 # View:  $ cat /etc/rc.local
