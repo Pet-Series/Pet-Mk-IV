@@ -1,10 +1,10 @@
 #ifndef _PET_CHATTER_H
 #define _PET_CHATTER_H
 
-#include <ros.h>
+#include "ros.h"
 #include <std_msgs/String.h>
 
-extern ros::NodeHandle nh;
+extern pet::ros::NodeHandle nh;
 std_msgs::String chatterMsg;
 ros::Publisher chatterPub("chatter", &chatterMsg);
 

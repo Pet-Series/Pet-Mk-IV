@@ -2,7 +2,7 @@
 
 #include <NewPing.h>
 
-#include <ros.h>
+#include "ros.h"
 
 #include "pet_mk_iv_msgs/DistanceMeasurement.h"
 
@@ -17,7 +17,7 @@
 #define MAX_DISTANCE 150 // Maximum distance we want to ping for (in centimeters). Maximum sensor distance is rated at 400-500cm.
 #define PING_INTERVAL 33
 
-extern ros::NodeHandle nh;
+extern pet::ros::NodeHandle nh;
 pet_mk_iv_msgs::DistanceMeasurement distSensorMsg;
 ros::Publisher distSensorPub("dist_sensors", &distSensorMsg);
 

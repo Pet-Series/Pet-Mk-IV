@@ -1,13 +1,15 @@
 #ifndef _PET_LINEFOLLOWERS_H
 #define _PET_LINEFOLLOWERS_H
 
+#include "ros.h"
+
+#include "pet_mk_iv_msgs/TripleBoolean.h"
+
 #define lineFollowerLeftPin 2
 #define lineFollowerMiddlePin 3
 #define lineFollowerRightPin 4
 
-#include "pet_mk_iv_msgs/TripleBoolean.h"
-
-extern ros::NodeHandle nh;
+extern pet::ros::NodeHandle nh;
 pet_mk_iv_msgs::TripleBoolean lineFollowerMsg;
 ros::Publisher lineFollowerPub("line_followers", &lineFollowerMsg);
 

@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include <ros.h>
+#include "ros.h"
 #include <ros/time.h>
 
 #include "ros_time_operators.h"
@@ -24,13 +24,13 @@ struct Callback {
 template<uint8_t capacity>
 class Timer {
 public:
-    Timer(ros::NodeHandle& nh) : m_nh(nh) {}
+    Timer(pet::ros::NodeHandle& nh) : m_nh(nh) {}
 
     void register_callback(func_ptr func, ros::Duration interval);
     void spin_once();    
 
 private:
-    ros::NodeHandle& m_nh;
+    pet::ros::NodeHandle& m_nh;
     uint8_t m_size = 0;
     Callback m_callbacks[capacity];
 };

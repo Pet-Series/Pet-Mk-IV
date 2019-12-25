@@ -1,6 +1,6 @@
 #include "engines.h"
 
-#include <ros.h>
+#include "ros.h"
 #include <ros/time.h>
 #include "ros_time_operators.h"
 
@@ -15,7 +15,7 @@
 
 const ros::Duration ENGINE_TIMEOUT(0, 0.5e9);
 
-extern ros::NodeHandle nh;
+extern pet::ros::NodeHandle nh;
 pet_mk_iv_msgs::EngineCommand engineCommandMsg;
 ros::Subscriber<pet_mk_iv_msgs::EngineCommand> engineCommandSub("engine_command", &engineCommandCb);
 
