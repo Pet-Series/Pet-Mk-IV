@@ -2,7 +2,8 @@
 2. Source devel space (re-source devel/setup.bash or restart terminal).
 3. If it exists, remove the old ros_lib directory: "rm -r ~/Arduino/libraries/ros_lib".
 4. Generate arduino version of messages: "rosrun rosserial_client make_libraries ~/Arduino/libraries/".
-5. Copy directory with same name as your package and paste in libraries/Rosserial_Arduino_Library/src.
+5. Move directory with same name as your package and paste in libraries/Rosserial_Arduino_Library/src.
+   E.g. "mv -t ~/Arduino/libraries/Rosserial_Arduino_Library/src ~/Arduino/libraries/ros_lib/pet_mk_iv_msgs".
 6. Include "ArduinoIncludes.h" to the newly created custom message files.
 7. Add "PSTR" to the message definition and the checksum at the bottom of the file.
    E.g. PSTR( "package_name/message_name" ) and PSTR( "some_checksum" ).
