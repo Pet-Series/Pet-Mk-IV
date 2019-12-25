@@ -53,6 +53,7 @@
   <depend>rospy</depend>
   <depend>geometry_msgs</depend>
   <depend>pet_mk_iv_msgs</depend>
+  <depend>key_teleop</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
