@@ -18,7 +18,7 @@ rosinstall_generator ros_comm --rosdistro melodic --deps --wet-only > melodic-ro
 wstool init src melodic-ros_comm-wet.rosinstall
 
 # Install system dependencies to ros_comm.
-rosdep install -y --from-paths ~/ros_installed_ws/src --ignore-src --rosdistro melodic -r --os=debian:buster
+rosdep install -y --from-paths ~/ros_install_ws/src --ignore-src --rosdistro melodic -r --os=debian:buster
 
 # Build bare-bones ROS into install space.
 # Can run out of memory even with -j2 flag. Running the command again should solve it.
