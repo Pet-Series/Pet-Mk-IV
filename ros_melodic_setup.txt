@@ -47,7 +47,7 @@ wstool merge -t src melodic-pet_mk_iv-deps.rosinstall
 wstool update -t src
 
 # Install system dependencies to dependencies to custom packages.
-rosdep install -y --from-paths ~/ros_installed_ws/src --ignore-src --rosdistro melodic -r --os=debian:buster
+rosdep install -y --from-paths ~/ros_install_ws/src --ignore-src --rosdistro melodic -r --os=debian:buster
 
 # Build dependencies to custom packages into install space.
 sudo ./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release --install-space /opt/ros/melodic -j2
