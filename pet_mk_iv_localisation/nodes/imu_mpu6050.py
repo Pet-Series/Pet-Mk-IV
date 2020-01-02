@@ -21,6 +21,12 @@ class ImuMpu6050(object):
     GYRO_YOUT  = 0x45
     GYRO_ZOUT  = 0x47
 
+    # Value range of +-2g put into 16-bit integer.
+    LINEAR_ACC_SCALE = 4 * 9.82 / 2**16
+
+    # Value range of +-250 deg/s put into 16-bit integer.
+    ANGULAR_VEL_SCALE = 500 / 2**16
+
     def __init__(self):
         rospy.init_node("imu")
         self._publish_rate = rospy.Rate(40)
@@ -41,13 +47,13 @@ class ImuMpu6050(object):
             msg.header.stamp = rospy.Time.now()
             msg.header.frame_id = "imu_frame"
 
-            msg.linear_acceleration.x = linear_acc[0]
-            msg.linear_acceleration.y = linear_acc[1]
-            msg.linear_acceleration.z = linear_acc[2]
+            msg.linear_acceleration.x = linear_acc[0] * ImuMpu6050.LINEAR_ACC_SCALE
+            msg.linear_acceleration.y = linear_acc[1] * ImuMpu6050.LINEAR_ACC_SCALE
+            msg.linear_acceleration.z = linear_acc[2] * ImuMpu6050.LINEAR_ACC_SCALE
 
-            msg.angular_velocity.x = angular_vel[0]
-            msg.angular_velocity.y = angular_vel[1]
-            msg.angular_velocity.z = angular_vel[2]
+            msg.angular_velocity.x = angular_vel[0] * ImuMpu6050.ANGULAR_VEL_SCALE
+            msg.angular_velocity.y = angular_vel[1] * ImuMpu6050.ANGULAR_VEL_SCALE
+            msg.angular_velocity.z = angular_vel[2] * ImuMpu6050.ANGULAR_VEL_SCALE
 
             msg.orientation_covariance[0] = -1  # Declare that we don't use orientation 
 
