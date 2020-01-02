@@ -51,7 +51,7 @@ qtcreator-*
 CATKIN_IGNORE
 
 # VSCode
-.vscode/*
+.vscode/**
 
 # Get repository stuff... No need to be cloned to local/target systems
-/Project_stuff
+/Project_stuff/**
