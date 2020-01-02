@@ -13,24 +13,52 @@ import rospy
 # bool middle
 # bool right
 from pet_mk_iv_msgs.msg import TripleBoolean
+from geometry_msgs.msg import Twist  # Linear velocity + Angular velocity
 
-def callback(msg):
-    rospy.loginfo(rospy.get_caller_id() + "I heard Left={}, Middle={}, Right={}".format(msg.left,msg.middle,msg.right))
-    
-def listener():
+class LineFollower(object):
 
-    # In ROS, nodes are uniquely named. If two nodes with the same
-    # name are launched, the previous one is kicked off. The
-    # anonymous=True flag means that rospy will choose a unique
-    # name for our 'listener' node so that multiple listeners can
-    # run simultaneously.
-    rospy.init_node('listener', anonymous=True)
+    def __init__(self):
+        rospy.init_node("line_follower_state_machine")
+        self.cmd_rate = rospy.Rate(10) #10Hz
 
-    rospy.Subscriber("line_followers", TripleBoolean, callback)
+        # Subscribers
+        self.LF_sensors_msg = None
+        self.LF_sub = rospy.Subscriber("line_followers", TripleBoolean, self.LF_senors_cb)
+        rospy.wait_for_message("line_followers", TripleBoolean, timeout=10)
 
-    # spin() simply keeps python from exiting until this node is stopped
-    rospy.spin()
+        # Publishers
+        self.vel_pub = rospy.Publisher("vel_cmd", Twist, queue_size=10)
+
+    def run(self):
+        vel_msg = Twist()
+        vel_msg.linear.x = 0 # Speed forward
+        vel_msg.linear.y = 0 # "almost" always 0 rad/sec
+        vel_msg.linear.z = 0 # Always 0 m/sec
+        
+        vel_msg.angular.x = 0 # Always 0 rad/sec
+        vel_msg.angular.y = 0 # Always 0 rad/sec
+        vel_msg.angular.z = 0 # Turn speed (ccw "to the left")
+        
+        emergency_stop = False
+        
+        while not rospy.is_shutdown() and not emergency_stop:
+            
+            # stuff
+            if self.LF_sensors_msg.left and self.LF_sensors_msg.middle and self.LF_sensors_msg.right:
+                rospy.logwarn(rospy.get_caller_id() + " Run Forrest... RUN!")
+                vel_msg.linear.x = 0.1
+            else:
+                rospy.logwarn(rospy.get_caller_id() + " STOP!")
+                vel_msg.linear.x = 0.0
+                emergency_stop = True
+            self.vel_pub.publish(vel_msg)
+            
+            self.cmd_rate.sleep()
+
+    def LF_senors_cb(self, msg):
+        rospy.loginfo(rospy.get_caller_id() + "I heard Left={}, Middle={}, Right={}".format(msg.left,msg.middle,msg.right))
+        self.LF_sensors_msg = msg
 
 if __name__ == '__main__':
-    listener()
-
+    line_follower = LineFollower()
+    line_follower.run()
