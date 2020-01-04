@@ -1,19 +1,23 @@
-#!/bin/bash
+#!/bin/sh -e
+# "Github @SeniorKullken 2020-01-04"
 # /etc/rc.local
+# ---------------------------------
 # This script will be executed at the end of the boot procedure
 # For more information see https://www.raspberrypi.org/documentation/linux/usage/rc-local.md
-# git --global user.name="SeniorKullken"
-#
-# Edit:  $ sudo nano /etc/rc.local
-# View:  $ cat /etc/rc.local
+# ----------------------------------
+# Edit:    $ sudo nano /etc/rc.local
+# View:    $ cat /etc/rc.local
 # Tst.run: $ sudo /etc/rc.local
-# Debug  : ...see instructions below
-#
+# ----------------------------------
+# "Debug  : ...see instructions below"
 # Debug: Sending output to a loggfile /tmp/rc.local.log
-# Enable/Disable one of the following lines.
+# View debugg-loggfile:  $ cat /tmp/rc.local.log
+# Enable/Disable debug-mode by un-comment one of the following lines.
 #exec > /tmp/rc.local.log 2>&1;set -x
 #exec > /tmp/rc.local.log
-# View debugg-loggfile:  $ cat /tmp/rc.local.log
-#
+# ----------------------------------
+# "User added script..."
+# - Avoid lock the boot process by adding a traling " &"
 /home/pi/ros_ws/src/Pet-Mk-IV/Linux/BootTimeShowNodeIP-LCD.py &
-exit 0;
+
+exit 0
