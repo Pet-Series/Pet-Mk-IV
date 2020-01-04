@@ -2,6 +2,7 @@
 
 from __future__ import division
 
+import math
 import smbus
 
 import rospy
@@ -33,11 +34,21 @@ class MPU6050(object):
     GYRO_YOUT       = 0x45
     GYRO_ZOUT       = 0x47
 
-    # Value range of +-2g put into 16-bit integer.
-    LINEAR_ACC_SCALE = 4 * 9.82 / 2**16
+    # Sensitivity values taken from table at: https://www.invensense.com/products/motion-tracking/6-axis/mpu-6050/
+    # GYRO_250_DPS:   131,
+    # GYRO_500_DPS:   65.5,
+    # GYRO_1000_DPS:  32.8,
+    # GYRO_2000_DPS:  16.4,
+    # ACCEL_2_G:      16384,
+    # ACCEL_4_G:      8192,
+    # ACCEL_8_G:      4096,
+    # ACCEL_16_G:     2048,
 
-    # Value range of +-250 deg/s put into 16-bit integer.
-    ANGULAR_VEL_SCALE = 500 / 2**16
+    # Value range of +-2g put into 16-bit integer.
+    LINEAR_ACC_SCALE = 9.82 / 16384
+
+    # Value range of +-250 deg/s put into 16-bit integer. (Table says 131, why?).
+    ANGULAR_VEL_SCALE = (math.pi/180) / 131
 
     def __init__(self):
         rospy.init_node("imu")
