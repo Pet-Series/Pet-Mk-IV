@@ -62,7 +62,7 @@ max_count = 20     # Max retries (in total we wait 40(2sec*20 attenpt) seconds b
 while True:
     count+=1
     IP = subprocess.check_output(["hostname", "-I"]).decode('utf-8').strip()
- #   IP = ""
+ #   IP = "" # Debug - Simulate no IP/WiFi connection...
     if IP:
         # IP detected. THen show IP address on display and break the loop.
         lcd.text(IP, 2, 'center')                            # Logg text on display
