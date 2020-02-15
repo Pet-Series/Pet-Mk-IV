@@ -22,10 +22,13 @@
 #  60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 #  70: -- -- -- -- -- -- -- --  
 #  ------Future-----------------------------
-# 1) Add "cpu_temp" and "gpu_temp"
-# 2) Add switch "--nodisplay"
-# 3) Add Graphing: https://stackoverflow.com/questions/7998302/graphing-a-processs-memory-usage
-#                  https://projects.raspberrypi.org/en/projects/temperature-log/2
+# TODO Convert "choices=..." to a choices=[choices.keys()]
+# TODO Add switch "--nodisplay"
+# TODO ADd switch "--text Xyx"
+# TODO Plott Graphic data via rqt
+# TODO Plott Graphic data 
+#      https://stackoverflow.com/questions/7998302/graphing-a-processs-memory-usage
+#      https://projects.raspberrypi.org/en/projects/temperature-log/2
 
 from rpi_lcd import LCD
 import socket
