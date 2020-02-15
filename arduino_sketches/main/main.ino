@@ -7,8 +7,8 @@
 #include "dist_sensors.h"
 #include "chatter.h"
 
-#define ENGINE_CALLBACK_INTERVALL ros::Duration(0, 100000000)     // 100 ms -> 10 Hz
-#define LF_CALLBACK_INTERVALL ros::Duration(0, 100000000)         // 100 ms -> 10 Hz
+#define ENGINE_CALLBACK_INTERVALL ros::Duration(0, 20000000)      // 20 ms -> 50 Hz
+#define LF_CALLBACK_INTERVALL ros::Duration(0, 10000000)          // 10 ms -> 100 Hz
 #define DIST_SENSOR_CALLBACK_INTERVALL ros::Duration(0, 33000000) //  33 ms -> ~30 Hz
 
 pet::ros::NodeHandle nh;
