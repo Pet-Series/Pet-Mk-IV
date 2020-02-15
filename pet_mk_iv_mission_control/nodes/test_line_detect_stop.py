@@ -19,7 +19,7 @@ class LineFollower(object):
 
     def __init__(self):
         rospy.init_node("line_follower_state_machine")
-        self.cmd_rate = rospy.Rate(10) #10Hz
+        self.cmd_rate = rospy.Rate(100) #10Hz
 
         # Subscribers
         self.LF_sensors_msg = None
@@ -51,8 +51,8 @@ class LineFollower(object):
                 rospy.logwarn(rospy.get_caller_id() + " STOP!")
                 vel_msg.linear.x = 0.0
                 emergency_stop = True
-            self.vel_pub.publish(vel_msg)
-            
+                
+            self.vel_pub.publish(vel_msg)        
             self.cmd_rate.sleep()
 
     def LF_senors_cb(self, msg):
