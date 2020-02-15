@@ -1,33 +1,42 @@
-//Confirmed working with Arduino IDE 1.8.9 
-//Dependencies: EnableInterrupt, Rosserial Arduino Library
-//Custom ros packages needs to be processed, guide on git.
-
-#include <EnableInterrupt.h>
-
-#include <ros.h>
+#include "ros.h"
 #include <ros/time.h>
 
+#include "timer.h"
+#include "engines.h"
+#include "line_followers.h"
+#include "dist_sensors.h"
+#include "chatter.h"
 
-#include "pet_mk_iv_msgs/EngineCommand.h"
-#include "pet_mk_iv_msgs/TripleBoolean.h"
+#define ENGINE_CALLBACK_INTERVALL ros::Duration(0, 100000000)     // 100 ms -> 10 Hz
+#define LF_CALLBACK_INTERVALL ros::Duration(0, 100000000)         // 100 ms -> 10 Hz
+#define DIST_SENSOR_CALLBACK_INTERVALL ros::Duration(0, 33000000) //  33 ms -> ~30 Hz
 
-ros::NodeHandle nh;
+pet::ros::NodeHandle nh;
+Timer<4> timer(nh);
 
 void setup()
 {
-  nh.initNode();
+    nh.initNode();
+    delay(1);
 
-  lineFollowerSetup();
-  enginesSetup();
-  
+    nh.loginfo("Arduino starting...");
+    nh.spinOnce();
+
+    enginesSetup();
+    lineFollowerSetup();
+    distSensorSetup();
+    chatterSetup();
+
+    timer.register_callback(enginesUpdate, ENGINE_CALLBACK_INTERVALL);
+    timer.register_callback(lineFollowerUpdate, LF_CALLBACK_INTERVALL);
+    timer.register_callback(distSensorUpdate, DIST_SENSOR_CALLBACK_INTERVALL);
+    timer.register_callback(chatterUpdate, ros::Duration(0, 500000000));
+
+    nh.loginfo("Arduino setup done!");
 }
 
 void loop()
 {
-  
-  lineFollowerUpdate();
-  enginesUpdate();
-  
-  nh.spinOnce();
-  delay(100);
+    nh.spinOnce();
+    timer.spin_once();
 }
