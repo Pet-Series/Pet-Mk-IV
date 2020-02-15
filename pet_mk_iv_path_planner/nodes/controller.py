@@ -12,7 +12,7 @@ class Controller(object):
 
     def __init__(self):
         rospy.init_node("controller")
-        self._cmd_rate = rospy.Rate(10)
+        self._cmd_rate = rospy.Rate(100)
 
         # Subscribers
         self._vel_msg = None
