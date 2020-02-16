@@ -1,6 +1,8 @@
 #ifndef _PET_DISTSENSORS_H
 #define _PET_DISTSENSORS_H
 
+#include <Arduino.h>
+
 #include <stdint.h>
 
 void distSensorSetup();

@@ -1,6 +1,8 @@
 #ifndef _PET_LINEFOLLOWERS_H
 #define _PET_LINEFOLLOWERS_H
 
+#include <Arduino.h>
+
 #include "ros.h"
 
 #include "pet_mk_iv_msgs/TripleBoolean.h"

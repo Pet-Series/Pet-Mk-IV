@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 #include "ros.h"
 #include <ros/time.h>
 
