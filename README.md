@@ -10,19 +10,19 @@
 
 ## Prerequisites
 ### Developing Enviroment
- - [X] Arduino IDE @ RPI  (Lib: ROS-serial, New-Ping)
+ - [X] Arduino IDE @ RPi  (Lib: ROS-serial, New-Ping)
  - [X] Python 2 (using various ROS-API)
- - [ ] cmake for buildning ROS
- - [ ] cmake for buildning Arduino firmware/sketches
+ - [X] cmake for buildning ROS via catkin/cmake
+ - [X] cmake for buildning Arduino firmware/sketches
  - [X] This Git-repo.
  
 ### Target Envieroment: Main ECU
  - [X] Rasperry PI model 3
-       Raspian Buster
- - [X] ROS Melodic
+       Raspian Buster (Debian Buster)
+ - [X] ROS Melodic Ubuntu Bionic (but we comiple from spource anyway on the RPi/Raspian).
  - [X] Arduino IDE
  
 ### Target Envieroment: Sub-ECU
- - [X] Arduino UNO
+ - [X] Arduino UNO via serial/USB-cable.
 
 ## Installing
