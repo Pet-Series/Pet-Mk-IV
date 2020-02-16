@@ -6,13 +6,18 @@
 - SeniorKullkens OneNote: https://1drv.ms/u/s!Aq6kdS_u7ZDZ5REO5Ms1MWFe0tBR
 - ROS.org http://wiki.ros.org/
 - Git command line cheat sheet https://education.github.com/git-cheat-sheet-education.pdf
+- Lucid Chart Diagram https://www.lucidchart.com/invitations/accept/760f4729-2814-43cd-bd3d-829c4079b3df
 
 ## Prerequisites
 ### Developing Enviroment
- - [X] Arduino IDE
+ - [X] Arduino IDE @ RPI  (Lib: ROS-serial, New-Ping)
+ - [X] Python 2 (using various ROS-API)
+ - [ ] cmake for buildning ROS
+ - [ ] cmake for buildning Arduino firmware/sketches
+ - [X] This Git-repo.
  
 ### Target Envieroment: Main ECU
- - [X] Rasperry PI 
+ - [X] Rasperry PI model 3
        Raspian Buster
  - [X] ROS Melodic
  - [X] Arduino IDE
