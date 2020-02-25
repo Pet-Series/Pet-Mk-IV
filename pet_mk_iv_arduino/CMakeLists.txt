@@ -3,11 +3,10 @@ cmake_policy(SET CMP0048 NEW)
 
 project(pet_mk_iv_arduino)
 
-# add_compile_options(-std=c++11)
-
 find_package(catkin REQUIRED COMPONENTS
   rosserial_arduino
   rosserial_client
+  pet_mk_iv_msgs
 )
 
 catkin_package()
