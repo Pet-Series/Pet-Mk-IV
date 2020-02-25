@@ -6,43 +6,39 @@
 
 #include "pet_mk_iv_msgs/DistanceMeasurement.h"
 
-#define TRIGGER_PIN_1 14 // A0  "Left"
-#define ECHO_PIN_1 14    // A0  "Left"
-#define TRIGGER_PIN_2 15 // A1  "Middle"
-#define ECHO_PIN_2 15    // A1  "Middle"
-#define TRIGGER_PIN_3 16 // A2  "Right"
-#define ECHO_PIN_3 16    // A2  "Right"
+constexpr unsigned int kTriggerPin1     = 14;   // A0  "Left"
+constexpr unsigned int kEchoPin1        = 14;   // A0  "Left"
+constexpr unsigned int kTriggerPin2     = 15;   // A1  "Middle"
+constexpr unsigned int kEchoPin2        = 15;   // A1  "Middle"
+constexpr unsigned int kTriggerPin3     = 16;   // A2  "Right"
+constexpr unsigned int kEchoPin3        = 16;   // A2  "Right"
 
-#define SONAR_NUM 3
-#define MAX_DISTANCE 150 // Maximum distance we want to ping for (in centimeters). Maximum sensor distance is rated at 400-500cm.
-#define PING_INTERVAL 33
+constexpr unsigned int kSonarNum        = 3;
+constexpr unsigned int kMaxDistance     = 150;  // Maximum distance we want to ping for (in centimeters). Maximum sensor distance is rated at 400-500cm.
+constexpr unsigned int kPingInterval    = 33;
 
 extern pet::ros::NodeHandle nh;
 pet_mk_iv_msgs::DistanceMeasurement distSensorMsg;
 ros::Publisher distSensorPub("dist_sensors", &distSensorMsg);
 
-unsigned long pingTimer[SONAR_NUM];
-uint8_t currentSensor = 0;
-//int resultDistSensor[SONAR_NUM] = {0,0,0};
+unsigned long pingTimer[kSonarNum];
 
-//char logChars[22];
-
-const char distSensorFrames[SONAR_NUM][14] = {
+const char distSensorFrames[kSonarNum][14] = {
     "dist_sensor_0",
     "dist_sensor_1",
     "dist_sensor_2"};
 
-NewPing sonar[SONAR_NUM] = {
-    NewPing(TRIGGER_PIN_1, ECHO_PIN_1, MAX_DISTANCE),
-    NewPing(TRIGGER_PIN_2, ECHO_PIN_2, MAX_DISTANCE),
-    NewPing(TRIGGER_PIN_3, ECHO_PIN_3, MAX_DISTANCE)};
+NewPing sonar[kSonarNum] = {
+    NewPing(kTriggerPin1, kEchoPin1, kMaxDistance),
+    NewPing(kTriggerPin2, kEchoPin2, kMaxDistance),
+    NewPing(kTriggerPin3, kEchoPin3, kMaxDistance)};
 
 void distSensorSetup()
 {
     pingTimer[0] = millis() + 75;
-    for (uint8_t i = 1; i < SONAR_NUM; ++i)
+    for (uint8_t i = 1; i < kSonarNum; ++i)
     {
-        pingTimer[i] = pingTimer[i - 1] + PING_INTERVAL;
+        pingTimer[i] = pingTimer[i - 1] + kPingInterval;
     }
 
     distSensorMsg.header.frame_id = "dist_sensor_x";
@@ -51,11 +47,11 @@ void distSensorSetup()
 
 void distSensorUpdate()
 {
-    for (uint8_t i = 0; i < SONAR_NUM; ++i)
+    for (uint8_t i = 0; i < kSonarNum; ++i)
     {
         if (millis() >= pingTimer[i])
         {
-            pingTimer[i] += PING_INTERVAL * SONAR_NUM;
+            pingTimer[i] += kPingInterval * kSonarNum;
             sonar[currentSensor].timer_stop();
             currentSensor = i;
             sonar[currentSensor].ping_timer(echoCheck);

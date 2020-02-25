@@ -6,12 +6,12 @@
 
 #include "pet_mk_iv_msgs/EngineCommand.h"
 
-#define LeftReversePin 7
-#define LeftForwardPin 8
-#define LeftSpeedPin 9
-#define RightSpeedPin 10
-#define RightForwardPin 11
-#define RightReversePin 12
+constexpr unsigned int kLeftReversePin  = 7;
+constexpr unsigned int kLeftForwardPin  = 8;
+constexpr unsigned int kLeftSpeedPin    = 9;
+constexpr unsigned int kRightSpeedPin   = 10;
+constexpr unsigned int kRightForwardPin = 11;
+constexpr unsigned int kRightReversePin = 12;
 
 const ros::Duration ENGINE_TIMEOUT(0, 0.5e9);
 
@@ -21,19 +21,19 @@ ros::Subscriber<pet_mk_iv_msgs::EngineCommand> engineCommandSub("engine_command"
 
 void enginesSetup()
 {
-    pinMode(LeftReversePin, OUTPUT);
-    pinMode(LeftForwardPin, OUTPUT);
-    pinMode(LeftSpeedPin, OUTPUT);
-    pinMode(RightSpeedPin, OUTPUT);
-    pinMode(RightForwardPin, OUTPUT);
-    pinMode(RightReversePin, OUTPUT);
+    pinMode(kLeftReversePin, OUTPUT);
+    pinMode(kLeftForwardPin, OUTPUT);
+    pinMode(kLeftSpeedPin, OUTPUT);
+    pinMode(kRightSpeedPin, OUTPUT);
+    pinMode(kRightForwardPin, OUTPUT);
+    pinMode(kRightReversePin, OUTPUT);
 
-    digitalWrite(LeftReversePin, LOW);
-    digitalWrite(LeftForwardPin, LOW);
-    digitalWrite(LeftSpeedPin, LOW);
-    digitalWrite(RightSpeedPin, LOW);
-    digitalWrite(RightForwardPin, LOW);
-    digitalWrite(RightReversePin, LOW);
+    digitalWrite(kLeftReversePin, LOW);
+    digitalWrite(kLeftForwardPin, LOW);
+    digitalWrite(kLeftSpeedPin, LOW);
+    digitalWrite(kRightSpeedPin, LOW);
+    digitalWrite(kRightForwardPin, LOW);
+    digitalWrite(kRightReversePin, LOW);
 
     nh.subscribe(engineCommandSub);
 }
@@ -44,50 +44,50 @@ void enginesUpdate()
     {
         if (engineCommandMsg.left_direction == engineCommandMsg.FORWARD)
         {
-            digitalWrite(LeftReversePin, LOW);
-            digitalWrite(LeftForwardPin, HIGH);
-            analogWrite(LeftSpeedPin, engineCommandMsg.left_pwm);
+            digitalWrite(kLeftReversePin, LOW);
+            digitalWrite(kLeftForwardPin, HIGH);
+            analogWrite(kLeftSpeedPin, engineCommandMsg.left_pwm);
         }
         else if (engineCommandMsg.left_direction == engineCommandMsg.BACKWARD)
         {
-            digitalWrite(LeftForwardPin, LOW);
-            digitalWrite(LeftReversePin, HIGH);
-            analogWrite(LeftSpeedPin, engineCommandMsg.left_pwm);
+            digitalWrite(kLeftForwardPin, LOW);
+            digitalWrite(kLeftReversePin, HIGH);
+            analogWrite(kLeftSpeedPin, engineCommandMsg.left_pwm);
         }
         else
         {
-            digitalWrite(LeftReversePin, LOW);
-            digitalWrite(LeftForwardPin, LOW);
-            analogWrite(LeftSpeedPin, 0);
+            digitalWrite(kLeftReversePin, LOW);
+            digitalWrite(kLeftForwardPin, LOW);
+            analogWrite(kLeftSpeedPin, 0);
         }
 
         if (engineCommandMsg.right_direction == engineCommandMsg.FORWARD)
         {
-            digitalWrite(RightReversePin, LOW);
-            digitalWrite(RightForwardPin, HIGH);
-            analogWrite(RightSpeedPin, engineCommandMsg.right_pwm);
+            digitalWrite(kRightReversePin, LOW);
+            digitalWrite(kRightForwardPin, HIGH);
+            analogWrite(kRightSpeedPin, engineCommandMsg.right_pwm);
         }
         else if (engineCommandMsg.right_direction == engineCommandMsg.BACKWARD)
         {
-            digitalWrite(RightForwardPin, LOW);
-            digitalWrite(RightReversePin, HIGH);
-            analogWrite(RightSpeedPin, engineCommandMsg.right_pwm);
+            digitalWrite(kRightForwardPin, LOW);
+            digitalWrite(kRightReversePin, HIGH);
+            analogWrite(kRightSpeedPin, engineCommandMsg.right_pwm);
         }
         else
         {
-            digitalWrite(RightReversePin, LOW);
-            digitalWrite(RightForwardPin, LOW);
-            analogWrite(RightSpeedPin, 0);
+            digitalWrite(kRightReversePin, LOW);
+            digitalWrite(kRightForwardPin, LOW);
+            analogWrite(kRightSpeedPin, 0);
         }
     }
     else
     {
-        digitalWrite(LeftReversePin, LOW);
-        digitalWrite(LeftForwardPin, LOW);
-        digitalWrite(LeftSpeedPin, LOW);
-        digitalWrite(RightSpeedPin, LOW);
-        digitalWrite(RightForwardPin, LOW);
-        digitalWrite(RightReversePin, LOW);
+        digitalWrite(kLeftReversePin, LOW);
+        digitalWrite(kLeftForwardPin, LOW);
+        digitalWrite(kLeftSpeedPin, LOW);
+        digitalWrite(kRightSpeedPin, LOW);
+        digitalWrite(kRightForwardPin, LOW);
+        digitalWrite(kRightReversePin, LOW);
     }
 }
 
