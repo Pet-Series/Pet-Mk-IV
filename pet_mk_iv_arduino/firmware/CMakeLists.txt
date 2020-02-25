@@ -22,6 +22,7 @@ set(${PROJECT}_SOURCE_FILES
   main.cpp
   dist_sensors.cpp
   engines.cpp
+  line_followers.cpp
   ros_time_operators.cpp
 )
 
