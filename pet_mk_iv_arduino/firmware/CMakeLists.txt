@@ -15,6 +15,9 @@ include_directories(
   ${NEW_PING_INCLUDE_DIR}
 )
 
+# Not nicest solution. Would like to only add the flags for code from pet_mk_iv_arduino.
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -Wextra -Wpedantic")
+
 set(${PROJECT}_SOURCE_FILES
   main.cpp
   dist_sensors.cpp
