@@ -1,5 +1,7 @@
 #include "engines.h"
 
+#include <Arduino.h>
+
 #include "ros.h"
 #include <ros/time.h>
 #include "ros_time_operators.h"
@@ -13,11 +15,11 @@ constexpr unsigned int kRightSpeedPin   = 10;
 constexpr unsigned int kRightForwardPin = 11;
 constexpr unsigned int kRightReversePin = 12;
 
-const ros::Duration ENGINE_TIMEOUT(0, 0.5e9);
+static const ros::Duration ENGINE_TIMEOUT(0, 0.5e9);
 
 extern pet::ros::NodeHandle nh;
-pet_mk_iv_msgs::EngineCommand engineCommandMsg;
-ros::Subscriber<pet_mk_iv_msgs::EngineCommand> engineCommandSub("engine_command", &engineCommandCb);
+static pet_mk_iv_msgs::EngineCommand engineCommandMsg;
+static ros::Subscriber<pet_mk_iv_msgs::EngineCommand> engineCommandSub("engine_command", &engineCommandCb);
 
 void enginesSetup()
 {

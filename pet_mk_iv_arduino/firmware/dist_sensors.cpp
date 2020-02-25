@@ -1,9 +1,11 @@
 #include "dist_sensors.h"
 
+#include <stdint.h>
+
+#include <Arduino.h>
 #include <NewPing.h>
 
 #include "ros.h"
-
 #include "pet_mk_iv_msgs/DistanceMeasurement.h"
 
 constexpr unsigned int kTriggerPin1     = 14;   // A0  "Left"
@@ -18,17 +20,18 @@ constexpr unsigned int kMaxDistance     = 150;  // Maximum distance we want to p
 constexpr unsigned int kPingInterval    = 33;
 
 extern pet::ros::NodeHandle nh;
-pet_mk_iv_msgs::DistanceMeasurement distSensorMsg;
-ros::Publisher distSensorPub("dist_sensors", &distSensorMsg);
+static pet_mk_iv_msgs::DistanceMeasurement distSensorMsg;
+static ros::Publisher distSensorPub("dist_sensors", &distSensorMsg);
 
-unsigned long pingTimer[kSonarNum];
+static unsigned long pingTimer[kSonarNum];
+static uint8_t currentSensor = 0;
 
-const char distSensorFrames[kSonarNum][14] = {
+static const char distSensorFrames[kSonarNum][14] = {
     "dist_sensor_0",
     "dist_sensor_1",
     "dist_sensor_2"};
 
-NewPing sonar[kSonarNum] = {
+static NewPing sonar[kSonarNum] = {
     NewPing(kTriggerPin1, kEchoPin1, kMaxDistance),
     NewPing(kTriggerPin2, kEchoPin2, kMaxDistance),
     NewPing(kTriggerPin3, kEchoPin3, kMaxDistance)};
@@ -73,9 +76,3 @@ void publishResult(uint8_t sensor, int16_t dist)
 
     distSensorPub.publish(&distSensorMsg);
 }
-
-//void logResult(uint8_t sensor, int16_t dist) {
-//String logString = "id: " + String(sensor) + ", dist: " + String(dist) + " mm";
-//logString.toCharArray(logChars, 22);
-//nh.loginfo(logChars);
-//}
