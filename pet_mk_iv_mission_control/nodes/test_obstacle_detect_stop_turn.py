@@ -19,11 +19,12 @@ class ObstacleDetectStopTurn(object):
         rospy.init_node("obstacle_detect_stop_turn")
         self.cmd_rate = rospy.Rate(10) #10Hz
 
-        # Subscribers
+        # Default/Init.values
         self.dist_sensors_left   = -1 # Infinity-"mm"
         self.dist_sensors_middle = -1 # Infinity-"mm" 
         self.dist_sensors_right  = -1 # Infinity-"mm" 
 
+        # Subscribers
         self.dist_sub = rospy.Subscriber("dist_sensors", DistanceMeasurement, self.dist_senors_cb)
         # rospy.wait_for_message("dist_sensors", DistanceMeasurement, timeout=10)
 
