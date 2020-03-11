@@ -18,9 +18,9 @@
  
 ### Target Envieroment: Main ECU
  - [X] Rasperry PI model 3
-       Raspian Buster (Debian Buster)
- - [X] ROS Melodic Ubuntu Bionic (but we comiple from spource anyway on the RPi/Raspian).
- - [X] Arduino IDE
+       Raspian Buster (Debian Buster 10)
+ - [X] ROS Melodic Ubuntu Bionic (but we compile from source anyway on the RPi/Raspian).
+ - [X] Arduino IDE (
  
 ### Target Envieroment: Sub-ECU
  - [X] Arduino UNO via serial/USB-cable.
