@@ -51,7 +51,7 @@ parser.add_argument("--verbose", "-v", action="store_true", help="Verbose on the
 args = parser.parse_args()
 #args.verbose = True
 
-#Initiate the SSD1306 LCD-display
+#Initiate the SSD1306 LCD-display with a PC8574T piggy back I2C-interface
 lcd = LCD(address=0x3f, width=16, rows=2)
 
 # -------------------------------
