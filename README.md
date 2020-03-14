@@ -19,7 +19,7 @@
  - [X] This Git-repo.
  
 ### Target Envieroment: Main ECU
- - [X] Rasperry PI model 3
+ - [x] Rasperry PI model 3
        Raspian Buster (Debian Buster 10)
  - [X] ROS Melodic Ubuntu Bionic (but we compile from source anyway on the RPi/Raspian).
  - [X] Arduino IDE (Not for the IDE itself... mainly for get/manage IDE-libraries).
@@ -32,17 +32,17 @@
      ...
 
 ## Mechanics & Hardware
- - [X] Main ECU/CPU's: Rasperry Pi 3
-       - [x] Power by: 1x USB Powerbank 1.5A
-       - [x] Display: LCD 1602 via I2C interface: PC8574T
-       - [x] Sensor: IMU 6050 via I2C
-       - [x] Sensor: RPi Camera module 1.0
- - [X] Arduino UNO R3
-       - [X] Senors: 3x HC-SR04 as Obstacle avaidance
-       - [X] Senors: 3x Xyz as Line Follower
-       - [x] Engine controller: L298N
- - [X] Chassie: Zumo with belt drive
-       - [x] Power power: 6x AAA-batteries (4+2 config => 6*1,2V=7,2V)
+- [X] Main ECU/CPU's: Rasperry Pi 3
+  - [X] Power by: 1x USB Powerbank 1.5A
+  - [x] Display: LCD 1602 via I2C interface: PC8574T
+  - [x] Sensor: IMU 6050 via I2C
+  - [x] Sensor: RPi Camera module 1.0
+- [X] Arduino UNO R3
+  - [x] Senors: 3x HC-SR04 as Obstacle avaidance
+  - [x] Senors: 3x Xyz as Line Follower
+  - [x] Engine controller: L298N
+- [X] Chassie: Zumo with belt drive
+  - [x] Power power: 6x AAA-batteries (4+2 config => 6*1,2V=7,2V)
 
 ### External references
 - SeniorKullkens OneNote: https://1drv.ms/u/s!Aq6kdS_u7ZDZ5REO5Ms1MWFe0tBR
