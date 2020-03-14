@@ -20,11 +20,25 @@
 #  40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 #  50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 #  60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-#  70: -- -- -- -- -- -- -- --  
+#  70: -- -- -- -- -- -- -- --
+#
+#  ------Test Cases-----------------------------
+#
+#  $ ./ShowStatus-LCD.py -h
+#  $ ./ShowStatus-LCD.py -v -1 hostname -2 CPUload   # Validate "$uname -n" "$htop -tree"
+#  $ ./ShowStatus-LCD.py -v -2 hostname -1 CPUload 
+#  $ ./ShowStatus-LCD.py -v -1 RAMusage -2 diskusage # Validate "$free -m" "$df -h"
+#  $ ./ShowStatus-LCD.py -v -2 RAMusage -1 diskusage 
+#  $ ./ShowStatus-LCD.py -v -1 IP -2 datetime        # Validate "$hostname -I" "$"
+#  $ ./ShowStatus-LCD.py -v -2 IP -1 datetime
+#  $ ./ShowStatus-LCD.py -v -1 cputemp -2 gputemp
+#  $ ./ShowStatus-LCD.py -v -1 cputemp -2 gputemp
+#  $ ./ShowStatus-LCD.py -v -c
+#
 #  ------Future-----------------------------
 # TODO Convert "choices=..." to a choices=[choices.keys()]
 # TODO Add switch "--nodisplay"
-# TODO ADd switch "--text Xyx"
+# TODO Add switch "--text Xyx"
 # TODO Plott Graphic data via rqt
 # TODO Plott Graphic data 
 #      https://stackoverflow.com/questions/7998302/graphing-a-processs-memory-usage
@@ -54,51 +68,69 @@ args = parser.parse_args()
 #Initiate the SSD1306 LCD-display with a PC8574T piggy back I2C-interface
 lcd = LCD(address=0x3f, width=16, rows=2)
 
-# -------------------------------
+#
 # Set/prepare all various parameter to show
 #
 
-# Set/Prepare local Node/HostName and IP-adress (behind a NAT). 
-host_name=socket.gethostname()
+# Set/Prepare local Node/HostName (behind a NAT).
+# Terminal$ uname -n
+def get_host_name():
+    string = socket.gethostname()
+    return string
 
 # Set/Prepare CPU-load = CPU
-cmd = "top -bn1 | grep load | awk '{printf \"%.2f%%\", $(NF-2)}'"
-CPU_load = subprocess.check_output(cmd, shell = True ).decode('utf-8')
-    
-# Set/Prepare TotaltMemry/UsedMemory information
-#cmd = "free -m | awk 'NR==2{printf \"%s/%sMB %.2f%%\", $3,$2,$3*100/$2 }'" #"Total/Used Procent%"
-cmd = "free -m | awk 'NR==2{printf \"%s/%sMB %.0f%%\", $3,$2,$3*100/$2 }'" #"Total/Used Procent%"
-RAM_usage = subprocess.check_output(cmd, shell = True ).decode('utf-8')
-    
-# Set/Prepare TotalStorage/UsedStorage information
-cmd = "df -h | awk '$NF==\"/\"{printf \"%d/%dGB %s\", $3,$2,$5}'"  #"Total/Used Procent%"
-disk_usage = subprocess.check_output(cmd, shell = True ).decode('utf-8')
+# Terminal$ htop -tree
+def get_cpu_load():
+    cmd = "top -bn1 | grep load | awk '{printf \"%.2f%%\", $(NF-2)*100}'"
+    string = subprocess.check_output(cmd, shell = True ).decode('utf-8')
+    return string
 
-# Set/Prepare IP-address
+# Set/Prepare TotaltMemry/UsedMemory information
+# Terminal$ htop -tree   ...or$ free -m
+def get_ram_usage():
+    #cmd = "free -m | awk 'NR==2{printf \"%s/%sMB %.2f%%\", $3,$2,$3*100/$2 }'" #"Total/Used Procent%"
+    cmd = "free -m | awk 'NR==2{printf \"%s/%sMB %.0f%%\", $3,$2,$3*100/$2 }'" #"Total/Used Procent%"
+    string = RAM_usage = subprocess.check_output(cmd, shell = True ).decode('utf-8')
+    return string
+
+# Set/Prepare TotalStorage/UsedStorage information
+# Terminal$ df -h
+def get_disk_usage():
+    cmd = "df -h | awk '$NF==\"/\"{printf \"%d/%dGB %s\", $3,$2,$5}'"  #"Total/Used Procent%"
+    string = subprocess.check_output(cmd, shell = True ).decode('utf-8')
+    return string
+
+# Set/Prepare IP-address (behind a NAT)
 # A better algorithm to retrieve IP-address due to complexity with multiple IP and subnet behind NAT.
 # IP = (([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")] or [[(s.connect(("8.8.8.8", 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) + ["no IP found"])[0]
-IP = subprocess.check_output(["hostname", "-I"]).decode('utf-8').strip()
+# Terminal$ hostname -I
+def get_ip_adress():
+    string = subprocess.check_output(["hostname", "-I"]).decode('utf-8').strip()
+    return string
 
 # Set/Prepare current date&time 
-#date_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") # Become tooo long for my 16chr display :-(
-date_time = datetime.datetime.now().strftime("%d %b %H:%M:%S")
+# date_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") # Become tooo long for my 16chr display :-(
+# Terminal$ date '+%A %W %Y %X'
+def get_date_time():
+    string =  datetime.datetime.now().strftime("%d %b %H:%M:%S")
+    return string
 
 # Set/Prepare CPU-temperature 
+# Terminal$ cat /sys/class/thermal/thermal_zone0/temp
 def get_cpu_tempC():
     # First get the CPU/Core temperature
     tempFile = open("/sys/class/thermal/thermal_zone0/temp")
     cpu_temp = tempFile.read()
     tempFile.close()    
     string = "CPU temp.=" + str(round(float(cpu_temp)/1000,1)) + "`C"
-    #print (string)
     return string
 
 # Set/Prepare GPU-temperature (GPU=Graphic 'CPU')
+# Terminal$ vcgencmd measure_temp
 def get_gpu_tempC():
     #gpu_temp = subprocess.getoutput( '/opt/vc/bin/vcgencmd measure_temp' ).replace( 'temp=', '' ).replace( '\'C', '' )
     gpu_temp = os.popen('/opt/vc/bin/vcgencmd measure_temp').readline().strip('\n').replace( 'temp=', '' ).replace( '\'C', '' )
     string = "GPU temp.=" + gpu_temp + "`C"
-    #print (string)
     return string
 
 if args.verbose:
@@ -114,63 +146,97 @@ if args.clear:
 
 # Select what to Display on each row
 if args.row1 == "hostname":
-    if args.verbose: print(verboseHeader + "Row1 = Display 'hostname'=" + host_name)
-    lcd.text(host_name, 1, 'center')
+    string = get_host_name()
+    if args.verbose: print(verboseHeader + "Row1 = Display 'hostname'=" + string )
+    lcd.text(string, 1, 'center')
+    
 elif args.row1 == "CPUload":
-    if args.verbose: print(verboseHeader + "Row1 = Display 'CPUload'=" + CPU_load)
-    lcd.text(CPU_load, 1, 'right')
+    string = get_cpu_load()
+    if args.verbose: print(verboseHeader + "Row1 = Display 'CPUload'=" + string )
+    lcd.text(string, 1, 'right')
+    
 elif args.row1 == "RAMusage":
-    if args.verbose: print(verboseHeader + "Row1 = Display 'RAMusage'=" + RAM_usage)
-    lcd.text(RAM_usage, 1, 'right')
+    string = get_ram_usage()
+    if args.verbose: print(verboseHeader + "Row1 = Display 'RAMusage'=" + string )
+    lcd.text(string, 1, 'right')
+    
 elif args.row1 == "diskusage":
-    if args.verbose: print(verboseHeader + "Row1 = Display 'diskusage'=" + disk_usage)
-    lcd.text(disk_usage, 1, 'right')
+    string = get_disk_usage()
+    if args.verbose: print(verboseHeader + "Row1 = Display 'diskusage'=" + string )
+    lcd.text(string, 1, 'right')
+    
 elif args.row1 == "IP":
-    if args.verbose: print(verboseHeader + "Row1 = Display 'IP'=" + IP)
-    lcd.text(IP, 1, 'center')
+    string = get_ip_adress()
+    if args.verbose: print(verboseHeader + "Row1 = Display 'IP'=" + string )
+    lcd.text(string, 1, 'center')
+    
 elif args.row1 == "datetime":
-    if args.verbose: print(verboseHeader + "Row1 = Display 'datetime'=" + date_time)
-    lcd.text(date_time, 1, 'left')
+    string = get_date_time()
+    if args.verbose: print(verboseHeader + "Row1 = Display 'datetime'=" + string )
+    lcd.text(string, 1, 'left')
+    
 elif args.row1 == "cputemp":
-    if args.verbose: print(verboseHeader + "Row1 = Display 'cputemp'=" + get_cpu_tempC() )
-    lcd.text(get_cpu_tempC(), 1, 'left')
+    string = get_cpu_tempC()
+    if args.verbose: print(verboseHeader + "Row1 = Display 'cputemp'=" + string )
+    lcd.text(string, 1, 'left')
+    
 elif args.row1 == "gputemp":
-    if args.verbose: print(verboseHeader + "Row1 = Display 'gputemp'=" + get_gpu_tempC() )
-    lcd.text(get_gpu_tempC(), 1, 'left')
+    string = get_gpu_tempC()
+    if args.verbose: print(verboseHeader + "Row1 = Display 'gputemp'=" + string )
+    lcd.text(string , 1, 'left')
+    
 elif args.row1 == "customtxt":
+    string = "---" 
     if args.verbose: print(verboseHeader + "Row1 = ...clear" )
-    lcd.text("---", 1, 'center')
+    lcd.text(string , 1, 'center')
 else:
     print(verboseHeader + "Row1 = n/a")
 
 
 if args.row2 == "hostname":
-    if args.verbose: print(verboseHeader + "Row2 = Display 'hostname'=" + host_name)
-    lcd.text(host_name, 2, 'center')
+    string = get_host_name()
+    if args.verbose: print(verboseHeader + "Row2 = Display 'hostname'=" + string )
+    lcd.text(string, 2, 'center')
+    
 elif args.row2 == "CPUload":
-    if args.verbose: print(verboseHeader + "Row2 = Display 'CPUload'=" + CPU_load)
-    lcd.text(CPU_load, 2, 'right')
+    string = get_cpu_load()
+    if args.verbose: print(verboseHeader + "Row2 = Display 'CPUload'=" + string )
+    lcd.text(string, 2, 'right')
+    
 elif args.row2 == "RAMusage":
-    if args.verbose: print(verboseHeader + "Row2 = Display 'RAMusage'=" + RAM_usage)
-    lcd.text(RAM_usage, 2, 'right')
+    string = get_ram_usage()
+    if args.verbose: print(verboseHeader + "Row2 = Display 'RAMusage'=" + string )
+    lcd.text(string, 2, 'right')
+    
 elif args.row2 == "diskusage":
-    if args.verbose: print(verboseHeader + "Row2 = Display 'diskusage'=" + disk_usage)
-    lcd.text(disk_usage, 2, 'right')
+    string = get_disk_usage()
+    if args.verbose: print(verboseHeader + "Row2 = Display 'diskusage'=" + string )
+    lcd.text(string, 2, 'right')
+    
 elif args.row2 == "IP":
-    if args.verbose: print(verboseHeader + "Row2 = Display 'IP'=" + IP)
-    lcd.text(IP, 2, 'center')
+    string = get_ip_adress()
+    if args.verbose: print(verboseHeader + "Row2 = Display 'IP'=" + string )
+    lcd.text(string, 2, 'center')
+    
 elif args.row2 == "datetime":
-    if args.verbose: print(verboseHeader + "Row2 = Display 'datetime'=" + date_time)
-    lcd.text(date_time, 2, 'left')
+    string = get_date_time()
+    if args.verbose: print(verboseHeader + "Row2 = Display 'datetime'=" + string )
+    lcd.text(string, 2, 'left')
+    
 elif args.row2 == "cputemp":
-    if args.verbose: print(verboseHeader + "Row2 = Display 'cputemp'=" + get_cpu_tempC() )
-    lcd.text(get_cpu_tempC(), 2, 'left')
+    string = get_cpu_tempC()
+    if args.verbose: print(verboseHeader + "Row2 = Display 'cputemp'=" + string )
+    lcd.text(string, 2, 'left')
+    
 elif args.row2 == "gputemp":
-    if args.verbose: print(verboseHeader + "Row2 = Display 'gputemp'=" + get_gpu_tempC() )
-    lcd.text(get_gpu_tempC(), 2, 'left')
+    string = get_gpu_tempC()
+    if args.verbose: print(verboseHeader + "Row2 = Display 'gputemp'=" + string )
+    lcd.text(string, 2, 'left')
+    
 elif args.row2 == "customtxt":
+    string = " :-) "
     if args.verbose: print(verboseHeader + "Row2 = ...clear" )
-    lcd.text(" :-) ", 2, 'center')
+    lcd.text(string, 2, 'center')
 else:
     print(verboseHeader + "Row2 = n/a")
     
