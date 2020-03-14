@@ -37,12 +37,12 @@
 - [X] **Main ECU/CPU's:** Raspberry Pi 3
   - [X] **Power by:** 1x USB Power bank 1.5A
   - [x] **Display:** LCD 1602 via I2C interface: PC8574T
-  - [x] **Sensor:** IMU 6050 via I2C
-  - [x] **Sensor:** RPi Camera module 1.0
+  - [x] **Sensor:** IMU GY-521/MPU6050(6 axis) via I2C
+  - [x] **Sensor:** Camera RPi Camera module 1.0
 - [X] **Arduino UNO R3**
-  - [x] **Sensor:** 3x HC-SR04 as Obstacle avoidance
-  - [x] **Sensor:** 3x Xyz as Line Follower
-  - [x] **Engine controller:** L298N
+  - [x] **Sensor:** 3x HC-SR04 ultrasonic ranging sensor for Obstacle detection
+  - [x] **Sensor:** 3x CTRT5000 Infrared sensors for tracing
+  - [x] **Engine controller:** L298N Dual H Bridge Step/DC-motor controller
 - [X] **Chassis: Zumo with belt drive**
   - [x] Power: 6x AAA-batteries (4+2 config => 6*1,2V=7,2V)
 
