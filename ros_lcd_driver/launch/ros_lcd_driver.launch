@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="ros_lcd_driver" type="lcd_driver_node.py" name="lcd_display" output="screen"/>
+</launch>

@@ -16,4 +16,6 @@
   <!-- Engine controller -->
   <include file="$(find pet_mk_iv_path_planner)/launch/controller.launch"/>
 
+  <!-- LCD display driver/controller -->
+  <include file="$(find ros_lcd_driver)/launch/ros_lcd_driver.launch"/>
 </launch>
