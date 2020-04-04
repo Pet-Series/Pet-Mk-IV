@@ -2,6 +2,7 @@
 
 #include "ros.h"
 #include <ros/time.h>
+#include <ros/duration.h>
 
 #include "timer.h"
 #include "engines.h"
@@ -9,9 +10,9 @@
 #include "dist_sensors.h"
 #include "chatter.h"
 
-#define ENGINE_CALLBACK_INTERVAL ros::Duration(0, 20000000)      // 20 ms -> 50 Hz
-#define LF_CALLBACK_INTERVAL ros::Duration(0, 10000000)          // 10 ms -> 100 Hz
-#define DIST_SENSOR_CALLBACK_INTERVAL ros::Duration(0, 33000000) // 33 ms -> ~30 Hz
+static const ros::Duration kEngineCallbackInterval(0, 20'000'000);      // 20 ms -> 50 Hz
+static const ros::Duration kLfCallbackInterval(0, 10'000'000);          // 10 ms -> 100 Hz
+static const ros::Duration kDistSensorCallbackInterval(0, 33'000'000);  // 33 ms -> ~30 Hz
 
 pet::ros::NodeHandle nh;
 Timer<4> timer(nh);
@@ -29,10 +30,10 @@ void setup()
     distSensorSetup();
     chatterSetup();
 
-    timer.register_callback(enginesUpdate, ENGINE_CALLBACK_INTERVAL);
-    timer.register_callback(lineFollowerUpdate, LF_CALLBACK_INTERVAL);
-    timer.register_callback(distSensorUpdate, DIST_SENSOR_CALLBACK_INTERVAL);
-    timer.register_callback(chatterUpdate, ros::Duration(0, 500000000));
+    timer.register_callback(enginesUpdate, kEngineCallbackInterval);
+    timer.register_callback(lineFollowerUpdate, kLfCallbackInterval);
+    timer.register_callback(distSensorUpdate, kDistSensorCallbackInterval);
+    timer.register_callback(chatterUpdate, ros::Duration(0, 500'000'000));
 
     nh.loginfo("Arduino setup done!");
 }
