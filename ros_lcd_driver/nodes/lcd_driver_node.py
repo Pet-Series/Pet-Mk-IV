@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # Github @SeniorKullken 2020-03-11
 #
-# Linux/Raspian status/information on LCD-Display
-# Route msg that is published on ROS-topic "lcd_display/row1" => subscriber LCD-display Row1
-# Route msg that is published on ROS-topic "lcd_display/row2" => subscriber LCD-display Row2
+# Display any string that has been published to the LCD-Display
+# 1) ROS-topic "lcd_display/row1" => LCD-display row1
+# 2) ROS-topic "lcd_display/row2" => LCD-display row2
 #
 # $ roscore
 # $ rosrun ros_lcd_driver lcd_driver_node.py
@@ -47,7 +47,7 @@ from rpi_lcd import LCD
 class LCDDisplay(object): # A ROS-subscriber node...
 
     def __init__(self):
-        rospy.init_node("lcd_display")  # The same name as in 
+        rospy.init_node("lcd_display")  # Default name of node. Might be set to something else in a .launch-file.
         self.update_rate = rospy.Rate(1) #1Hz
         
         #Initiate the SSD1306 LCD-display with a PC8574T piggy back I2C-interface

@@ -25,7 +25,7 @@
 #  ------Test Cases-----------------------------
 #
 #  $ ./ShowStatus-LCD.py -h
-#  $ ./ShowStatus-LCD.py -v -1 hostname -2 CPUload   # Validate "$uname -n" "$htop -tree"
+#  $ ./ShowStatus-LCD.py -v -1 hostname -2 CPUload   # Validate "$uname -n" "$htop --tree"
 #  $ ./ShowStatus-LCD.py -v -2 hostname -1 CPUload 
 #  $ ./ShowStatus-LCD.py -v -1 RAMusage -2 diskusage # Validate "$free -m" "$df -h"
 #  $ ./ShowStatus-LCD.py -v -2 RAMusage -1 diskusage 
