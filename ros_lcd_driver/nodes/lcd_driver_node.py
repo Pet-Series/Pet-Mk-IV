@@ -72,8 +72,8 @@ class LCDDisplay(object): # A ROS-subscriber node...
             self.lcd.text(self.row1_string, 1, 'center')
             self.lcd.text(self.row2_string, 2, 'center')
             # Debug text to terminal
-            rospy.loginfo(rospy.get_caller_id() + rospy.get_name() + "/Row1=\"" + self.row1_string + "\"" ) 
-            rospy.loginfo(rospy.get_caller_id() + rospy.get_name() + "/Row2=\"" + self.row2_string + "\"" ) 
+            rospy.logdebug(rospy.get_caller_id() + rospy.get_name() + "/Row1=\"" + self.row1_string + "\"" ) 
+            rospy.logdebug(rospy.get_caller_id() + rospy.get_name() + "/Row2=\"" + self.row2_string + "\"" ) 
             # Put myself into sleep...Zzzz
             self.update_rate.sleep()
             
