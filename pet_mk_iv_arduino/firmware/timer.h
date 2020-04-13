@@ -27,6 +27,7 @@ public:
     Timer(pet::ros::NodeHandle& nh) : m_nh(nh) {}
 
     void register_callback(func_ptr func, ros::Duration interval);
+    void register_callback(func_ptr func, ros::Duration interval, ros::Time start_time);
     void spin_once();    
 
 private:
@@ -49,13 +50,28 @@ void Timer<capacity>::register_callback(func_ptr func, ros::Duration interval)
 }
 
 template<uint8_t capacity>
+void Timer<capacity>::register_callback(func_ptr func, ros::Duration interval, ros::Time start_time) 
+{
+    if (m_size < capacity) 
+    {
+        m_callbacks[m_size] = Callback(func, interval, start_time);
+        ++m_size;
+    }
+    else {
+        // TODO: Raise exception? Error handling? Ignore?
+    }
+}
+
+template<uint8_t capacity>
 inline void Timer<capacity>::spin_once() 
 {
-    ros::Time current_time = m_nh.now();
-    for (uint8_t i = 0; i < m_size; ++i) {
-        Callback& cb = m_callbacks[i];
-        if (cb.next_time < current_time) {
+    const ros::Time current_time = m_nh.now();
+    for (Callback& cb : m_callbacks) 
+    {
+        if (cb.next_time < current_time)
+        {
             cb.func();
+            // cb.next_time = cb.next_time + cb.interval;
             cb.next_time = current_time + cb.interval;
             break;
         }
