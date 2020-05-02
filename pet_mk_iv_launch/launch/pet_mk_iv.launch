@@ -1,22 +1,18 @@
 <launch>
   <arg name="teleop"  default="false"/>
-  <arg name="port"    default="/dev/ttyACM0"/>
-  <arg name="baud"    default="57600"/>
 
-  <node pkg="rosserial_python" type="serial_node.py" name="arduino" output="screen">
-    <param name="port" value="$(arg port)"/>
-    <param name="baud" value="$(arg baud)"/>
-  </node>
-
-  <!-- Teleop -->
-  <group if="$(arg teleop)">
-    <remap from="key_vel" to="vel_cmd"/>
-    <include file="$(find pet_mk_iv_path_planner)/launch/teleop.launch"/>
-  </group>
+  <!-- rosserial + arduino -->
+  <include file="$(find pet_mk_iv_arduino)/launch/arduino.launch"/>
   
   <!-- Engine controller -->
   <include file="$(find pet_mk_iv_path_planner)/launch/controller.launch"/>
 
   <!-- LCD display driver/controller -->
   <include file="$(find ros_lcd_driver)/launch/ros_lcd_driver.launch"/>
+
+  <!-- Teleop -->
+  <group if="$(arg teleop)">
+    <remap from="key_vel" to="vel_cmd"/>
+    <include file="$(find pet_mk_iv_path_planner)/launch/teleop.launch"/>
+  </group>
 </launch>
