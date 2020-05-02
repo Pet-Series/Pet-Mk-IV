@@ -52,6 +52,7 @@ CATKIN_IGNORE
 
 # VSCode
 .vscode/**
+*.code-workspace
 
 # Get repository stuff... No need to be cloned to local/target systems
 /Project_stuff/**
