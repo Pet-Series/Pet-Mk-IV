@@ -27,15 +27,14 @@ void setup()
         nh.spinOnce();
     }
 
-    nh.logwarn("Arduino starting...");
-    nh.spinOnce();
+    nh.loginfo("Arduino starting...");
 
     enginesSetup();
     lineFollowerSetup();
     // distSensorSetup();
     chatterSetup();
 
-    const ros::Duration start_delay(100, 0);
+    const ros::Duration start_delay(1, 0);
     const ros::Time global_start_time = nh.now() + start_delay;
 
     timer.register_callback(enginesUpdate, kEngineCallbackInterval, global_start_time);
@@ -43,13 +42,7 @@ void setup()
     // timer.register_callback(distSensorUpdate, kDistSensorCallbackInterval);
     timer.register_callback(chatterUpdate, ros::Duration(0, 500'000'000), global_start_time);
 
-    while (!nh.connected())
-    {
-        nh.spinOnce();
-    }
-
-    delay(1000);
-    nh.logwarn("Arduino setup done!");
+    nh.loginfo("Arduino setup done!");
 }
 
 void loop()
