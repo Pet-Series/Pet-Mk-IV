@@ -34,6 +34,9 @@ void setup()
     // distSensorSetup();
     chatterSetup();
 
+    // We need to renegotiate topics after setup-calls since new publishers/subscribers is registered.
+    nh.negotiateTopics();
+
     const ros::Duration start_delay(1, 0);
     const ros::Time global_start_time = nh.now() + start_delay;
 
