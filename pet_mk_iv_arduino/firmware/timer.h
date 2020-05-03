@@ -71,8 +71,7 @@ inline void Timer<capacity>::spin_once()
         if (cb.next_time < current_time)
         {
             cb.func();
-            // cb.next_time = cb.next_time + cb.interval;
-            cb.next_time = current_time + cb.interval;
+            cb.next_time = cb.next_time + cb.interval;
             break;
         }
     }
