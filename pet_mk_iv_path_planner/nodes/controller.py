@@ -26,8 +26,8 @@ class Controller(object):
             if self._vel_msg is not None:
                 msg = EngineCommand()
                 msg.header.stamp = rospy.Time.now()
-                msg.left_pwm = 255
-                msg.right_pwm = 255
+                msg.left_pwm = 128
+                msg.right_pwm = 128
 
                 if self._vel_msg.linear.x > 0:
                     msg.left_direction = EngineCommand.FORWARD
