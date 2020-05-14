@@ -38,15 +38,6 @@ void setup()
     // We need to renegotiate topics after setup-calls since new publishers/subscribers is registered.
     nh.negotiateTopics();
 
-    { // Debug code
-        ros::Time now = nh.now();
-        String msg = "Before time sync: ";
-        msg += now.sec;
-        msg += ".";
-        msg += now.nsec;
-        nh.logwarn(msg.c_str());
-    }
-
     // Ensure time is synced before continuing.
     uint32_t last_sync_time = nh.get_last_sync_receive_time();
     nh.requestSyncTime();
@@ -55,25 +46,8 @@ void setup()
         nh.spinOnce();
     }
 
-    { // Debug code
-        ros::Time now = nh.now();
-        String msg = "After time sync:  ";
-        msg += now.sec;
-        msg += ".";
-        msg += now.nsec;
-        nh.logwarn(msg.c_str());
-    }
-
-    const ros::Duration start_delay(1, 0);
+    const ros::Duration start_delay(0, 200'000'000);
     const ros::Time start_time = nh.now() + start_delay;
-
-    { // Debug code
-        String msg = "Callback start time: ";
-        msg += start_time.sec;
-        msg += ".";
-        msg += start_time.nsec;
-        nh.logwarn(msg.c_str());
-    }
 
     timer.register_callback(enginesUpdate, kEngineCallbackInterval, start_time);
     timer.register_callback(lineFollowerUpdate, kLfCallbackInterval, start_time);
