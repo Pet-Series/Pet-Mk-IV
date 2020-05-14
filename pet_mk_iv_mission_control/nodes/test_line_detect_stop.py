@@ -19,7 +19,7 @@ class LineFollower(object):
 
     def __init__(self):
         rospy.init_node("line_follower_state_machine")
-        self.cmd_rate = rospy.Rate(100) #10Hz
+        self.cmd_rate = rospy.Rate(100) # Hz
 
         # Subscribers
         self.LF_sensors_msg = None
@@ -48,6 +48,7 @@ class LineFollower(object):
             
             # stuff
             if self.LF_sensors_msg.left and self.LF_sensors_msg.middle and self.LF_sensors_msg.right:
+                rospy.logwarn_throttle(1, rospy.get_caller_id() + " Run Forrest... RUN!")
                 vel_msg.twist.linear.x = 0.1
             else:
                 rospy.logwarn(rospy.get_caller_id() + " STOP!")
@@ -58,7 +59,6 @@ class LineFollower(object):
             self.cmd_rate.sleep()
 
     def LF_senors_cb(self, msg):
-        rospy.loginfo(rospy.get_caller_id() + "I heard Left={}, Middle={}, Right={}".format(msg.left,msg.middle,msg.right))
         self.LF_sensors_msg = msg
 
 if __name__ == '__main__':
