@@ -32,8 +32,6 @@ class LineFollower(object):
     def run(self):
         vel_msg = TwistStamped()
 
-        vel_msg.header.stamp = rospy.Time.now()
-
         vel_msg.twist.linear.x = 0 # Speed forward
         vel_msg.twist.linear.y = 0 # "almost" always 0 rad/sec
         vel_msg.twist.linear.z = 0 # Always 0 m/sec
@@ -45,6 +43,8 @@ class LineFollower(object):
         emergency_stop = False
         
         while not rospy.is_shutdown() and not emergency_stop:
+
+            vel_msg.header.stamp = rospy.Time.now()
             
             # stuff
             if self.LF_sensors_msg.left and self.LF_sensors_msg.middle and self.LF_sensors_msg.right:
