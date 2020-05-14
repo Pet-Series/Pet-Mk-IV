@@ -4,7 +4,7 @@ from __future__ import division
 
 import rospy
 
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import TwistStamped
 
 from pet_mk_iv_msgs.msg import EngineCommand
 
@@ -16,7 +16,7 @@ class Controller(object):
 
         # Subscribers
         self._vel_msg = None
-        self._vel_sub = rospy.Subscriber("vel_cmd", Twist, self._vel_cb)
+        self._vel_sub = rospy.Subscriber("vel_cmd", TwistStamped, self._vel_cb)
 
         # Publishers
         self._engine_pub = rospy.Publisher("engine_command", EngineCommand, queue_size=2)
@@ -25,20 +25,20 @@ class Controller(object):
         while not rospy.is_shutdown():
             if self._vel_msg is not None:
                 msg = EngineCommand()
-                msg.header.stamp = rospy.Time.now()
+                msg.header.stamp = self._vel_msg.header.stamp
                 msg.left_pwm = 128
                 msg.right_pwm = 128
 
-                if self._vel_msg.linear.x > 0:
+                if self._vel_msg.twist.linear.x > 0:
                     msg.left_direction = EngineCommand.FORWARD
                     msg.right_direction = EngineCommand.FORWARD
-                elif self._vel_msg.linear.x < 0:
+                elif self._vel_msg.twist.linear.x < 0:
                     msg.left_direction = EngineCommand.BACKWARD
                     msg.right_direction = EngineCommand.BACKWARD
-                elif self._vel_msg.angular.z > 0:
+                elif self._vel_msg.twist.angular.z > 0:
                     msg.left_direction = EngineCommand.BACKWARD
                     msg.right_direction = EngineCommand.FORWARD
-                elif self._vel_msg.angular.z < 0:
+                elif self._vel_msg.twist.angular.z < 0:
                     msg.left_direction = EngineCommand.FORWARD
                     msg.right_direction = EngineCommand.BACKWARD
                 else:

@@ -13,7 +13,7 @@ import rospy
 # bool middle
 # bool right
 from pet_mk_iv_msgs.msg import TripleBoolean
-from geometry_msgs.msg import Twist  # Linear velocity + Angular velocity
+from geometry_msgs.msg import TwistStamped  # Linear velocity + Angular velocity
 
 class LineFollower(object):
 
@@ -27,17 +27,20 @@ class LineFollower(object):
         rospy.wait_for_message("line_followers", TripleBoolean, timeout=10)
 
         # Publishers
-        self.vel_pub = rospy.Publisher("vel_cmd", Twist, queue_size=10)
+        self.vel_pub = rospy.Publisher("vel_cmd", TwistStamped, queue_size=10)
 
     def run(self):
-        vel_msg = Twist()
-        vel_msg.linear.x = 0 # Speed forward
-        vel_msg.linear.y = 0 # "almost" always 0 rad/sec
-        vel_msg.linear.z = 0 # Always 0 m/sec
+        vel_msg = TwistStamped()
+
+        vel_msg.header.stamp = rospy.Time.now()
+
+        vel_msg.twist.linear.x = 0 # Speed forward
+        vel_msg.twist.linear.y = 0 # "almost" always 0 rad/sec
+        vel_msg.twist.linear.z = 0 # Always 0 m/sec
         
-        vel_msg.angular.x = 0 # Always 0 rad/sec
-        vel_msg.angular.y = 0 # Always 0 rad/sec
-        vel_msg.angular.z = 0 # Turn speed (ccw "to the left")
+        vel_msg.twist.angular.x = 0 # Always 0 rad/sec
+        vel_msg.twist.angular.y = 0 # Always 0 rad/sec
+        vel_msg.twist.angular.z = 0 # Turn speed (ccw "to the left")
         
         emergency_stop = False
         
@@ -45,11 +48,10 @@ class LineFollower(object):
             
             # stuff
             if self.LF_sensors_msg.left and self.LF_sensors_msg.middle and self.LF_sensors_msg.right:
-                rospy.logwarn(rospy.get_caller_id() + " Run Forrest... RUN!")
-                vel_msg.linear.x = 0.1
+                vel_msg.twist.linear.x = 0.1
             else:
                 rospy.logwarn(rospy.get_caller_id() + " STOP!")
-                vel_msg.linear.x = 0.0
+                vel_msg.twist.linear.x = 0.0
                 emergency_stop = True
                 
             self.vel_pub.publish(vel_msg)        
