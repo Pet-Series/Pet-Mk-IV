@@ -60,19 +60,21 @@ void distSensorUpdate()
             sonar[currentSensor].ping_timer(echoCheck);
         }
     }
+
+    distSensorPub.publish(&distSensorMsg);
 }
 
+/// WARNING! This function is called inside an interrupt.
 void echoCheck()
 {
     if (sonar[currentSensor].check_timer())
         publishResult(currentSensor, sonar[currentSensor].ping_result * 10 / US_ROUNDTRIP_CM);
 }
 
+/// WARNING! This function is called inside an interrupt.
 void publishResult(uint8_t sensor, int16_t dist)
 {
     distSensorMsg.header.stamp = nh.now();
     distSensorMsg.header.frame_id = distSensorFrames[sensor];
     distSensorMsg.distance = dist;
-
-    distSensorPub.publish(&distSensorMsg);
 }
