@@ -26,7 +26,7 @@ static ros::Publisher distSensorPub("dist_sensors", &distSensorMsg);
 static unsigned long pingTimer[kSonarNum];
 static uint8_t currentSensor = 0;
 
-static const char distSensorFrames[kSonarNum][14] = {
+constexpr char distSensorFrames[kSonarNum][14] = {
     "dist_sensor_0",
     "dist_sensor_1",
     "dist_sensor_2"};
