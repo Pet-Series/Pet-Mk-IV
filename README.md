@@ -47,12 +47,8 @@
   - [x] Power: 6x AAA-batteries (4+2 config => 6*1,2V=7,2V)
 
 # External references
-- SeniorKullken OneNote:
-  - https://1drv.ms/u/s!Aq6kdS_u7ZDZ5REO5Ms1MWFe0tBR
 - ROS.org
   - http://wiki.ros.org/
 - GitHub cheat sheets
   - https://help.github.com/en/github/writing-on-github/basic-writing-and-formatting-syntax
   - https://www.webfx.com/tools/emoji-cheat-sheet/
-- Lucid Chart Diagram:
-  - https://www.lucidchart.com/invitations/accept/760f4729-2814-43cd-bd3d-829c4079b3df
