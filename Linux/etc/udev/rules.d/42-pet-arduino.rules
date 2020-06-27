@@ -1,0 +1,2 @@
+SUBSYSTEM=="tty" ATTRS{idVendor}=="2341" SYMLINK+="ArduinoUno%n"
+SUBSYSTEM=="tty" ATTRS{idVendor}=="1a86" SYMLINK+="ArduinoNano%n"
