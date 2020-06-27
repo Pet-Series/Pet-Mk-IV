@@ -25,5 +25,5 @@ generate_arduino_firmware(arduino
   SRCS ${${PROJECT}_SOURCE_FILES} ${EXTERNAL_SOURCE_FILES}
   BOARD nano328
   # PROGRAMMER  
-  PORT /dev/ttyUSB0
+  PORT /dev/ArduinoNano0
 )

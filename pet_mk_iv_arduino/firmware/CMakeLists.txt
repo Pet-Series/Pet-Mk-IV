@@ -35,5 +35,5 @@ set(EXTERNAL_SOURCE_FILES
 generate_arduino_firmware(hello
   SRCS ${${PROJECT}_SOURCE_FILES} ${EXTERNAL_SOURCE_FILES}
   BOARD uno
-  PORT /dev/ttyACM0
+  PORT /dev/ArduinoUno0
 )
