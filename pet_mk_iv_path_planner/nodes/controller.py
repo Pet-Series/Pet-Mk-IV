@@ -20,7 +20,7 @@ class Controller(object):
 
         # Subscribers
         self._vel_msg = None
-        self._vel_sub = rospy.Subscriber("vel_cmd", TwistStamped, self._vel_cb)
+        self._vel_sub = rospy.Subscriber("cmd_vel", TwistStamped, self._vel_cb)
 
         # Publishers
         self._engine_pub = rospy.Publisher("engine_command", EngineCommand, queue_size=2)
