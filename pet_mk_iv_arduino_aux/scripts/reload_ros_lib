@@ -1,0 +1,4 @@
+#!/bin/bash
+
+rm -r ~/ros_ws/build/pet_mk_iv_arduino_aux/ros_lib  # Remove ros_lib folder...
+catkin build pet_mk_iv_arduino_aux                  # ...then rebuild it.
