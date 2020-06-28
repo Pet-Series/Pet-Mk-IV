@@ -9,5 +9,7 @@ void enginesSetup();
 void enginesUpdate();
 
 void engineCommandCb(const pet_mk_iv_msgs::EngineCommand& msg);
+void setEnginePWM(const pet_mk_iv_msgs::EngineCommand& cmd);
+void emergencyStop();
 
 #endif

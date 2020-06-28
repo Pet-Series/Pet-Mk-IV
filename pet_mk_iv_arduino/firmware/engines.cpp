@@ -44,43 +44,7 @@ void enginesUpdate()
 {
     if (nh.now() < engineCommandMsg.header.stamp + ENGINE_TIMEOUT)
     {
-        if (engineCommandMsg.left_direction == engineCommandMsg.FORWARD)
-        {
-            digitalWrite(kLeftReversePin, LOW);
-            digitalWrite(kLeftForwardPin, HIGH);
-            analogWrite(kLeftSpeedPin, engineCommandMsg.left_pwm);
-        }
-        else if (engineCommandMsg.left_direction == engineCommandMsg.BACKWARD)
-        {
-            digitalWrite(kLeftForwardPin, LOW);
-            digitalWrite(kLeftReversePin, HIGH);
-            analogWrite(kLeftSpeedPin, engineCommandMsg.left_pwm);
-        }
-        else
-        {
-            digitalWrite(kLeftReversePin, LOW);
-            digitalWrite(kLeftForwardPin, LOW);
-            analogWrite(kLeftSpeedPin, 0);
-        }
-
-        if (engineCommandMsg.right_direction == engineCommandMsg.FORWARD)
-        {
-            digitalWrite(kRightReversePin, LOW);
-            digitalWrite(kRightForwardPin, HIGH);
-            analogWrite(kRightSpeedPin, engineCommandMsg.right_pwm);
-        }
-        else if (engineCommandMsg.right_direction == engineCommandMsg.BACKWARD)
-        {
-            digitalWrite(kRightForwardPin, LOW);
-            digitalWrite(kRightReversePin, HIGH);
-            analogWrite(kRightSpeedPin, engineCommandMsg.right_pwm);
-        }
-        else
-        {
-            digitalWrite(kRightReversePin, LOW);
-            digitalWrite(kRightForwardPin, LOW);
-            analogWrite(kRightSpeedPin, 0);
-        }
+        setEnginePWM(engineCommandMsg);
     }
     else
     {
@@ -90,10 +54,76 @@ void enginesUpdate()
         digitalWrite(kRightSpeedPin, LOW);
         digitalWrite(kRightForwardPin, LOW);
         digitalWrite(kRightReversePin, LOW);
+        // nh.logwarn("Engine timeout!");
     }
 }
 
 void engineCommandCb(const pet_mk_iv_msgs::EngineCommand& msg)
 {
     engineCommandMsg = msg;
+}
+
+void setEnginePWM(const pet_mk_iv_msgs::EngineCommand& cmd)
+{
+    switch (cmd.left_direction)
+    {
+    case pet_mk_iv_msgs::EngineCommand::FORWARD:
+        digitalWrite(kLeftReversePin, LOW);
+        digitalWrite(kLeftForwardPin, HIGH);
+        analogWrite(kLeftSpeedPin, cmd.left_pwm);
+        break;
+    
+    case pet_mk_iv_msgs::EngineCommand::BACKWARD:
+        digitalWrite(kLeftForwardPin, LOW);
+        digitalWrite(kLeftReversePin, HIGH);
+        analogWrite(kLeftSpeedPin, cmd.left_pwm);
+        break;
+    
+    case pet_mk_iv_msgs::EngineCommand::STOP:
+        digitalWrite(kLeftReversePin, LOW);
+        digitalWrite(kLeftForwardPin, LOW);
+        analogWrite(kLeftSpeedPin, 0);
+        break;
+
+    default:
+        emergencyStop();
+        return;
+    }
+
+    switch (cmd.right_direction)
+    {
+    case pet_mk_iv_msgs::EngineCommand::FORWARD:
+        digitalWrite(kRightReversePin, LOW);
+        digitalWrite(kRightForwardPin, HIGH);
+        analogWrite(kRightSpeedPin, cmd.right_pwm);
+        break;
+    
+    case pet_mk_iv_msgs::EngineCommand::BACKWARD:
+        digitalWrite(kRightForwardPin, LOW);
+        digitalWrite(kRightReversePin, HIGH);
+        analogWrite(kRightSpeedPin, cmd.right_pwm);
+        break;
+    
+    case pet_mk_iv_msgs::EngineCommand::STOP:
+        digitalWrite(kRightReversePin, LOW);
+        digitalWrite(kRightForwardPin, LOW);
+        analogWrite(kRightSpeedPin, 0);
+        break;
+
+    default:
+        emergencyStop();
+        return;
+    }
+}
+
+void emergencyStop()
+{
+    digitalWrite(kLeftReversePin, LOW);
+    digitalWrite(kLeftForwardPin, LOW);
+    analogWrite(kLeftSpeedPin, 0);
+    digitalWrite(kRightReversePin, LOW);
+    digitalWrite(kRightForwardPin, LOW);
+    analogWrite(kRightSpeedPin, 0);
+
+    nh.logwarn("Unexpected Stop!");
 }
