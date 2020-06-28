@@ -11,6 +11,7 @@ from pet_mk_iv_msgs.msg import EngineCommand
 class Controller(object):
 
     width = 0.088
+    pwm_offset = 40
     pwm_vel_ratio = 255 / 0.52  # Velocity measured with PWM=128 -> 0.26 m/s.
 
 
@@ -57,7 +58,7 @@ class Controller(object):
 
     def vel_to_pwm(self, vel):
         """Converts velocity to PWM value [0,255]. Ignores signedness of given velocity."""
-        return int(min(abs(vel * self.pwm_vel_ratio), 255))
+        return int(min(abs(vel * self.pwm_vel_ratio) + self.pwm_offset, 255))
 
 def sign(x):
     """Returns (+-)1 with same sign as x (or 0 if x == 0)."""
