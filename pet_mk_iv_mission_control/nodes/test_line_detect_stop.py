@@ -1,5 +1,9 @@
 #!/usr/bin/env python
-
+# Pet Mk. IV
+# Behaviour
+# 1. Run in a straight line.
+# 2. When line detected - Then just stop!
+#
 from __future__ import division
 
 import rospy
@@ -9,9 +13,6 @@ import rospy
 # <Stop> "Finish"
 # <Stop> "Undefined"
 
-# bool left
-# bool middle
-# bool right
 from pet_mk_iv_msgs.msg import TripleBoolean
 from geometry_msgs.msg import TwistStamped  # Linear velocity + Angular velocity
 
@@ -27,7 +28,7 @@ class LineFollower(object):
         rospy.wait_for_message("line_followers", TripleBoolean, timeout=10)
 
         # Publishers
-        self.vel_pub = rospy.Publisher("vel_cmd", TwistStamped, queue_size=10)
+        self.vel_pub = rospy.Publisher("cmd_vel", TwistStamped, queue_size=10)
 
     def run(self):
         vel_msg = TwistStamped()
@@ -48,10 +49,10 @@ class LineFollower(object):
             
             # stuff
             if self.LF_sensors_msg.left and self.LF_sensors_msg.middle and self.LF_sensors_msg.right:
-                rospy.logwarn_throttle(1, rospy.get_caller_id() + " Run Forrest... RUN!")
-                vel_msg.twist.linear.x = 0.1
+                rospy.logwarn_throttle(1, " Run Forrest... RUN!")
+                vel_msg.twist.linear.x = 0.2
             else:
-                rospy.logwarn(rospy.get_caller_id() + " STOP!")
+                rospy.logwarn(" STOP!")
                 vel_msg.twist.linear.x = 0.0
                 emergency_stop = True
                 
