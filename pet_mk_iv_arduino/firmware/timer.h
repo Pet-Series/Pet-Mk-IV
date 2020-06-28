@@ -5,8 +5,7 @@
 
 #include "ros.h"
 #include <ros/time.h>
-
-#include "ros_time_operators.h"
+#include <ros/duration.h>
 
 
 using func_ptr = void (*)();

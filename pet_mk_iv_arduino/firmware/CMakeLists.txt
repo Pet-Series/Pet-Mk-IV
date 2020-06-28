@@ -23,7 +23,6 @@ set(${PROJECT}_SOURCE_FILES
   dist_sensors.cpp
   engines.cpp
   line_followers.cpp
-  ros_time_operators.cpp
 )
 
 set(EXTERNAL_SOURCE_FILES

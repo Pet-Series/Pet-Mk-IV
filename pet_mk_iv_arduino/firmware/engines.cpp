@@ -4,7 +4,7 @@
 
 #include "ros.h"
 #include <ros/time.h>
-#include "ros_time_operators.h"
+#include <ros/duration.h>
 
 #include "pet_mk_iv_msgs/EngineCommand.h"
 
