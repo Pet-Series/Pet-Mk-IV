@@ -46,6 +46,10 @@
 - [X] **Chassis: Zumo with belt drive**
   - [x] Power: 6x AAA-batteries (4+2 config => 6*1,2V=7,2V)
 
+### Images
+- <img src="/Project_stuff/Images/2019-09-09_122618.jpg" width="350px">|<img src="/Project_stuff/Images/2019-09-09_122725.jpg" width="350px">
+- [More images: /Project_stuff/Images](/Project_stuff/Image)
+
 # External references
 - ROS.org
   - http://wiki.ros.org/
