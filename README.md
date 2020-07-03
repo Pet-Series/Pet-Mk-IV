@@ -48,7 +48,7 @@
 
 ### Images
 - <img src="/Project_stuff/Images/2019-09-09_122618.jpg" width="350px">|<img src="/Project_stuff/Images/2019-09-09_122725.jpg" width="350px">
-- [More images: /Project_stuff/Images](/Project_stuff/Image)
+- [More images: /Project_stuff/Images](/Project_stuff/Images)
 
 # External references
 - ROS.org
