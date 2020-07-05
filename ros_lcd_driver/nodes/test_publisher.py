@@ -22,7 +22,7 @@ class LCDPublisher(object): # A ROS-publisher
 
     def __init__(self):
         rospy.init_node("publish2LCD")
-        self.publish_rate = rospy.Rate(1) # 10hz
+        self.publish_rate = rospy.Rate(1) # Hz
         self.start_time  = rospy.get_time()
         #
         # Publishers
