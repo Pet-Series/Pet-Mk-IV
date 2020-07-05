@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.10.2)
 
 register_hardware_platform(${ARDUINO_SDK_PATH}/hardware/arduino/avr)
 
