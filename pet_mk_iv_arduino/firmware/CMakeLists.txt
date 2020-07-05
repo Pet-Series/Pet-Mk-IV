@@ -10,7 +10,7 @@ set(NEW_PING_SOURCE_FILES
 )
 
 include_directories(
-  ${CMAKE_CURRENT_SOURCE_DIR}/firmware
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
   ${ROS_LIB_DIR}
   ${NEW_PING_INCLUDE_DIR}
 )
@@ -19,10 +19,10 @@ include_directories(
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -Wextra -Wpedantic")
 
 set(${PROJECT}_SOURCE_FILES
-  main.cpp
-  dist_sensors.cpp
-  engines.cpp
-  line_followers.cpp
+  src/main.cpp
+  src/dist_sensors.cpp
+  src/engines.cpp
+  src/line_followers.cpp
 )
 
 set(EXTERNAL_SOURCE_FILES
