@@ -10,7 +10,7 @@ ros::Publisher chatterPub("chatter", &chatterMsg);
 
 void chatterSetup()
 {
-    chatterMsg.data = "chatter";
+    chatterMsg.data = "chatter@aux";
     nh.advertise(chatterPub);
 }
 
