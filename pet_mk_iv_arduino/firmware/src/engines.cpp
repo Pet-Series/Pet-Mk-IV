@@ -8,6 +8,11 @@
 
 #include "pet_mk_iv_msgs/EngineCommand.h"
 
+extern pet::ros::NodeHandle nh;
+
+namespace engines
+{
+
 constexpr unsigned int kLeftReversePin  = 7;
 constexpr unsigned int kLeftForwardPin  = 8;
 constexpr unsigned int kLeftSpeedPin    = 9;
@@ -17,11 +22,10 @@ constexpr unsigned int kRightReversePin = 12;
 
 static const ros::Duration ENGINE_TIMEOUT(0, 0.5e9);
 
-extern pet::ros::NodeHandle nh;
 static pet_mk_iv_msgs::EngineCommand engineCommandMsg;
 static ros::Subscriber<pet_mk_iv_msgs::EngineCommand> engineCommandSub("engine_command", &engineCommandCb);
 
-void enginesSetup()
+void setup()
 {
     pinMode(kLeftReversePin, OUTPUT);
     pinMode(kLeftForwardPin, OUTPUT);
@@ -40,7 +44,7 @@ void enginesSetup()
     nh.subscribe(engineCommandSub);
 }
 
-void enginesUpdate()
+void callback()
 {
     if (nh.now() < engineCommandMsg.header.stamp + ENGINE_TIMEOUT)
     {
@@ -127,3 +131,5 @@ void emergencyStop()
 
     nh.logwarn("Unexpected Stop!");
 }
+
+} // namespace engines

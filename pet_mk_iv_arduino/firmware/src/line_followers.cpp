@@ -6,15 +6,19 @@
 
 #include "pet_mk_iv_msgs/TripleBoolean.h"
 
+extern pet::ros::NodeHandle nh;
+
+namespace line_followers
+{
+
 constexpr unsigned int kLineFollowerLeftPin      = 2;
 constexpr unsigned int kLineFollowerMiddlePin    = 3;
 constexpr unsigned int kLineFollowerRightPin     = 4;
 
-extern pet::ros::NodeHandle nh;
 static pet_mk_iv_msgs::TripleBoolean lineFollowerMsg;
 static ros::Publisher lineFollowerPub("line_followers", &lineFollowerMsg);
 
-void lineFollowerSetup()
+void setup()
 {
     pinMode(kLineFollowerLeftPin, INPUT);
     pinMode(kLineFollowerMiddlePin, INPUT);
@@ -24,7 +28,7 @@ void lineFollowerSetup()
     nh.advertise(lineFollowerPub);
 }
 
-void lineFollowerUpdate()
+void callback()
 {
     lineFollowerMsg.header.stamp = nh.now();
 
@@ -34,3 +38,5 @@ void lineFollowerUpdate()
 
     lineFollowerPub.publish(&lineFollowerMsg);
 }
+
+} // namespace line_followers

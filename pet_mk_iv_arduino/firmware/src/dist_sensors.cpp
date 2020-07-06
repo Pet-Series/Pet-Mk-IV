@@ -9,6 +9,10 @@
 
 #include "ros.h"
 
+extern pet::ros::NodeHandle nh;
+
+namespace dist_sensors
+{
 
 constexpr unsigned int kTriggerPinRight  = 14;   // A0  "Right"
 constexpr unsigned int kEchoPinRight     = 14;   // A0  "Right"
@@ -20,7 +24,6 @@ constexpr unsigned int kEchoPinLeft      = 16;   // A2  "Left"
 constexpr unsigned int kSensorCount      = 3;
 constexpr unsigned int kMaxDistance      = 400;  // Maximum distance we want to ping for (in centimeters). Maximum sensor distance is rated at 400-500cm.
 
-extern pet::ros::NodeHandle nh;
 static pet_mk_iv_msgs::DistanceMeasurement distSensorMsg;
 static ros::Publisher distSensorPub("dist_sensors", &distSensorMsg);
 
@@ -79,14 +82,14 @@ static void echoCheck()
     }
 }
 
-void distSensorSetup()
+void setup()
 {
     sensors[currentSensor].startPing();
 
     nh.advertise(distSensorPub);
 }
 
-void distSensorUpdate()
+void callback()
 {
     sensors[currentSensor].stopPing();
 
@@ -99,3 +102,5 @@ void distSensorUpdate()
     currentSensor = (currentSensor + 1) % kSensorCount;
     sensors[currentSensor].startPing();
 }
+
+} // namespace dist_sensors

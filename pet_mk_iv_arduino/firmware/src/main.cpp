@@ -29,9 +29,9 @@ void setup()
 
     nh.loginfo("Arduino starting...");
 
-    enginesSetup();
-    lineFollowerSetup();
-    distSensorSetup();
+    engines::setup();
+    line_followers::setup();
+    dist_sensors::setup();
 
     // We need to renegotiate topics after setup-calls since new publishers/subscribers is registered.
     nh.negotiateTopics();
@@ -44,12 +44,9 @@ void setup()
         nh.spinOnce();
     }
 
-    const ros::Duration start_delay(0, 200'000'000);
-    const ros::Time start_time = nh.now() + start_delay;
-
-    timer.register_callback(enginesUpdate, kEngineCallbackInterval, start_time);
-    timer.register_callback(lineFollowerUpdate, kLfCallbackInterval, start_time);
-    timer.register_callback(distSensorUpdate, kDistSensorCallbackInterval);
+    timer.register_callback(engines::callback, kEngineCallbackInterval);
+    timer.register_callback(line_followers::callback, kLfCallbackInterval);
+    timer.register_callback(dist_sensors::callback, kDistSensorCallbackInterval);
 
     nh.loginfo("Arduino setup done!");
 }
