@@ -52,6 +52,7 @@ add_message_files(
   TripleBoolean.msg
   EngineCommand.msg
   DistanceMeasurement.msg
+  IrRemote.msg
 )
 
 ## Generate services in the 'srv' folder
