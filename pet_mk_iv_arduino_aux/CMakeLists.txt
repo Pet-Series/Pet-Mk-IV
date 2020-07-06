@@ -6,7 +6,7 @@ project(pet_mk_iv_arduino_aux)
 find_package(catkin REQUIRED COMPONENTS
   rosserial_arduino
   rosserial_client
-  #pet_mk_iv_msgs
+  pet_mk_iv_msgs
 )
 
 catkin_package()

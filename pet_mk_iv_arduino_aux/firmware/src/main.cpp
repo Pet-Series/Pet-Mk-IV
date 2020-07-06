@@ -2,13 +2,9 @@
 #include <stdint.h>
 
 #include "ros.h"
-#include <ros/time.h>
-#include <ros/duration.h>
-
 #include "timer.h"
 #include "chatter.h"
-
-static const ros::Duration kChatterInterval(1, 0);    // sec, nsec
+#include "irremote.h"
 
 pet::ros::NodeHandle nh;
 Timer<1> timer(nh);
@@ -23,8 +19,9 @@ void setup()
     }
 
     nh.loginfo("Arduino Aux starting...");
-
-    chatterSetup();
+    
+    irremote::setup();
+    chatter::setup();
 
     // We need to renegotiate topics after setup-calls since new publishers/subscribers is registered.
     nh.negotiateTopics();
@@ -37,7 +34,8 @@ void setup()
         nh.spinOnce();
     }
 
-    timer.register_callback(chatterUpdate, kChatterInterval);
+    timer.register_callback(irremote::callback, irremote::kPeriod);
+    timer.register_callback(chatter::callback,  chatter::kPeriod);
 
     nh.loginfo("Arduino Aux setup done!");
 }

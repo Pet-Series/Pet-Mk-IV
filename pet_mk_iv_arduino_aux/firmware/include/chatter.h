@@ -1,22 +1,19 @@
 #ifndef _PET_CHATTER_H
 #define _PET_CHATTER_H
 
-#include "ros.h"
-#include <std_msgs/String.h>
+#include <ros/duration.h>
 
-extern pet::ros::NodeHandle nh;
-std_msgs::String chatterMsg;
-ros::Publisher chatterPub("chatter", &chatterMsg);
-
-void chatterSetup()
+namespace chatter
 {
-    chatterMsg.data = "chatter@aux";
-    nh.advertise(chatterPub);
-}
 
-void chatterUpdate()
-{
-    chatterPub.publish(&chatterMsg);
-}
+static const ros::Duration kPeriod;
+
+// Will be exposed as "chatter::setup()"
+void setup();
+
+// Will be exposed as "chatter::callback()"   
+void callback();
+
+} // namespace chatter
 
 #endif
