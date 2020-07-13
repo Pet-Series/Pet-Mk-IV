@@ -1,8 +1,11 @@
 <launch>
   <arg name="teleop"  default="false"/>
 
-  <!-- rosserial + arduino -->
+  <!-- rosserial #1 + arduino -->
   <include file="$(find pet_mk_iv_arduino)/launch/arduino.launch"/>
+
+  <!-- rosserial #2 + arduino_aux -->
+ <include file="$(find pet_mk_iv_arduino_aux)/launch/arduino_aux.launch"/>
   
   <!-- Engine controller -->
   <include file="$(find pet_mk_iv_path_planner)/launch/controller.launch"/>
