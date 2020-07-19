@@ -7,7 +7,7 @@
 #include "irremote.h"
 
 pet::ros::NodeHandle nh;
-Timer<1> timer(nh);
+Timer<2> timer(nh);
 
 void setup() 
 {
