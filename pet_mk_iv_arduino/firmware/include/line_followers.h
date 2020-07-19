@@ -1,10 +1,12 @@
 #ifndef _PET_LINEFOLLOWERS_H
 #define _PET_LINEFOLLOWERS_H
 
+#include <ros/duration.h>
+
 namespace line_followers
 {
 
-// inline const ros::Duration kPeriod(0, 10'000'000);
+constexpr ros::Duration kPeriod(0, 10'000'000);
 
 void setup();
 void callback();

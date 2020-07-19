@@ -28,8 +28,6 @@ set(${PROJECT}_SOURCE_FILES
 )
 
 set(EXTERNAL_SOURCE_FILES
-  ${ROS_LIB_DIR}/time.cpp
-  ${ROS_LIB_DIR}/duration.cpp
 )
 
 generate_arduino_firmware(arduino

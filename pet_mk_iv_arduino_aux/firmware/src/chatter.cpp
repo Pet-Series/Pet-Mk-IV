@@ -6,8 +6,6 @@ extern pet::ros::NodeHandle nh;
 namespace chatter
 {
 
-static const ros::Duration kPeriod(1, 0);    // sec, nsec
-
 static std_msgs::String chatterMsg;
 static ros::Publisher chatterPub("chatter", &chatterMsg);
 

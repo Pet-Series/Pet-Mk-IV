@@ -9,8 +9,6 @@ extern pet::ros::NodeHandle nh;
 namespace irremote
 {
 
-static const ros::Duration kPeriod(1, 0);    // sec, nsec
-
 using pet_mk_iv_msgs::IrRemote;
 
 // Define IR Receiver and Results Objects

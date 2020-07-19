@@ -6,7 +6,7 @@
 namespace chatter
 {
 
-static const ros::Duration kPeriod;
+constexpr ros::Duration kPeriod(1, 0);
 
 // Will be exposed as "chatter::setup()"
 void setup();

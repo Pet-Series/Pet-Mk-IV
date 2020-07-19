@@ -6,7 +6,7 @@
 namespace irremote
 {
 
-static const ros::Duration kPeriod;
+constexpr ros::Duration kPeriod(2, 0);
 
 void setup();       // Will be exposed as "irremote::setup()"
 void callback();    // Will be exposed as "irremote::callback()"
