@@ -7,7 +7,6 @@ set(IRREMOTE_INCLUDE_DIR $ENV{HOME}/Arduino/libraries/IRremote)
 set(IRREMOTE_SOURCE_DIR $ENV{HOME}/Arduino/libraries/IRremote)
 
 set(IRREMOTE_SOURCE_FILES 
-  # Source (.cpp) files from IRremote library might need to be declared here.
   ${IRREMOTE_SOURCE_DIR}/IRremote.cpp
   ${IRREMOTE_SOURCE_DIR}/irRecv.cpp
 )
@@ -27,11 +26,8 @@ set(${PROJECT}_SOURCE_FILES
   src/irremote.cpp
 )
 
-set(EXTERNAL_SOURCE_FILES
-)
-
 generate_arduino_firmware(arduino
-  SRCS ${${PROJECT}_SOURCE_FILES} ${EXTERNAL_SOURCE_FILES}
+  SRCS ${${PROJECT}_SOURCE_FILES} ${IRREMOTE_SOURCE_FILES}
   BOARD nano328
   PORT /dev/ArduinoNano0
 )

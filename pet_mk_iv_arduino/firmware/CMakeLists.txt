@@ -5,6 +5,7 @@ register_hardware_platform(${ARDUINO_SDK_PATH}/hardware/arduino/avr)
 # NewPing Arduino library
 set(NEW_PING_INCLUDE_DIR $ENV{HOME}/Arduino/libraries/NewPing/src)
 set(NEW_PING_SOURCE_DIR $ENV{HOME}/Arduino/libraries/NewPing/src)
+
 set(NEW_PING_SOURCE_FILES 
   ${NEW_PING_SOURCE_DIR}/NewPing.cpp
 )
@@ -25,12 +26,8 @@ set(${PROJECT}_SOURCE_FILES
   src/line_followers.cpp
 )
 
-set(EXTERNAL_SOURCE_FILES
-  ${NEW_PING_SOURCE_FILES}
-)
-
 generate_arduino_firmware(hello
-  SRCS ${${PROJECT}_SOURCE_FILES} ${EXTERNAL_SOURCE_FILES}
+  SRCS ${${PROJECT}_SOURCE_FILES} ${NEW_PING_SOURCE_FILES}
   BOARD uno
   PORT /dev/ArduinoUno0
 )
