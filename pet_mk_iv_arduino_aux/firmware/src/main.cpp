@@ -9,6 +9,18 @@
 pet::ros::NodeHandle nh;
 Timer<2> timer(nh);
 
+void synchronise_with_server()
+{
+    nh.negotiateTopics();
+
+    uint32_t last_sync_time = nh.get_last_sync_receive_time();
+    nh.requestSyncTime();
+    while (last_sync_time == nh.get_last_sync_receive_time())
+    {
+        nh.spinOnce();
+    }
+}
+
 void setup() 
 {
     nh.initNode();
@@ -23,16 +35,8 @@ void setup()
     irremote::setup();
     chatter::setup();
 
-    // We need to renegotiate topics after setup-calls since new publishers/subscribers is registered.
-    nh.negotiateTopics();
-
-    // Ensure time is synced before continuing.
-    uint32_t last_sync_time = nh.get_last_sync_receive_time();
-    nh.requestSyncTime();
-    while (last_sync_time == nh.get_last_sync_receive_time())
-    {
-        nh.spinOnce();
-    }
+    // Ensure topic information is updated on server-side.
+    synchronise_with_server();
 
     timer.register_callback(irremote::callback, irremote::kPeriod);
     timer.register_callback(chatter::callback,  chatter::kPeriod);
