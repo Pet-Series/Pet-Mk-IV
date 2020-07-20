@@ -6,7 +6,7 @@
 namespace line_followers
 {
 
-constexpr ros::Duration kPeriod(0, 10'000'000);
+constexpr ros::Duration kPeriod(0.01);
 
 void setup();
 void callback();

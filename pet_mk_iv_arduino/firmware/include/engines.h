@@ -8,7 +8,7 @@
 namespace engines
 {
 
-constexpr ros::Duration kPeriod(0, 20'000'000);
+constexpr ros::Duration kPeriod(0.02);
 
 void setup();
 void callback();
