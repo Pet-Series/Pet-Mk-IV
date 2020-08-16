@@ -27,9 +27,12 @@
  - [X] Arduino IDE (Not for the IDE itself... mainly for get/manage IDE-libraries).
  - [ ] cmake upload firmware from RPi > Arduino system  (No use of Arduino IDE)
  
-### Target Environment: Sub-ECU
+### Target Environment: Sub-ECU #1
  - [X] Arduino UNO R3 via serial/USB-cable -> RPi
 
+### Target Environment: Sub-ECU #2
+ - [X] Arduino Nano via serial/USB-cable -> RPi
+ 
 ### Installing
      ...
 
@@ -39,12 +42,18 @@
   - [x] **Display:** LCD 1602 via I2C interface: PC8574T
   - [x] **Sensor:** IMU GY-521/MPU6050(6 axis) via I2C
   - [x] **Sensor:** Camera RPi Camera module 1.0
-- [X] **Arduino UNO R3**
+- [X] **Sub-ECU #1:** Arduino UNO R3
+  - [X] **Power by:** Via RPi (1x USB Power bank 1.5A)
   - [x] **Sensor:** 3x HC-SR04 ultrasonic ranging sensor for Obstacle detection
   - [x] **Sensor:** 3x CTRT5000 Infrared sensors for tracing
   - [x] **Engine controller:** L298N Dual H Bridge Step/DC-motor controller
+- [X] **Auxiliary-ECU #2:** Arduino Nano
+  - [X] **Power by:** Chassis battery pack 
+  - [ ] **Sensor:** IR
+  - [ ] **Flash light** Flash/Strobe light
 - [X] **Chassis: Zumo with belt drive**
-  - [x] Power: 6x AAA-batteries (4+2 config => 6*1,2V=7,2V)
+  - [x] **Power source:** 6x AAA-batteries (4+2 config => 6*1,2V=7,2V)
+  - [X] **Engines:** 2x Electrical engines (Controlled via "L298N Dual H Bridge"@Sub-ECU #1: Arduino UNO R3)
 
 ### Images
 - <img src="/Project_stuff/Images/2019-09-09_122618.jpg" width="350px">|<img src="/Project_stuff/Images/2019-09-09_122725.jpg" width="350px">
