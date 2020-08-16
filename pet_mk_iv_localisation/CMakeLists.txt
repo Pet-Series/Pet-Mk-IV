@@ -7,8 +7,14 @@ project(pet_mk_iv_localisation)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-  rospy
+find_package(catkin REQUIRED
+  COMPONENTS
+    geometry_msgs
+    roscpp
+    rospy
+    sensor_msgs
+    tf2_ros
+    ugl_ros
 )
 
 find_package(ugl)
@@ -143,6 +149,30 @@ target_link_libraries(kalman_filter
   PUBLIC
     ugl::math
   PRIVATE
+    project_options
+    project_warnings
+)
+
+## Kalman ROS-node executable
+add_executable(kalman_node
+    src/kalman_node.cpp
+    src/startup_utility.cpp
+    src/measurement.cpp
+    src/imu_measurement.cpp
+)
+
+target_include_directories(kalman_node
+  PUBLIC
+    include
+    ${catkin_INCLUDE_DIRS}
+)
+
+target_link_libraries(kalman_node
+  PUBLIC
+    kalman_filter
+    ${catkin_LIBRARIES}
+  PRIVATE
+    ugl::math
     project_options
     project_warnings
 )
