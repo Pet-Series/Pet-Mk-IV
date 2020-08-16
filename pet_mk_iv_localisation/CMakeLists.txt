@@ -11,6 +11,24 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
 )
 
+find_package(ugl)
+
+add_library(project_options INTERFACE)
+target_compile_features(project_options INTERFACE cxx_std_17)
+
+add_library(project_warnings INTERFACE)
+target_compile_options(project_warnings
+  INTERFACE
+    -Wall -Wextra -Wpedantic
+    -Wnon-virtual-dtor
+    -Wcast-align
+    -Wunused
+    -Woverloaded-virtual
+    -Wnull-dereference
+    -Wmisleading-indentation
+    -Wno-deprecated-copy
+)
+
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -111,12 +129,30 @@ catkin_package(
 ## Build ##
 ###########
 
+## Kalman filter shared library
+add_library(kalman_filter SHARED
+    src/kalman_filter.cpp
+)
+
+target_include_directories(kalman_filter
+  PUBLIC
+    include
+)
+
+target_link_libraries(kalman_filter
+  PUBLIC
+    ugl::math
+  PRIVATE
+    project_options
+    project_warnings
+)
+
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
-)
+# include_directories(
+#   include
+#   ${catkin_INCLUDE_DIRS}
+# )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
