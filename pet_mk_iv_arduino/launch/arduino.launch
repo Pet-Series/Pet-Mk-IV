@@ -5,5 +5,9 @@
   <node pkg="rosserial_python" type="serial_node.py" name="arduino" output="screen">
     <param name="port" value="$(arg port)"/>
     <param name="baud" value="$(arg baud)"/>
+
+    <param name="use_engines" value="true"/>
+    <param name="use_line_followers" value="true"/>
+    <param name="use_dist_sensors" value="true"/>
   </node>
 </launch>

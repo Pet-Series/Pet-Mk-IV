@@ -33,12 +33,15 @@ enum class ConfigResult
 };
 
 // Configure what modules to run based on ROS parameters.
-// TODO: Read ROS parameters.
 ConfigResult configure_modules()
 {
-    constexpr bool use_engines        = true;
-    constexpr bool use_line_followers = true;
-    constexpr bool use_dist_sensors   = true;
+    bool use_engines        = false;
+    bool use_line_followers = false;
+    bool use_dist_sensors   = false;
+
+    pet::nh.getParam("~use_engines", &use_engines);
+    pet::nh.getParam("~use_line_followers", &use_line_followers);
+    pet::nh.getParam("~use_dist_sensors", &use_dist_sensors);
 
     // NOTE: We only use heap allocation at configuration time.
     if (use_engines)
