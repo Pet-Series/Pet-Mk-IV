@@ -7,9 +7,7 @@
 
 #include <pet_mk_iv_msgs/DistanceMeasurement.h>
 
-#include "ros.h"
-
-extern pet::ros::NodeHandle nh;
+#include "rosserial_node.h"
 
 namespace dist_sensors
 {
@@ -86,14 +84,14 @@ void setup()
 {
     sensors[currentSensor].startPing();
 
-    nh.advertise(distSensorPub);
+    pet::nh.advertise(distSensorPub);
 }
 
 void callback()
 {
     sensors[currentSensor].stopPing();
 
-    distSensorMsg.header.stamp = nh.now();
+    distSensorMsg.header.stamp = pet::nh.now();
     distSensorMsg.header.frame_id = sensors[currentSensor].m_frame_id;
     distSensorMsg.distance = measuredDistance;
     distSensorPub.publish(&distSensorMsg);

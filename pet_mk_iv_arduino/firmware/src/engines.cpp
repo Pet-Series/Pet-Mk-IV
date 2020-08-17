@@ -2,30 +2,19 @@
 
 #include <Arduino.h>
 
-#include "ros.h"
 #include <ros/time.h>
 #include <ros/duration.h>
 
-#include "pet_mk_iv_msgs/EngineCommand.h"
+#include <pet_mk_iv_msgs/EngineCommand.h>
 
-extern pet::ros::NodeHandle nh;
+#include "rosserial_node.h"
 
-namespace engines
+namespace pet
 {
 
-constexpr unsigned int kLeftReversePin  = 7;
-constexpr unsigned int kLeftForwardPin  = 8;
-constexpr unsigned int kLeftSpeedPin    = 9;
-constexpr unsigned int kRightSpeedPin   = 10;
-constexpr unsigned int kRightForwardPin = 11;
-constexpr unsigned int kRightReversePin = 12;
-
-static const ros::Duration ENGINE_TIMEOUT(0, 0.5e9);
-
-static pet_mk_iv_msgs::EngineCommand engineCommandMsg;
-static ros::Subscriber<pet_mk_iv_msgs::EngineCommand> engineCommandSub("engine_command", &engineCommandCb);
-
-void setup()
+Engines::Engines()
+    : m_cmd_msg()
+    , m_subscriber("engine_command", &Engines::cmd_msg_callback, this)
 {
     pinMode(kLeftReversePin, OUTPUT);
     pinMode(kLeftForwardPin, OUTPUT);
@@ -34,40 +23,33 @@ void setup()
     pinMode(kRightForwardPin, OUTPUT);
     pinMode(kRightReversePin, OUTPUT);
 
-    digitalWrite(kLeftReversePin, LOW);
-    digitalWrite(kLeftForwardPin, LOW);
-    digitalWrite(kLeftSpeedPin, LOW);
-    digitalWrite(kRightSpeedPin, LOW);
-    digitalWrite(kRightForwardPin, LOW);
-    digitalWrite(kRightReversePin, LOW);
+    // Make sure engines are turned of until commanded otherwise.
+    stop();
 
-    nh.subscribe(engineCommandSub);
+    nh.subscribe(m_subscriber);
 }
 
-void callback()
+void Engines::callback()
 {
-    if (nh.now() < engineCommandMsg.header.stamp + ENGINE_TIMEOUT)
-    {
-        setEnginePWM(engineCommandMsg);
-    }
-    else
-    {
-        digitalWrite(kLeftReversePin, LOW);
-        digitalWrite(kLeftForwardPin, LOW);
-        digitalWrite(kLeftSpeedPin, LOW);
-        digitalWrite(kRightSpeedPin, LOW);
-        digitalWrite(kRightForwardPin, LOW);
-        digitalWrite(kRightReversePin, LOW);
+    if (nh.now() < m_cmd_msg.header.stamp + kEngineTimeout) {
+        set_engine_pwm(m_cmd_msg);
+    } else {
+        stop();
         // nh.logwarn("Engine timeout!");
     }
 }
 
-void engineCommandCb(const pet_mk_iv_msgs::EngineCommand& msg)
+void Engines::stop()
 {
-    engineCommandMsg = msg;
+    digitalWrite(kLeftReversePin, LOW);
+    digitalWrite(kLeftForwardPin, LOW);
+    analogWrite(kLeftSpeedPin, 0);
+    digitalWrite(kRightReversePin, LOW);
+    digitalWrite(kRightForwardPin, LOW);
+    analogWrite(kRightSpeedPin, 0);
 }
 
-void setEnginePWM(const pet_mk_iv_msgs::EngineCommand& cmd)
+void Engines::set_engine_pwm(const pet_mk_iv_msgs::EngineCommand& cmd)
 {
     switch (cmd.left_direction)
     {
@@ -76,21 +58,19 @@ void setEnginePWM(const pet_mk_iv_msgs::EngineCommand& cmd)
         digitalWrite(kLeftForwardPin, HIGH);
         analogWrite(kLeftSpeedPin, cmd.left_pwm);
         break;
-    
     case pet_mk_iv_msgs::EngineCommand::BACKWARD:
         digitalWrite(kLeftForwardPin, LOW);
         digitalWrite(kLeftReversePin, HIGH);
         analogWrite(kLeftSpeedPin, cmd.left_pwm);
         break;
-    
     case pet_mk_iv_msgs::EngineCommand::STOP:
         digitalWrite(kLeftReversePin, LOW);
         digitalWrite(kLeftForwardPin, LOW);
         analogWrite(kLeftSpeedPin, 0);
         break;
-
     default:
-        emergencyStop();
+        stop();
+        nh.logerror("Unrecognised engine command. Stopping.");
         return;
     }
 
@@ -101,35 +81,21 @@ void setEnginePWM(const pet_mk_iv_msgs::EngineCommand& cmd)
         digitalWrite(kRightForwardPin, HIGH);
         analogWrite(kRightSpeedPin, cmd.right_pwm);
         break;
-    
     case pet_mk_iv_msgs::EngineCommand::BACKWARD:
         digitalWrite(kRightForwardPin, LOW);
         digitalWrite(kRightReversePin, HIGH);
         analogWrite(kRightSpeedPin, cmd.right_pwm);
         break;
-    
     case pet_mk_iv_msgs::EngineCommand::STOP:
         digitalWrite(kRightReversePin, LOW);
         digitalWrite(kRightForwardPin, LOW);
         analogWrite(kRightSpeedPin, 0);
         break;
-
     default:
-        emergencyStop();
+        stop();
+        nh.logerror("Unrecognised engine command. Stopping.");
         return;
     }
 }
 
-void emergencyStop()
-{
-    digitalWrite(kLeftReversePin, LOW);
-    digitalWrite(kLeftForwardPin, LOW);
-    analogWrite(kLeftSpeedPin, 0);
-    digitalWrite(kRightReversePin, LOW);
-    digitalWrite(kRightForwardPin, LOW);
-    analogWrite(kRightSpeedPin, 0);
-
-    nh.logwarn("Unexpected Stop!");
-}
-
-} // namespace engines
+} // namespace pet

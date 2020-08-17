@@ -2,41 +2,32 @@
 
 #include <Arduino.h>
 
-#include "ros.h"
+#include "rosserial_node.h"
 
-#include "pet_mk_iv_msgs/TripleBoolean.h"
-
-extern pet::ros::NodeHandle nh;
-
-namespace line_followers
+namespace pet
 {
 
-constexpr unsigned int kLineFollowerLeftPin      = 2;
-constexpr unsigned int kLineFollowerMiddlePin    = 3;
-constexpr unsigned int kLineFollowerRightPin     = 4;
-
-static pet_mk_iv_msgs::TripleBoolean lineFollowerMsg;
-static ros::Publisher lineFollowerPub("line_followers", &lineFollowerMsg);
-
-void setup()
+LineFollowers::LineFollowers()
+    : m_msg()
+    , m_publisher(kTopicName, &m_msg)
 {
-    pinMode(kLineFollowerLeftPin, INPUT);
-    pinMode(kLineFollowerMiddlePin, INPUT);
-    pinMode(kLineFollowerRightPin, INPUT);
+    pinMode(kLeftPin, INPUT);
+    pinMode(kMiddlePin, INPUT);
+    pinMode(kRightPin, INPUT);
 
-    lineFollowerMsg.header.frame_id = "line_followers";
-    nh.advertise(lineFollowerPub);
+    m_msg.header.frame_id = "line_followers";
+    nh.advertise(m_publisher);
 }
 
-void callback()
+void LineFollowers::callback()
 {
-    lineFollowerMsg.header.stamp = nh.now();
+    m_msg.header.stamp = nh.now();
 
-    lineFollowerMsg.left = digitalRead(kLineFollowerLeftPin);
-    lineFollowerMsg.middle = digitalRead(kLineFollowerMiddlePin);
-    lineFollowerMsg.right = digitalRead(kLineFollowerRightPin);
+    m_msg.left = digitalRead(kLeftPin);
+    m_msg.middle = digitalRead(kMiddlePin);
+    m_msg.right = digitalRead(kRightPin);
 
-    lineFollowerPub.publish(&lineFollowerMsg);
+    m_publisher.publish(&m_msg);
 }
 
-} // namespace line_followers
+} // namespace pet

@@ -1,57 +1,117 @@
-#include <Arduino.h>
 #include <stdint.h>
 
-#include "ros.h"
 #include <ros/time.h>
 #include <ros/duration.h>
 
+#include "rosserial_node.h"
+#include "arduino_module.h"
 #include "timer.h"
 #include "engines.h"
 #include "line_followers.h"
 #include "dist_sensors.h"
 
-pet::ros::NodeHandle nh;
-Timer<3> timer(nh);
+pet::Timer<3> timer;
 
+// Synchronises topic information and time stamp with the rosserial server.
 void synchronise_with_server()
 {
-    nh.negotiateTopics();
+    pet::nh.negotiateTopics();
 
-    uint32_t last_sync_time = nh.get_last_sync_receive_time();
-    nh.requestSyncTime();
-    while (last_sync_time == nh.get_last_sync_receive_time())
+    uint32_t last_sync_time = pet::nh.get_last_sync_receive_time();
+    pet::nh.requestSyncTime();
+    while (last_sync_time == pet::nh.get_last_sync_receive_time())
     {
-        nh.spinOnce();
+        pet::nh.spinOnce();
     }
+}
+
+enum class ConfigResult
+{
+    Success,
+    AllocationError,
+    TimerRegistrationError,
+};
+
+// Configure what modules to run based on ROS parameters.
+// TODO: Read ROS parameters.
+ConfigResult configure_modules()
+{
+    constexpr bool use_engines        = true;
+    constexpr bool use_line_followers = true;
+    constexpr bool use_dist_sensors   = true;
+
+    // NOTE: We only use heap allocation at configuration time.
+    if (use_engines)
+    {
+        pet::ArduinoModule* engine_module = new pet::Engines();
+        if (!engine_module) {
+            return ConfigResult::AllocationError;
+        }
+        if (!timer.register_module(engine_module)) {
+            return ConfigResult::TimerRegistrationError;
+        }
+    }
+
+    if (use_line_followers)
+    {
+        pet::ArduinoModule* line_follower_module = new pet::LineFollowers();
+        if (!line_follower_module) {
+            return ConfigResult::AllocationError;
+        }
+        if (!timer.register_module(line_follower_module)) {
+            return ConfigResult::TimerRegistrationError;
+        }
+    }
+
+    if (use_dist_sensors)
+    {
+        pet::ArduinoModule* dist_sensor_module = new pet::DistSensors();
+        if (!dist_sensor_module) {
+            return ConfigResult::AllocationError;
+        }
+        if (!timer.register_module(dist_sensor_module)) {
+            return ConfigResult::TimerRegistrationError;
+        }
+    }
+
+    return ConfigResult::Success;
 }
 
 void setup()
 {
-    nh.initNode();
+    pet::nh.initNode();
 
-    while (!nh.connected())
+    while (!pet::nh.connected())
     {
-        nh.spinOnce();
+        pet::nh.spinOnce();
     }
 
-    nh.loginfo("Arduino starting...");
-
-    engines::setup();
-    line_followers::setup();
-    dist_sensors::setup();
+    pet::nh.loginfo("Arduino starting...");
+    
+    ConfigResult result = configure_modules();
+    switch (result)
+    {
+    case ConfigResult::Success:
+        pet::nh.loginfo("Module setup done.");
+        break;
+    case ConfigResult::AllocationError:
+        pet::nh.logerror("AllocationError during module setup!");
+        break;
+    case ConfigResult::TimerRegistrationError:
+        pet::nh.logerror("TimerRegistrationError during module setup!");
+        break;
+    }
 
     // Ensure topic information is updated on server-side.
     synchronise_with_server();
 
-    timer.register_callback(engines::callback, engines::kPeriod);
-    timer.register_callback(line_followers::callback, line_followers::kPeriod);
-    timer.register_callback(dist_sensors::callback, dist_sensors::kPeriod);
+    timer.start();
 
-    nh.loginfo("Arduino setup done!");
+    pet::nh.loginfo("Arduino setup done!");
 }
 
 void loop()
 {
-    nh.spinOnce();
+    pet::nh.spinOnce();
     timer.spin_once();
 }

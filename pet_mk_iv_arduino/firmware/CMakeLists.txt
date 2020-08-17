@@ -21,6 +21,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -Wextra -Wpedantic")
 
 set(${PROJECT}_SOURCE_FILES
   src/main.cpp
+  src/rosserial_node.cpp
+  src/timer.cpp
+  src/arduino_module.cpp
   src/dist_sensors.cpp
   src/engines.cpp
   src/line_followers.cpp
