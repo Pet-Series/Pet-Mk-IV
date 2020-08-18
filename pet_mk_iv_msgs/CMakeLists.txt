@@ -53,6 +53,7 @@ add_message_files(
   EngineCommand.msg
   DistanceMeasurement.msg
   IrRemote.msg
+  LightBeacon.msg
 )
 
 ## Generate services in the 'srv' folder
