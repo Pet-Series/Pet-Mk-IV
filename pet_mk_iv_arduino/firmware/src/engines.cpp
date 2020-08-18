@@ -8,6 +8,7 @@
 #include <pet_mk_iv_msgs/EngineCommand.h>
 
 #include "rosserial_node.h"
+#include "timer.h"
 
 namespace pet
 {
@@ -29,14 +30,15 @@ Engines::Engines()
     nh.subscribe(m_subscriber);
 }
 
-void Engines::callback()
+ros::Time Engines::callback(const TimerEvent& event)
 {
-    if (nh.now() < m_cmd_msg.header.stamp + kEngineTimeout) {
+    if (event.current_time < m_cmd_msg.header.stamp + Engines::timeout()) {
         set_engine_pwm(m_cmd_msg);
     } else {
         stop();
         // nh.logwarn("Engine timeout!");
     }
+    return event.desired_time + Engines::period();
 }
 
 void Engines::stop()

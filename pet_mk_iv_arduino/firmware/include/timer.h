@@ -12,6 +12,12 @@
 namespace pet
 {
 
+struct TimerEvent
+{
+    ros::Time desired_time;
+    ros::Time current_time;
+};
+
 template<uint8_t capacity>
 class Timer
 {
@@ -19,12 +25,11 @@ private:
     struct Callback
     {
         ArduinoModule* module_ = nullptr;
-        ros::Duration period_{};
-        ros::Time next_time_{};
+        ros::Time next_desired_time_{};
 
-        void call()
+        void call(const ros::Time& current_time)
         {
-            module_->callback();
+            next_desired_time_ = module_->callback(TimerEvent{next_desired_time_, current_time});
         }
     };
 
@@ -34,7 +39,6 @@ public:
         if (m_size < capacity)
         {
             m_callbacks[m_size].module_ = module;
-            m_callbacks[m_size].period_ = ros::Duration{1/module->frequency()};
             ++m_size;
             return true;
         }
@@ -51,20 +55,19 @@ public:
         for (int i = 0; i < m_size; ++i)
         {
             auto& callback = m_callbacks[i];
-            callback.next_time_ = current_time + callback.period_;
+            callback.next_desired_time_ = current_time;
         }
     }
 
     void spin_once()
     {
-        const ros::Time current_time = nh.now();
         for (int i = 0; i < m_size; ++i)
         {
             auto& callback = m_callbacks[i];
-            if (callback.next_time_ < current_time)
+            const ros::Time current_time = nh.now();
+            if (callback.next_desired_time_ < current_time)
             {
-                callback.call();
-                callback.next_time_ += callback.period_;
+                callback.call(current_time);
             }
         }
     }

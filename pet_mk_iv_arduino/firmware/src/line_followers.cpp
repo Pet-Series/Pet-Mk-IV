@@ -2,7 +2,10 @@
 
 #include <Arduino.h>
 
+#include <ros/time.h>
+
 #include "rosserial_node.h"
+#include "timer.h"
 
 namespace pet
 {
@@ -19,15 +22,14 @@ LineFollowers::LineFollowers()
     nh.advertise(m_publisher);
 }
 
-void LineFollowers::callback()
+ros::Time LineFollowers::callback(const TimerEvent& event)
 {
-    m_msg.header.stamp = nh.now();
-
     m_msg.left = digitalRead(kLeftPin);
     m_msg.middle = digitalRead(kMiddlePin);
     m_msg.right = digitalRead(kRightPin);
-
+    m_msg.header.stamp = event.current_time;
     m_publisher.publish(&m_msg);
+    return event.desired_time + kPeriod;
 }
 
 } // namespace pet

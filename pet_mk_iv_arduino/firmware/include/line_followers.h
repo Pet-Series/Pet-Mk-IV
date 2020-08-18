@@ -1,10 +1,14 @@
 #ifndef _PET_LINEFOLLOWERS_H
 #define _PET_LINEFOLLOWERS_H
 
+#include <ros/time.h>
+#include <ros/duration.h>
+
 #include <pet_mk_iv_msgs/TripleBoolean.h>
 
 #include "rosserial_node.h"
 #include "arduino_module.h"
+#include "timer.h"
 
 namespace pet
 {
@@ -15,6 +19,8 @@ class LineFollowers : public ArduinoModule
 {
 private:
     static constexpr double kFrequency = 100;
+    static constexpr auto   kPeriod = ros::Duration{1.0/kFrequency};
+
     static constexpr int    kLeftPin   = 2;
     static constexpr int    kMiddlePin = 3;
     static constexpr int    kRightPin  = 4;
@@ -23,12 +29,7 @@ private:
 public:
     LineFollowers();
 
-    void callback() override;
-
-    double frequency() const override
-    {
-        return kFrequency;
-    }
+    ros::Time callback(const TimerEvent& event) override;
 
 private:
     pet_mk_iv_msgs::TripleBoolean m_msg;
