@@ -9,6 +9,18 @@ set(IRREMOTE_SOURCE_DIR $ENV{HOME}/Arduino/libraries/IRremote)
 set(IRREMOTE_SOURCE_FILES 
   ${IRREMOTE_SOURCE_DIR}/IRremote.cpp
   ${IRREMOTE_SOURCE_DIR}/irRecv.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_NEC.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_Sony.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_Sanyo.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_Mitsubishi.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_RC5_RC6.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_Panasonic.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_LG.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_JVC.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_Samsung.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_Whynter.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_Aiwa.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_Denon.cpp
 )
 
 include_directories(
