@@ -10,7 +10,7 @@
 namespace pet
 {
 
-class ImuMeasurement: public MeasurementBase
+class ImuMeasurement: public Measurement
 {
 public:
     ImuMeasurement(const sensor_msgs::Imu& imu_msg);

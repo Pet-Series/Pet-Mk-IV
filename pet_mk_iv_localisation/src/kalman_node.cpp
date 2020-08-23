@@ -22,6 +22,10 @@
 namespace pet
 {
 
+const ros::Duration KalmanNode::kQueueMinDuration = ros::Duration{0.005};
+const ros::Duration KalmanNode::kQueueMaxDuration = ros::Duration{0.1};
+const ros::Duration KalmanNode::kImuMaxDuration   = ros::Duration{0.05};
+
 KalmanNode::KalmanNode(ros::NodeHandle& nh, ros::NodeHandle& nh_private)
     : m_nh(nh)
     , m_nh_private(nh_private)
@@ -65,16 +69,43 @@ void KalmanNode::initialise_kalman_filter()
 
 void KalmanNode::timer_cb(const ros::TimerEvent& e)
 {
-    // TODO: Update the filter with measuremnts going from oldest to newest.
+    if (m_queue.top()->stamp() > e.current_real + kQueueMaxDuration)
+    {
+        ROS_WARN("Actual processing latency [%f] exceeds maximum desired latency [%f]. Filter might not be running in real-time.",
+                 (e.current_real - m_queue.top()->stamp()).toSec(), kQueueMaxDuration.toSec());
+    }
+
+    while (!m_queue.empty() && m_queue.top()->stamp() > e.current_real + kQueueMinDuration)
+    {
+        auto measurement_ptr = m_queue.top();
+        m_queue.pop();
+
+        if (auto imu_measurement_ptr = std::dynamic_pointer_cast<const ImuMeasurement>(measurement_ptr)) {
+            process_imu_measurement(*imu_measurement_ptr);
+        }
+        else {
+            ROS_ERROR("Measurement pointer could not be downcasted to any known measurement type. This is a programming logic error.");
+        }
+    }
 
     publish_tf(e.current_real);
     publish_pose(e.current_real);
     publish_velocity(e.current_real);
 }
 
+void KalmanNode::process_imu_measurement(const ImuMeasurement& measurement)
+{
+    const ros::Duration dt = measurement.stamp() - m_previous_imu_time;
+    if (dt > kImuMaxDuration) {
+        ROS_WARN("Time between IMU messages is high [dt=%f]. Might result in large discretisation errors.", dt.toSec());
+    }
+    m_kalman_filter.predict(dt.toSec(), measurement.acceleration(), measurement.angular_rate());
+    m_previous_imu_time = measurement.stamp();
+}
+
 void KalmanNode::imu_cb(const sensor_msgs::Imu& msg)
 {
-    m_imu_queue.emplace(msg);
+    m_queue.push(std::make_shared<ImuMeasurement>(msg));
 }
 
 void KalmanNode::sonar_cb(const pet_mk_iv_msgs::DistanceMeasurement& msg)

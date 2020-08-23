@@ -63,6 +63,7 @@ target_link_libraries(kalman_filter
   PUBLIC
     ugl::math
   PRIVATE
+    ugl::lie_group
     project_options
     project_warnings
 )

@@ -1,6 +1,7 @@
 #ifndef PET_LOCALISATION_KALMAN_NODE_H
 #define PET_LOCALISATION_KALMAN_NODE_H
 
+#include <memory>
 #include <string>
 #include <vector>
 #include <queue>
@@ -23,6 +24,17 @@ namespace pet
 
 class KalmanNode
 {
+private:
+    using MeasurementPtr = std::shared_ptr<const Measurement>;
+
+    // Lower/earlier time stamp has higher priority.
+    struct MeasurementPriority
+    {
+        bool operator()(const MeasurementPtr& lhs, const MeasurementPtr& rhs) const {
+            return lhs->stamp() > rhs->stamp();
+        }
+    };
+
 public:
     KalmanNode(ros::NodeHandle& nh, ros::NodeHandle& nh_private);
 
@@ -32,6 +44,8 @@ private:
     void initialise_kalman_filter();
 
     void timer_cb(const ros::TimerEvent& e);
+    void process_imu_measurement(const ImuMeasurement& measurement);
+
     void imu_cb(const sensor_msgs::Imu& msg);
     void sonar_cb(const pet_mk_iv_msgs::DistanceMeasurement& msg);
 
@@ -62,12 +76,18 @@ private:
 
     KalmanFilter m_kalman_filter;
 
-    std::priority_queue<ImuMeasurement> m_imu_queue;
+    std::priority_queue<MeasurementPtr, std::vector<MeasurementPtr>, MeasurementPriority> m_queue;
+
     ros::Time m_previous_imu_time;
 
-    // std::priority_queue<Sonar(Odometry)Measurement> m_imu_queue;
-    ros::Time m_previous_sonar_time;
-    double m_previous_sonar_dist;
+private:
+    // Minimum duration to keep measurements in the queue before processing.
+    static const ros::Duration kQueueMinDuration;
+    // Desired maximum duration to keep measurements in the queue before processing.
+    static const ros::Duration kQueueMaxDuration;
+
+    // Desired maximum duration between two consecutive imu neasurements.
+    static const ros::Duration kImuMaxDuration;
 };
 
 }
