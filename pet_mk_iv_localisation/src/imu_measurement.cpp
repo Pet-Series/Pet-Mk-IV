@@ -12,7 +12,7 @@ namespace pet
 {
 
 ImuMeasurement::ImuMeasurement(const sensor_msgs::Imu& imu_msg)
-    : MeasurementBase(imu_msg.header.stamp)
+    : Measurement(imu_msg.header.stamp)
     , m_acc(tf2::fromMsg(imu_msg.linear_acceleration))
     , m_rate(tf2::fromMsg(imu_msg.angular_velocity))
 {
