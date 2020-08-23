@@ -74,6 +74,7 @@ add_executable(kalman_node
     src/startup_utility.cpp
     src/measurement.cpp
     src/imu_measurement.cpp
+    src/sonar_measurement.cpp
 )
 
 target_include_directories(kalman_node

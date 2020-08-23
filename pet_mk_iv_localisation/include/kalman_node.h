@@ -18,6 +18,7 @@
 #include "kalman_filter.h"
 #include "measurement.h"
 #include "imu_measurement.h"
+#include "sonar_measurement.h"
 
 namespace pet
 {
@@ -45,6 +46,7 @@ private:
 
     void timer_cb(const ros::TimerEvent& e);
     void process_imu_measurement(const ImuMeasurement& measurement);
+    void process_sonar_measurement(const SonarMeasurement& measurement);
 
     void imu_cb(const sensor_msgs::Imu& msg);
     void sonar_cb(const pet_mk_iv_msgs::DistanceMeasurement& msg);
@@ -79,6 +81,8 @@ private:
     std::priority_queue<MeasurementPtr, std::vector<MeasurementPtr>, MeasurementPriority> m_queue;
 
     ros::Time m_previous_imu_time;
+    ros::Time m_previous_sonar_time;
+    double m_previous_sonar_distance;
 
 private:
     // Minimum duration to keep measurements in the queue before processing.
@@ -88,6 +92,8 @@ private:
 
     // Desired maximum duration between two consecutive imu neasurements.
     static const ros::Duration kImuMaxDuration;
+    // Maximum duration between two consecutive sonar measurements for which we still use the measurement.
+    static const ros::Duration kSonarMaxDuration;
 };
 
 }
