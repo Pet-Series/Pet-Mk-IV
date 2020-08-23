@@ -24,9 +24,14 @@ public:
     const ugl::Vector<2>& position() const { return m_pos; }
     const ugl::Vector<2>& velocity() const { return m_vel; }
 
+    // Predicts new state from time passed and accelerometer+gyroscope measurements.
     void predict(double dt, const ugl::Vector3& acc, const ugl::Vector3& ang_vel);
 
+    // Updates state estimation from a measurement of forward velocity in body frame.
+    void velocity_update(double velocity);
+
 private:
+    // TODO: Aggregate state variables into one data structure (e.g Vector or ExtendedPose2D).
     // Estimated heading in reference frame. [rad]
     double m_theta = 0.0;
 
