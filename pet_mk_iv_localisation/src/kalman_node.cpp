@@ -25,6 +25,7 @@ namespace pet
 const ros::Duration KalmanNode::kQueueMinDuration = ros::Duration{0.005};
 const ros::Duration KalmanNode::kQueueMaxDuration = ros::Duration{0.1};
 const ros::Duration KalmanNode::kImuMaxDuration   = ros::Duration{0.05};
+const ros::Duration KalmanNode::kSonarMaxDuration = ros::Duration{0.2};
 
 KalmanNode::KalmanNode(ros::NodeHandle& nh, ros::NodeHandle& nh_private)
     : m_nh(nh)
@@ -83,6 +84,9 @@ void KalmanNode::timer_cb(const ros::TimerEvent& e)
         if (auto imu_measurement_ptr = std::dynamic_pointer_cast<const ImuMeasurement>(measurement_ptr)) {
             process_imu_measurement(*imu_measurement_ptr);
         }
+        else if (auto sonar_measurement_ptr = std::dynamic_pointer_cast<const SonarMeasurement>(measurement_ptr)) {
+            process_sonar_measurement(*sonar_measurement_ptr);
+        }
         else {
             ROS_ERROR("Measurement pointer could not be downcasted to any known measurement type. This is a programming logic error.");
         }
@@ -103,6 +107,20 @@ void KalmanNode::process_imu_measurement(const ImuMeasurement& measurement)
     m_previous_imu_time = measurement.stamp();
 }
 
+void KalmanNode::process_sonar_measurement(const SonarMeasurement& measurement)
+{
+    const ros::Duration dt = measurement.stamp() - m_previous_sonar_time;
+    if (dt > kSonarMaxDuration) {
+        ROS_WARN("Time between front sonar messages is too high [dt=%f]. Ignoring latest measurement.", dt.toSec());
+    }
+    else {
+        const double velocity = (m_previous_sonar_distance - measurement.distance()) / dt.toSec();
+        m_kalman_filter.velocity_update(velocity);
+    }
+    m_previous_sonar_time = measurement.stamp();
+    m_previous_sonar_distance = measurement.distance();
+}
+
 void KalmanNode::imu_cb(const sensor_msgs::Imu& msg)
 {
     m_queue.push(std::make_shared<ImuMeasurement>(msg));
@@ -110,8 +128,10 @@ void KalmanNode::imu_cb(const sensor_msgs::Imu& msg)
 
 void KalmanNode::sonar_cb(const pet_mk_iv_msgs::DistanceMeasurement& msg)
 {
-    // NOTE: Remember to ignore side-sonars.
-    // TODO: Check time difference and push velocity measurement to 'm_sonar_queue'.
+    if (msg.header.frame_id == "dist_sensor_mid")
+    {
+        m_queue.push(std::make_shared<SonarMeasurement>(msg));
+    }
 }
 
 void KalmanNode::publish_tf(const ros::Time& stamp)
