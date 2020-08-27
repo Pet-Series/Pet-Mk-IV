@@ -8,21 +8,25 @@ namespace pet
 {
 
 KalmanFilter::KalmanFilter(double theta, const ugl::Vector<2>& position, const ugl::Vector<2>& velocity)
-    : m_theta(theta)
-    , m_pos(position)
-    , m_vel(velocity)
 {
+    set_heading(theta);
+    set_position(position);
+    set_velocity(velocity);
 }
 
 void KalmanFilter::predict(double dt, const ugl::Vector3& acc, const ugl::Vector3& ang_vel)
 {
+    const auto theta = heading();
+    const auto pos   = position();
+    const auto vel   = velocity();
+
     const ugl::Vector<2> acc2d{acc.x(), acc.y()};
-    const ugl::lie::Rotation2D R{m_theta};
+    const ugl::lie::Rotation2D R{theta};
 
     // State propagation
-    const double new_theta = m_theta + ang_vel.z() * dt;
-    const ugl::Vector<2> new_pos = m_pos + (R * m_vel * dt) + (R * acc2d * 0.5*dt*dt);
-    const ugl::Vector<2> new_vel = m_vel + acc2d * dt;
+    const double new_theta = theta + ang_vel.z() * dt;
+    const ugl::Vector<2> new_pos = pos + (R * vel * dt) + (R * acc2d * 0.5*dt*dt);
+    const ugl::Vector<2> new_vel = vel + acc2d * dt;
 
     // Error propagation
     // TODO: Calculate jacobians A and B.
@@ -34,9 +38,9 @@ void KalmanFilter::predict(double dt, const ugl::Vector3& acc, const ugl::Vector
 
     m_P = A*m_P*A.transpose() + B*Q_imu*B.transpose();
 
-    m_theta = new_theta;
-    m_pos = new_pos;
-    m_vel = new_vel;
+    set_heading(new_theta);
+    set_position(new_pos);
+    set_velocity(new_vel);
 }
 
 void KalmanFilter::velocity_update(double velocity)
@@ -51,13 +55,9 @@ void KalmanFilter::velocity_update(double velocity)
     const Covariance<1> S = H*m_P*H.transpose() + M*Q_vel*M.transpose();
     const ugl::Matrix<5,1> K = m_P*H.transpose()*S.inverse();
 
-    const double innovation = velocity - m_vel[0];
+    const double innovation = velocity - m_X[kIndexVelX];
 
-    m_theta = m_theta + K[0] * innovation;
-    m_pos[0] = m_pos[0] + K[1] * innovation;
-    m_pos[1] = m_pos[1] + K[2] * innovation;
-    m_vel[0] = m_vel[0] + K[3] * innovation;
-    m_vel[1] = m_vel[1] + K[4] * innovation;
+    m_X = m_X + K*innovation;
 
     m_P = (Covariance<5>::Identity() - K*H) * m_P;
 }
