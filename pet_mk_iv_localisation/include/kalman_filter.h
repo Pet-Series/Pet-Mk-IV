@@ -20,9 +20,13 @@ public:
     KalmanFilter() = default;
     KalmanFilter(double theta, const ugl::Vector<2>& position, const ugl::Vector<2>& velocity);
 
-    double heading() const { return m_theta; }
-    const ugl::Vector<2>& position() const { return m_pos; }
-    const ugl::Vector<2>& velocity() const { return m_vel; }
+    double heading() const { return m_X[kIndexTheta]; }
+    ugl::Vector<2> position() const { return m_X.segment<2>(kIndexPosX); }
+    ugl::Vector<2> velocity() const { return m_X.segment<2>(kIndexVelX); }
+
+    void set_heading(double theta) { m_X[kIndexTheta] = theta; }
+    void set_position(const ugl::Vector<2>& position) { m_X.segment<2>(kIndexPosX) = position; }
+    void set_velocity(const ugl::Vector<2>& velocity) { m_X.segment<2>(kIndexVelX) = velocity; }
 
     // Predicts new state from time passed and accelerometer+gyroscope measurements.
     void predict(double dt, const ugl::Vector3& acc, const ugl::Vector3& ang_vel);
@@ -31,18 +35,17 @@ public:
     void velocity_update(double velocity);
 
 private:
-    // TODO: Aggregate state variables into one data structure (e.g Vector or ExtendedPose2D).
-    // Estimated heading in reference frame. [rad]
-    double m_theta = 0.0;
+    // State vector {theta, pos, vel}.
+    ugl::Vector<5> m_X = ugl::Vector<5>::Zero();
 
-    // Estimated position in reference frame. [m]
-    ugl::Vector<2> m_pos = ugl::Vector<2>::Zero();
-
-    // Estimated velocity in body frame. [m/s]
-    ugl::Vector<2> m_vel = ugl::Vector<2>::Zero();
-
-    // Uncertainty of estimated state {theta, pos, vel}.
+    // Error covariance {theta, pos, vel}.
     Covariance<5> m_P = Covariance<5>::Identity() * 0.1;
+
+    static constexpr int kIndexTheta = 0;
+    static constexpr int kIndexPosX = 1;
+    static constexpr int kIndexPosY = 2;
+    static constexpr int kIndexVelX = 3;
+    static constexpr int kIndexVelY = 4;
 };
 
 } // namespace pet
