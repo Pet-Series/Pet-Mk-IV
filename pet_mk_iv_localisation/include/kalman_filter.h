@@ -21,12 +21,12 @@ public:
     KalmanFilter(double theta, const ugl::Vector<2>& position, const ugl::Vector<2>& velocity);
 
     double heading() const { return m_X[kIndexTheta]; }
-    ugl::Vector<2> position() const { return m_X.segment<2>(kIndexPosX); }
     ugl::Vector<2> velocity() const { return m_X.segment<2>(kIndexVelX); }
+    ugl::Vector<2> position() const { return m_X.segment<2>(kIndexPosX); }
 
     void set_heading(double theta) { m_X[kIndexTheta] = theta; }
-    void set_position(const ugl::Vector<2>& position) { m_X.segment<2>(kIndexPosX) = position; }
     void set_velocity(const ugl::Vector<2>& velocity) { m_X.segment<2>(kIndexVelX) = velocity; }
+    void set_position(const ugl::Vector<2>& position) { m_X.segment<2>(kIndexPosX) = position; }
 
     // Predicts new state from time passed and accelerometer+gyroscope measurements.
     void predict(double dt, const ugl::Vector3& acc, const ugl::Vector3& ang_vel);
@@ -35,17 +35,17 @@ public:
     void velocity_update(double velocity);
 
 private:
-    // State vector {theta, pos, vel}.
+    // State vector [theta, vel, pos].
     ugl::Vector<5> m_X = ugl::Vector<5>::Zero();
 
-    // Error covariance {theta, pos, vel}.
+    // Error covariance [theta, vel, pos].
     Covariance<5> m_P = Covariance<5>::Identity() * 0.1;
 
     static constexpr int kIndexTheta = 0;
-    static constexpr int kIndexPosX = 1;
-    static constexpr int kIndexPosY = 2;
-    static constexpr int kIndexVelX = 3;
-    static constexpr int kIndexVelY = 4;
+    static constexpr int kIndexVelX = 1;
+    static constexpr int kIndexVelY = 2;
+    static constexpr int kIndexPosX = 3;
+    static constexpr int kIndexPosY = 4;
 };
 
 } // namespace pet
