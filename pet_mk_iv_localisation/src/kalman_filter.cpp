@@ -46,14 +46,14 @@ void KalmanFilter::predict(double dt, const ugl::Vector3& acc, const ugl::Vector
 
 void KalmanFilter::velocity_update(double velocity)
 {
-    // TODO: Calculate jacobians H and M.
-    Jacobian<1,5> H; // dh/d{state}
-    Jacobian<1,1> M; // dh/d{noise}
+    Jacobian<1,5> H = Jacobian<1,5>::Zero();
+    H[kIndexVelX] = 1.0;
+    Jacobian<1,1> G = Jacobian<1,1>::Identity();
 
     // TODO: Estimate real noise values.
     Covariance<1> Q_vel = Covariance<1>::Identity() * 0.1;
 
-    const Covariance<1> S = H*m_P*H.transpose() + M*Q_vel*M.transpose();
+    const Covariance<1> S = H*m_P*H.transpose() + G*Q_vel*G.transpose();
     const ugl::Matrix<5,1> K = m_P*H.transpose()*S.inverse();
 
     const double innovation = velocity - m_X[kIndexVelX];
