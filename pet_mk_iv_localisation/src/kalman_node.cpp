@@ -6,9 +6,10 @@
 #include <ros/ros.h>
 #include <tf2_ros/transform_broadcaster.h>
 
-#include <sensor_msgs/Imu.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Vector3Stamped.h>
+#include <pet_mk_iv_msgs/DistanceMeasurement.h>
+#include <sensor_msgs/Imu.h>
 
 #include <ugl/math/vector.h>
 #include <ugl/math/quaternion.h>
@@ -16,14 +17,17 @@
 #include <ugl_ros/convert_tf2.h>
 
 #include "kalman_filter.h"
+#include "measurement.h"
+#include "imu_measurement.h"
+#include "sonar_measurement.h"
 
 #include "startup_utility.h"
 
 namespace pet
 {
 
-const ros::Duration KalmanNode::kQueueMinLatency = ros::Duration{0.005};
-const ros::Duration KalmanNode::kQueueMaxLatency = ros::Duration{0.1};
+const ros::Duration KalmanNode::kQueueMinLatency  = ros::Duration{0.005};
+const ros::Duration KalmanNode::kQueueMaxLatency  = ros::Duration{0.1};
 const ros::Duration KalmanNode::kImuMaxDuration   = ros::Duration{0.05};
 const ros::Duration KalmanNode::kSonarMaxDuration = ros::Duration{0.2};
 
