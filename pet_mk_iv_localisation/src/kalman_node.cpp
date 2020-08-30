@@ -115,7 +115,7 @@ void KalmanNode::process_sonar_measurement(const SonarMeasurement& measurement)
     }
     else {
         const double velocity = (m_previous_sonar_distance - measurement.distance()) / dt.toSec();
-        m_kalman_filter.velocity_update(velocity);
+        m_kalman_filter.sonar_velocity_update(velocity);
     }
     m_previous_sonar_time = measurement.stamp();
     m_previous_sonar_distance = measurement.distance();

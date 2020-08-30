@@ -44,7 +44,7 @@ void KalmanFilter::predict(double dt, const ugl::Vector3& acc, const ugl::Vector
     set_velocity(new_vel);
 }
 
-void KalmanFilter::velocity_update(double velocity)
+void KalmanFilter::sonar_velocity_update(double velocity)
 {
     Jacobian<1,5> H = Jacobian<1,5>::Zero();
     H[kIndexVelX] = 1.0;
