@@ -85,10 +85,10 @@ private:
     double m_previous_sonar_distance;
 
 private:
-    // Minimum duration to keep measurements in the queue before processing.
-    static const ros::Duration kQueueMinDuration;
-    // Desired maximum duration to keep measurements in the queue before processing.
-    static const ros::Duration kQueueMaxDuration;
+    // Minimum amount of time a measurement will wait in the queue before processing.
+    static const ros::Duration kQueueMinLatency;
+    // Maximum amount of time a measurement should wait in the queue before processing.
+    static const ros::Duration kQueueMaxLatency;
 
     // Desired maximum duration between two consecutive imu neasurements.
     static const ros::Duration kImuMaxDuration;
@@ -96,6 +96,6 @@ private:
     static const ros::Duration kSonarMaxDuration;
 };
 
-}
+} // namespace pet
 
 #endif // PET_LOCALISATION_KALMAN_NODE_H

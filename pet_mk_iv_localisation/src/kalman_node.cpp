@@ -22,8 +22,8 @@
 namespace pet
 {
 
-const ros::Duration KalmanNode::kQueueMinDuration = ros::Duration{0.005};
-const ros::Duration KalmanNode::kQueueMaxDuration = ros::Duration{0.1};
+const ros::Duration KalmanNode::kQueueMinLatency = ros::Duration{0.005};
+const ros::Duration KalmanNode::kQueueMaxLatency = ros::Duration{0.1};
 const ros::Duration KalmanNode::kImuMaxDuration   = ros::Duration{0.05};
 const ros::Duration KalmanNode::kSonarMaxDuration = ros::Duration{0.2};
 
@@ -70,13 +70,13 @@ void KalmanNode::initialise_kalman_filter()
 
 void KalmanNode::timer_cb(const ros::TimerEvent& e)
 {
-    if (m_queue.top()->stamp() > e.current_real + kQueueMaxDuration)
+    if (ros::Duration current_latency = e.current_real - m_queue.top()->stamp(); current_latency > kQueueMaxLatency)
     {
         ROS_WARN("Actual processing latency [%f] exceeds maximum desired latency [%f]. Filter might not be running in real-time.",
-                 (e.current_real - m_queue.top()->stamp()).toSec(), kQueueMaxDuration.toSec());
+                 current_latency.toSec(), kQueueMaxLatency.toSec());
     }
 
-    while (!m_queue.empty() && m_queue.top()->stamp() > e.current_real + kQueueMinDuration)
+    while (!m_queue.empty() && m_queue.top()->stamp() > e.current_real + kQueueMinLatency)
     {
         auto measurement_ptr = m_queue.top();
         m_queue.pop();
