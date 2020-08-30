@@ -35,6 +35,13 @@ public:
     void velocity_update(double velocity);
 
 private:
+    // Returns the jacobian of the prediction function with regards to the state, df/dX.
+    static Jacobian<5,5> prediction_state_jacobian(double dt, const ugl::Vector<5> X, const ugl::Vector<2>& acc);
+
+    // Returns the jacobian of the prediction function with regards to the noise, df/dV.
+    static Jacobian<5,3> prediction_noise_jacobian(double dt, const ugl::Vector<5> X);
+
+private:
     // State vector [theta, vel, pos].
     ugl::Vector<5> m_X = ugl::Vector<5>::Zero();
 

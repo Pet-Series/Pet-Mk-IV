@@ -1,5 +1,7 @@
 #include "kalman_filter.h"
 
+#include <cmath>
+
 #include <ugl/math/vector.h>
 #include <ugl/math/matrix.h>
 #include <ugl/lie_group/rotation2d.h>
@@ -29,9 +31,8 @@ void KalmanFilter::predict(double dt, const ugl::Vector3& acc, const ugl::Vector
     const ugl::Vector<2> new_pos = pos + (R * vel * dt) + (R * acc2d * 0.5*dt*dt);
 
     // Error propagation
-    // TODO: Calculate jacobians A and B.
-    Jacobian<5,5> A; // df/d{state}
-    Jacobian<5,3> B; // df/d{noise}
+    const Jacobian<5,5> A = prediction_state_jacobian(dt, m_X, acc2d);
+    const Jacobian<5,3> B = prediction_noise_jacobian(dt, m_X);
 
     // TODO: Estimate real noise values.
     Covariance<3> Q_imu = Covariance<3>::Identity() * 0.1;
@@ -60,6 +61,31 @@ void KalmanFilter::velocity_update(double velocity)
     m_X = m_X + K*innovation;
 
     m_P = (Covariance<5>::Identity() - K*H) * m_P;
+}
+
+KalmanFilter::Jacobian<5,5> KalmanFilter::prediction_state_jacobian(double dt, const ugl::Vector<5> X, const ugl::Vector<2>& acc)
+{
+    const double theta = X[kIndexTheta];
+    const ugl::Vector<2> vel = X.segment<2>(kIndexVelX);
+    const ugl::lie::Rotation2D R{theta};
+
+    // Derivative of R with regards to theta.
+    ugl::Matrix<2,2> dRdtheta;
+    dRdtheta << -std::sin(theta), -std::cos(theta),
+                 std::cos(theta), -std::sin(theta);
+
+    Jacobian<5,5> A = Jacobian<5,5>::Identity();
+    A.block<2,1>(kIndexPosX, kIndexTheta) = dRdtheta * (vel*dt + 0.5*acc*dt*dt);
+    A.block<2,2>(kIndexPosX, kIndexVelX)  = R.matrix() * dt;
+    return A;
+}
+
+KalmanFilter::Jacobian<5,3> KalmanFilter::prediction_noise_jacobian(double dt, const ugl::Vector<5> X)
+{
+    const ugl::lie::Rotation2D R{X[kIndexTheta]};
+    Jacobian<5,3> B = Jacobian<5,3>::Identity() * dt;
+    B.block<2,2>(kIndexPosX, 1) = R.matrix() * 0.5*dt*dt;
+    return B;
 }
 
 } // namespace pet
