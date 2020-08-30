@@ -63,6 +63,25 @@ void KalmanFilter::sonar_velocity_update(double velocity)
     m_P = (Covariance<5>::Identity() - K*H) * m_P;
 }
 
+void KalmanFilter::pseudo_lateral_velocity_update(double velocity)
+{
+    Jacobian<1,5> H = Jacobian<1,5>::Zero();
+    H[kIndexVelY] = 1.0;
+    Jacobian<1,1> G = Jacobian<1,1>::Identity();
+
+    // TODO: How certain certain should we claim to be?
+    Covariance<1> Q_vel = Covariance<1>::Identity() * 0.01;
+
+    const Covariance<1> S = H*m_P*H.transpose() + G*Q_vel*G.transpose();
+    const ugl::Matrix<5,1> K = m_P*H.transpose()*S.inverse();
+
+    const double innovation = velocity - m_X[kIndexVelY];
+
+    m_X = m_X + K*innovation;
+
+    m_P = (Covariance<5>::Identity() - K*H) * m_P;
+}
+
 KalmanFilter::Jacobian<5,5> KalmanFilter::prediction_state_jacobian(double dt, const ugl::Vector<5> X, const ugl::Vector<2>& acc)
 {
     const double theta = X[kIndexTheta];
