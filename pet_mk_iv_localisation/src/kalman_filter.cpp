@@ -17,16 +17,16 @@ KalmanFilter::KalmanFilter(double theta, const ugl::Vector<2>& position, const u
 void KalmanFilter::predict(double dt, const ugl::Vector3& acc, const ugl::Vector3& ang_vel)
 {
     const auto theta = heading();
-    const auto pos   = position();
     const auto vel   = velocity();
+    const auto pos   = position();
 
     const ugl::Vector<2> acc2d{acc.x(), acc.y()};
     const ugl::lie::Rotation2D R{theta};
 
     // State propagation
     const double new_theta = theta + ang_vel.z() * dt;
-    const ugl::Vector<2> new_pos = pos + (R * vel * dt) + (R * acc2d * 0.5*dt*dt);
     const ugl::Vector<2> new_vel = vel + acc2d * dt;
+    const ugl::Vector<2> new_pos = pos + (R * vel * dt) + (R * acc2d * 0.5*dt*dt);
 
     // Error propagation
     // TODO: Calculate jacobians A and B.
