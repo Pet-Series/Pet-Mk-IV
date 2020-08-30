@@ -97,6 +97,9 @@ void KalmanNode::timer_cb(const ros::TimerEvent& e)
         }
     }
 
+    // Since pseudo-measurements are not dependent on received data we simply update them once per timer call.
+    m_kalman_filter.pseudo_lateral_velocity_update(0.0);
+
     publish_tf(e.current_real);
     publish_pose(e.current_real);
     publish_velocity(e.current_real);

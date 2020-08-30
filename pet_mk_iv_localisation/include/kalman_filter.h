@@ -34,6 +34,9 @@ public:
     // Updates state estimation from a sonar measurement of forward velocity in the body frame.
     void sonar_velocity_update(double velocity);
 
+    // Updates state estimation from a pseduo-measurement of zero lateral velocity in the body frame.
+    void pseudo_lateral_velocity_update(double velocity);
+
 private:
     // Returns the jacobian of the prediction function with regards to the state, df/dX.
     static Jacobian<5,5> prediction_state_jacobian(double dt, const ugl::Vector<5> X, const ugl::Vector<2>& acc);
