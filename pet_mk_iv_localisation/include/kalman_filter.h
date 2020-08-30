@@ -31,8 +31,8 @@ public:
     // Predicts new state from time passed and accelerometer+gyroscope measurements.
     void predict(double dt, const ugl::Vector3& acc, const ugl::Vector3& ang_vel);
 
-    // Updates state estimation from a measurement of forward velocity in body frame.
-    void velocity_update(double velocity);
+    // Updates state estimation from a sonar measurement of forward velocity in the body frame.
+    void sonar_velocity_update(double velocity);
 
 private:
     // Returns the jacobian of the prediction function with regards to the state, df/dX.
