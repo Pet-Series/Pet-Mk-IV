@@ -48,6 +48,11 @@ KalmanNode::KalmanNode(ros::NodeHandle& nh, ros::NodeHandle& nh_private)
 
     initialise_kalman_filter();
 
+    m_tf_msg.header.frame_id = m_map_frame;
+    m_tf_msg.child_frame_id = m_base_frame;
+    m_pose_msg.header.frame_id = m_map_frame;
+    m_vel_msg.header.frame_id = m_base_frame;
+
     // TODO: Measure accelerometer bias.
 
     utility::wait_for_message<sensor_msgs::Imu>(m_imu_sub);
@@ -148,10 +153,6 @@ void KalmanNode::sonar_cb(const pet_mk_iv_msgs::DistanceMeasurement& msg)
 
 void KalmanNode::publish_tf(const ros::Time& stamp)
 {
-    m_tf_msg.header.stamp = stamp;
-    m_tf_msg.header.frame_id = m_map_frame;
-    m_tf_msg.child_frame_id = m_base_frame;
-
     const auto& pos = m_kalman_filter.position();
     m_tf_msg.transform.translation.x = pos.x();
     m_tf_msg.transform.translation.y = pos.y();
@@ -160,14 +161,12 @@ void KalmanNode::publish_tf(const ros::Time& stamp)
     const ugl::Vector3 axis = ugl::Vector3::UnitZ();
     m_tf_msg.transform.rotation = tf2::toMsg(ugl::math::to_quat(yaw, axis));
 
+    m_tf_msg.header.stamp = stamp;
     m_tf_broadcaster.sendTransform(m_tf_msg);
 }
 
 void KalmanNode::publish_pose(const ros::Time& stamp)
 {
-    m_pose_msg.header.stamp = stamp;
-    m_pose_msg.header.frame_id = m_map_frame;
-
     const auto& pos = m_kalman_filter.position();
     m_pose_msg.pose.position.x = pos.x();
     m_pose_msg.pose.position.y = pos.y();
@@ -176,18 +175,17 @@ void KalmanNode::publish_pose(const ros::Time& stamp)
     const ugl::Vector3 axis = ugl::Vector3::UnitZ();
     m_tf_msg.transform.rotation = tf2::toMsg(ugl::math::to_quat(yaw, axis));
 
+    m_pose_msg.header.stamp = stamp;
     m_pose_pub.publish(m_pose_msg);
 }
 
 void KalmanNode::publish_velocity(const ros::Time& stamp)
 {
-    m_vel_msg.header.stamp = stamp;
-    m_vel_msg.header.frame_id = m_base_frame;
-
     const auto& vel = m_kalman_filter.velocity();
     m_vel_msg.vector.x = vel.x();
     m_vel_msg.vector.y = vel.y();
 
+    m_vel_msg.header.stamp = stamp;
     m_velocity_pub.publish(m_vel_msg);
 }
 
