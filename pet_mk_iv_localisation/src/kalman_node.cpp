@@ -182,7 +182,7 @@ void KalmanNode::publish_pose(const ros::Time& stamp)
 void KalmanNode::publish_velocity(const ros::Time& stamp)
 {
     m_vel_msg.header.stamp = stamp;
-    m_vel_msg.header.frame_id = m_map_frame;
+    m_vel_msg.header.frame_id = m_base_frame;
 
     const auto& vel = m_kalman_filter.velocity();
     m_vel_msg.vector.x = vel.x();
