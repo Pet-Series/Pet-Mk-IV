@@ -68,15 +68,20 @@ void KalmanNode::initialise_kalman_filter()
     m_kalman_filter = KalmanFilter(theta0, pos0, vel0);
 }
 
+ros::Duration KalmanNode::get_queue_latency(const ros::Time& now) const
+{
+    return m_queue.empty() ? ros::Duration{0.0} : (now - m_queue.top()->stamp());
+}
+
 void KalmanNode::timer_cb(const ros::TimerEvent& e)
 {
-    if (ros::Duration current_latency = e.current_real - m_queue.top()->stamp(); current_latency > kQueueMaxLatency)
+    if (auto current_latency = get_queue_latency(e.current_real); current_latency > kQueueMaxLatency)
     {
         ROS_WARN("Actual processing latency [%f] exceeds maximum desired latency [%f]. Filter might not be running in real-time.",
                  current_latency.toSec(), kQueueMaxLatency.toSec());
     }
 
-    while (!m_queue.empty() && m_queue.top()->stamp() > e.current_real + kQueueMinLatency)
+    while (get_queue_latency(e.current_real) > kQueueMinLatency)
     {
         auto measurement_ptr = m_queue.top();
         m_queue.pop();

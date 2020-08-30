@@ -43,6 +43,7 @@ public:
 
 private:
     void initialise_kalman_filter();
+    ros::Duration get_queue_latency(const ros::Time& now) const;
 
     void timer_cb(const ros::TimerEvent& e);
     void process_imu_measurement(const ImuMeasurement& measurement);
