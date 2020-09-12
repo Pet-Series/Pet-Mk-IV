@@ -19,6 +19,26 @@ set(SERVO_SOURCE_FILES
   ${SERVO_SOURCE_DIR}/avr/Servo.cpp
 )
 
+# IRremote Arduino library
+set(IRREMOTE_INCLUDE_DIRS $ENV{HOME}/Arduino/libraries/IRremote)
+set(IRREMOTE_SOURCE_DIR $ENV{HOME}/Arduino/libraries/IRremote)
+set(IRREMOTE_SOURCE_FILES
+  ${IRREMOTE_SOURCE_DIR}/IRremote.cpp
+  ${IRREMOTE_SOURCE_DIR}/irRecv.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_NEC.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_Sony.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_Sanyo.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_Mitsubishi.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_RC5_RC6.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_Panasonic.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_LG.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_JVC.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_Samsung.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_Whynter.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_Aiwa.cpp
+  ${IRREMOTE_SOURCE_DIR}/ir_Denon.cpp
+)
+
 add_library(pet_arduino_core INTERFACE)
 target_sources(pet_arduino_core
   INTERFACE
@@ -54,6 +74,7 @@ set(UNO_SOURCE_FILES
 set(NANO_SOURCE_FILES
   src/nano/modules.cpp
   src/light_beacon.cpp
+  src/ir_remote_module.cpp
 )
 
 # Generate Arduino Uno firmware
@@ -66,7 +87,7 @@ generate_arduino_firmware(arduino_uno
 
 # Generate Arduino Nano(old) firmware
 generate_arduino_firmware(arduino_nano
-  SRCS ${NANO_SOURCE_FILES} ${SERVO_SOURCE_FILES}
+  SRCS ${NANO_SOURCE_FILES} ${SERVO_SOURCE_FILES} ${IRREMOTE_SOURCE_FILES}
   LIBS pet_arduino_core
   BOARD nano328
   PORT /dev/ArduinoNano0
