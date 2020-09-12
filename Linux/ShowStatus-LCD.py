@@ -48,7 +48,7 @@ from rpi_lcd import LCD
 import socket
 import datetime
 import sys
-import subprocess #Utgår? Använd os istället?
+import subprocess #Utgï¿½r? Anvï¿½nd os istï¿½llet?
 import os
 import time
 import argparse # https://docs.python.org/2/howto/argparse.html
@@ -61,7 +61,7 @@ parser.add_argument("--row2", "-2", type=str, help="What to Display on row #2", 
                     choices=["hostname", "CPUload", "RAMusage", "diskusage", "IP", "datetime", "cputemp", "gputemp"])
 parser.add_argument("--clear", "-c", action="store_true", help="Clear row1 & row2")
 parser.add_argument("--verbose", "-v", action="store_true", help="Verbose on the terminal/console")
-#parser.add_argument("--nodisplay", "-n", action="store_true", help="I do not have a LCD-dispalay for the moment")
+#parser.add_argument("--nodisplay", "-n", action="store_true", help="I do not have a LCD-display for the moment")
 args = parser.parse_args()
 #args.verbose = True
 
@@ -85,10 +85,9 @@ def get_cpu_load():
     string = subprocess.check_output(cmd, shell = True ).decode('utf-8')
     return string
 
-# Set/Prepare TotaltMemry/UsedMemory information
+# Set/Prepare TotaltMemory/UsedMemory information
 # Terminal$ htop -tree   ...or$ free -m
 def get_ram_usage():
-    #cmd = "free -m | awk 'NR==2{printf \"%s/%sMB %.2f%%\", $3,$2,$3*100/$2 }'" #"Total/Used Procent%"
     cmd = "free -m | awk 'NR==2{printf \"%s/%sMB %.0f%%\", $3,$2,$3*100/$2 }'" #"Total/Used Procent%"
     string = RAM_usage = subprocess.check_output(cmd, shell = True ).decode('utf-8')
     return string

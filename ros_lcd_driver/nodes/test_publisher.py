@@ -35,7 +35,7 @@ class LCDPublisher(object): # A ROS-publisher
     def run(self):
         while not rospy.is_shutdown():
             # Create content to be published
-            self.time_now  = datetime.datetime.now().strftime("%d %b %H:%M:%S") # Why  not using rospy.get_time() ?
+            self.time_now  = datetime.datetime.now().strftime("%d %b %H:%M:%S") # Why not using rospy.get_time() ?
             self.time_past = rospy.get_time() - self.start_time
             # Format the content as strings before published
             self.row1_str = "%s"   % self.time_now          # Syntax "11 Mar 19:20:36"

@@ -4,11 +4,11 @@
 #
 # Show Linux/Raspian status/information on LCD-Display (SSD1306)
 # Row1: Show local HostName = HostName 
-# Row2: Show local IP-address = IP
+# Row2: Show local IP-address = IP (IPv4 WLAN)
 #
 # -----Prerequisite------------------------------
 #  Script is supposed to run once during boot, like via /etc/rc.local
-# - Avoid lock the boot process by adding a traling " &"
+# - Avoid lock the boot process by adding a trailing " &"
 # /home/pi/ros_ws/src/Pet-Mk-IV/Linux/BootTimeShowNodeIP-LCD.py &
 #
 #  Script is supposed to run once, like via /etc/rc.local
@@ -65,19 +65,19 @@ while True:
  #   IP = "" # Debug - Simulate no IP/WiFi connection...
     if IP:
         # IP detected. THen show IP address on display and break the loop.
-        lcd.text(IP, 2, 'center')                            # Logg text on display
-        print (verboseHeader + "IP=<" + IP + "> <-IP found") # Logg text on console
+        lcd.text(IP, 2, 'center')                           # Log text on display
+        print(verboseHeader + "IP=<" + IP + "> <-IP found") # Log text on console
         break
     else:
         # No IP detected. Then show intermediate message and try again.
-        lcd.text("No IP. Count=" + str(count), 2, 'center')                        # Logg text on display
-        print   (verboseHeader + "No IP. Count=" + str(count) + " <-NO IP FOUND!") # Logg text on console
+        lcd.text("No IP. Count=" + str(count), 2, 'center')                     # Log text on display
+        print(verboseHeader + "No IP. Count=" + str(count) + " <-NO IP FOUND!") # Log text on console
         time.sleep(retry_interval)
- 
+
     if count >= max_count:
-        # No IP detected whin max_cont. Then show "Warning" message on display and break the loop.        
-        print   (verboseHeader + "No IP. Timeout.. After #" + str(count) + " attempts") # Logg text on console
-        lcd.text("No IP. Timeout..", 2, 'center')                                       # Logg text on display
+        # No IP detected whin max_cont. Then show "Warning" message on display and break the loop.
+        print   (verboseHeader + "No IP. Timeout.. After #" + str(count) + " attempts") # Log text on console
+        lcd.text("No IP. Timeout..", 2, 'center')                                       # Log text on display
         break
 
 # debug feature for interactive test of the script.
@@ -86,6 +86,6 @@ if len(sys.argv) > 1 and (sys.argv[1] == '--clear' or sys.argv[1] == '-c'):
     lcd.text(" -- ", 1, 'center')
     lcd.text(" :-)", 2, 'center')
 
-# Leave a logg-text on the console/terminal
+# Leave a log-text on the console/terminal
 # "2019-10-19 Clock=19:59:38.812054 [LinuxStatusOnLCD-display.py] Done"
 # print (verboseHeader + str(datetime.datetime.now().date()) + " Clock=" + str(datetime.datetime.now().time()) +" <- Done")
