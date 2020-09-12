@@ -61,8 +61,9 @@ max_count = 20     # Max retries (in total we wait 40(2sec*20 attenpt) seconds b
 
 while True:
     count+=1
-    IP = subprocess.check_output(["hostname", "-I"]).decode('utf-8').strip()
- #   IP = "" # Debug - Simulate no IP/WiFi connection...
+    cmd = "ip -4 -o addr show scope global | awk '{printf $4}'"  # Print only the fourth column with IPv4 address
+    IP = subprocess.check_output(cmd, shell = True ).decode('utf-8').strip()
+    #IP = "" # Debug - Simulate no IP/WiFi connection...
     if IP:
         # IP detected. THen show IP address on display and break the loop.
         lcd.text(IP, 2, 'center')                           # Log text on display
@@ -76,8 +77,9 @@ while True:
 
     if count >= max_count:
         # No IP detected whin max_cont. Then show "Warning" message on display and break the loop.
-        print   (verboseHeader + "No IP. Timeout.. After #" + str(count) + " attempts") # Log text on console
-        lcd.text("No IP. Timeout..", 2, 'center')                                       # Log text on display
+        lcd.text("No IP. Timeout..", 2, 'center')                                    # Log text on display
+        print(verboseHeader + "No IP. Timeout.. After #" + str(count) + " attempts") # Log text on console
+
         break
 
 # debug feature for interactive test of the script.
