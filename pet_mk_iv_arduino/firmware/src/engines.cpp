@@ -10,6 +10,8 @@
 #include "rosserial_node.h"
 #include "timer.h"
 
+#include "prgmem_string.h"
+
 namespace pet
 {
 
@@ -72,7 +74,7 @@ void Engines::set_engine_pwm(const pet_mk_iv_msgs::EngineCommand& cmd)
         break;
     default:
         stop();
-        nh.logerror("Unrecognised engine command. Stopping.");
+        nh.logerror(PET_PSTR("Unrecognised engine command. Stopping."));
         return;
     }
 
@@ -95,7 +97,7 @@ void Engines::set_engine_pwm(const pet_mk_iv_msgs::EngineCommand& cmd)
         break;
     default:
         stop();
-        nh.logerror("Unrecognised engine command. Stopping.");
+        nh.logerror(PET_PSTR("Unrecognised engine command. Stopping."));
         return;
     }
 }

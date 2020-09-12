@@ -6,6 +6,7 @@
 #include "rosserial_node.h"
 #include "modules.h"
 
+#include "prgmem_string.h"
 
 // Synchronises topic information and time stamp with the rosserial server.
 void synchronise_with_server()
@@ -29,19 +30,19 @@ void setup()
         pet::nh.spinOnce();
     }
 
-    pet::nh.loginfo("Arduino starting...");
+    pet::nh.loginfo(PET_PSTR("Arduino starting..."));
 
     auto result = pet::configure_modules();
     switch (result)
     {
     case pet::ConfigResult::Success:
-        pet::nh.loginfo("Module setup done.");
+        pet::nh.loginfo(PET_PSTR("Module setup done."));
         break;
     case pet::ConfigResult::AllocationError:
-        pet::nh.logerror("AllocationError during module setup!");
+        pet::nh.logerror(PET_PSTR("AllocationError during module setup!"));
         break;
     case pet::ConfigResult::TimerRegistrationError:
-        pet::nh.logerror("TimerRegistrationError during module setup!");
+        pet::nh.logerror(PET_PSTR("TimerRegistrationError during module setup!"));
         break;
     }
 
@@ -50,7 +51,7 @@ void setup()
 
     pet::g_timer.start();
 
-    pet::nh.loginfo("Arduino setup done!");
+    pet::nh.loginfo(PET_PSTR("Arduino setup done!"));
 }
 
 void loop()
