@@ -1,5 +1,5 @@
-#ifndef _PET_LINEFOLLOWERS_H
-#define _PET_LINEFOLLOWERS_H
+#ifndef _PET_LINESENSORMODULE_H
+#define _PET_LINESENSORMODULE_H
 
 #include <ros/time.h>
 #include <ros/duration.h>
@@ -14,8 +14,7 @@ namespace pet
 {
 
 // Handler class for three ground pointing light sensors arranged in a left-middle-right pattern.
-// TODO: Rename to LineSensors?
-class LineFollowers : public ArduinoModule
+class LineSensorModule : public ArduinoModule
 {
 private:
     static constexpr double kFrequency = 100;
@@ -24,10 +23,11 @@ private:
     static constexpr int    kLeftPin   = 2;
     static constexpr int    kMiddlePin = 3;
     static constexpr int    kRightPin  = 4;
+    // TODO: Change topic name from "line_followers" to something like "line_sensors"...
     static constexpr auto   kTopicName = "line_followers";
 
 public:
-    LineFollowers();
+    LineSensorModule();
 
     ros::Time callback(const TimerEvent& event) override;
 
@@ -38,4 +38,4 @@ private:
 
 } // namespace pet
 
-#endif // _PET_LINEFOLLOWERS_H
+#endif // _PET_LINESENSORMODULE_H
