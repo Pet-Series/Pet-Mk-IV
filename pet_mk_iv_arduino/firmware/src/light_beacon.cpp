@@ -17,6 +17,7 @@ LightBeacon::LightBeacon()
     // NOTE: We hope this short delay once during construction does not make things crash.
     const auto press_duration_millis = static_cast<int>(press_duration().toSec() * 1000);
     delay(press_duration_millis);
+    nh.subscribe(m_subscriber);
 }
 
 ros::Time LightBeacon::callback(const TimerEvent& event)
