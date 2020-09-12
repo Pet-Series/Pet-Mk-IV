@@ -19,34 +19,65 @@ set(SERVO_SOURCE_FILES
   ${SERVO_SOURCE_DIR}/avr/Servo.cpp
 )
 
+add_library(pet_arduino_core INTERFACE)
+target_sources(pet_arduino_core
+  INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/rosserial_node.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/timer.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/arduino_module.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/prgmem_string.cpp
+)
+target_include_directories(pet_arduino_core
+  INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${ROS_LIB_DIR}
+)
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/include
   ${ROS_LIB_DIR}
   ${NEW_PING_INCLUDE_DIRS}
   ${SERVO_INCLUDE_DIRS}
+  ${IRREMOTE_INCLUDE_DIRS}
 )
 
 # Not nicest solution. Would like to only add the flags for code from pet_mk_iv_arduino.
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -Wextra -Wpedantic")
 
-set(${PROJECT}_SOURCE_FILES
-  src/main.cpp
-  src/rosserial_node.cpp
-  src/timer.cpp
-  src/arduino_module.cpp
+set(UNO_SOURCE_FILES
+  src/uno/modules.cpp
   src/dist_sensors.cpp
   src/engines.cpp
-  src/line_followers.cpp
+  src/line_sensor_module.cpp
+)
+
+set(NANO_SOURCE_FILES
+  src/nano/modules.cpp
+  src/light_beacon.cpp
 )
 
 # Generate Arduino Uno firmware
-generate_arduino_firmware(hello
-  SRCS ${${PROJECT}_SOURCE_FILES} ${NEW_PING_SOURCE_FILES} ${SERVO_SOURCE_FILES}
+generate_arduino_firmware(arduino_uno
+  SRCS ${UNO_SOURCE_FILES} ${NEW_PING_SOURCE_FILES}
+  LIBS pet_arduino_core
   BOARD uno
   PORT /dev/ArduinoUno0
 )
 
-target_compile_definitions(hello
+# Generate Arduino Nano(old) firmware
+generate_arduino_firmware(arduino_nano
+  SRCS ${NANO_SOURCE_FILES} ${SERVO_SOURCE_FILES}
+  LIBS pet_arduino_core
+  BOARD nano328
+  PORT /dev/ArduinoNano0
+)
+
+target_compile_definitions(arduino_uno
+  PUBLIC
+    "ARDUINO_ARCH_AVR"
+)
+
+target_compile_definitions(arduino_nano
   PUBLIC
     "ARDUINO_ARCH_AVR"
 )

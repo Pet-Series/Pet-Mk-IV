@@ -21,5 +21,8 @@ rosserial_configure_client(
   TOOLCHAIN_FILE ${ROSSERIAL_ARDUINO_TOOLCHAIN}
 )
 
-rosserial_add_client_target(firmware hello ALL)
-rosserial_add_client_target(firmware hello-upload)
+rosserial_add_client_target(firmware arduino_uno ALL)
+rosserial_add_client_target(firmware arduino_uno-upload)
+
+rosserial_add_client_target(firmware arduino_nano ALL)
+rosserial_add_client_target(firmware arduino_nano-upload)

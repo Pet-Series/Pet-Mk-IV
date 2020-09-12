@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Convenience script for uploading arduino firmware.
+# Usage:
+# $ rosrun pet_mk_iv_arduino upload_firmware_nano
+
+# Example workflow:
+# <Write smart code>
+# $ cd ~/ros_ws
+# $ catkin build pet_mk_iv_arduino
+# $ rosrun pet_mk_iv_arduino upload_firmware_nano
+
+catkin build --no-deps pet_mk_iv_arduino --make-args pet_mk_iv_arduino_firmware_arduino_nano-upload
