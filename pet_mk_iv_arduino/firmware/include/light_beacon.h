@@ -20,7 +20,8 @@ private:
     static constexpr ros::Duration kPeriod{1.0/kFrequency};
 
     // Pin to attach servo to.
-    static constexpr int kServoPin = 3;
+    static constexpr int kServoPin = 3;     // Orange wire (PD2)
+    static constexpr int kServoVCCPin = 2;  // Red wire    (PD3)
 
     // How long we have to wait for virtual servo to realise we have changed its position.
     static constexpr ros::Duration kPressDuration{0.05};

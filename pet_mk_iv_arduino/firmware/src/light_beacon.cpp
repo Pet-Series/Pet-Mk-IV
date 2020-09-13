@@ -11,12 +11,21 @@ namespace pet
 LightBeacon::LightBeacon()
     : m_subscriber("beacon_mode", &LightBeacon::mode_msg_callback, this)
 {
-    // TODO: Rewrite (and rewire!) so that a seperate pin controls power to the light beacon. Ensure this pin is turned off in constructor.
+    // Power up the LED Beacon by setting kServoVCCPin to High
+    pinMode(kServoVCCPin, OUTPUT);
+    // NOTE: We hope these delays during construction does not affect the timing of the rest of the system to much.
+    // TODO: Clean up delay for hardware power on sync.
+    const auto press_duration_millis = static_cast<int>(press_duration().toSec() * 1000);
+
+    digitalWrite(kServoVCCPin, HIGH);
+    delay(press_duration_millis);
+
     m_led_servo.attach(kServoPin);
     m_led_servo.write(kServoOff);
-    // NOTE: We hope this short delay once during construction does not make things crash.
-    const auto press_duration_millis = static_cast<int>(press_duration().toSec() * 1000);
+    // Wait for hardware to power on and react
     delay(press_duration_millis);
+    delay(press_duration_millis);
+
     nh.subscribe(m_subscriber);
 }
 
@@ -45,6 +54,7 @@ ros::Time LightBeacon::callback(const TimerEvent& event)
 
 void LightBeacon::mode_msg_callback(const pet_mk_iv_msgs::LightBeacon& msg)
 {
+    nh.loginfo("Recieved new mode");
     m_desired_mode = msg.mode;
 }
 
