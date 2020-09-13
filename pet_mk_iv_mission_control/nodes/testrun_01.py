@@ -12,6 +12,7 @@ from std_msgs.msg       import String                # As output to LCD
 from pet_mk_iv_msgs.msg import DistanceMeasurement   # As input from dist.sensors 
 from pet_mk_iv_msgs.msg import TripleBoolean         # As input from line follower sensors 
 from geometry_msgs.msg  import TwistStamped          # AS output to velocity controller
+from pet_mk_iv_msgs.msg import LightBeacon           #
 
 class MissionNode(object):
     kLinearSpeed   = 0.2 # m/sec
@@ -36,21 +37,31 @@ class MissionNode(object):
         self.LF_sub = rospy.Subscriber("line_followers", TripleBoolean, self.callback_LF_senors)
 
         # Publishers
-        self.vel_pub  = rospy.Publisher("cmd_vel", TwistStamped, queue_size=10)
-        self.row1_pub = rospy.Publisher("lcd_display/row1", String, queue_size=10)
-        self.row2_pub = rospy.Publisher("lcd_display/row2", String, queue_size=10)
-        
+        self.vel_pub         = rospy.Publisher("cmd_vel", TwistStamped, queue_size=10)
+        self.row1_pub        = rospy.Publisher("lcd_display/row1", String, queue_size=10)
+        self.row2_pub        = rospy.Publisher("lcd_display/row2", String, queue_size=10)
+        self.beacon_mode_pub = rospy.Publisher("beacon_mode", LightBeacon, queue_size=1)
+
         self.vel_msg = TwistStamped()
         self.vel_msg.header.frame_id = "base_link"  # Vehicle local coordinate frame
-        
+
+        self.beacon_msg = LightBeacon()
+        self.beacon_msg.mode = LightBeacon.ROTATING_FAST
+
         rospy.wait_for_message("dist_sensors", DistanceMeasurement, timeout=10)
         rospy.wait_for_message("line_followers", TripleBoolean, timeout=10)
 
         return
 
     def start(self):
+        rospy.loginfo("Node starting...")
+
         self.row1_pub.publish("STARTED")
         self.row2_pub.publish("...tjoho!..")
+
+        # TODO: Don't know why, but we need this sleep otherwise the beacon message is not published.
+        rospy.sleep(0.5)
+        self.beacon_mode_pub.publish(self.beacon_msg)
 
         self.check_for_stop_timer  = rospy.Timer(rospy.Duration(0, 100000000), self.check_for_stop)
         self.avoid_obstacles_timer = rospy.Timer(rospy.Duration(0, 100000000), self.avoid_obstacles)
@@ -63,6 +74,8 @@ class MissionNode(object):
             rospy.logwarn("STOP! <= Line detected")
             self.row1_pub.publish("STOP")
             self.emergency_stop = True
+            self.beacon_msg.mode = LightBeacon.OFF
+            self.beacon_mode_pub.publish(self.beacon_msg)
 
         # Stop criteria #2 ...       
         if (0 < self.dist_sensors_middle < MissionNode.kForwardDistance and 
