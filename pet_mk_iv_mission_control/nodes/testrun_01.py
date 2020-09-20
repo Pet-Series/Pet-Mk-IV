@@ -9,10 +9,11 @@ from __future__ import division
 import rospy
 
 from std_msgs.msg       import String                # As output to LCD
-from pet_mk_iv_msgs.msg import DistanceMeasurement   # As input from dist.sensors 
-from pet_mk_iv_msgs.msg import TripleBoolean         # As input from line follower sensors 
+from pet_mk_iv_msgs.msg import DistanceMeasurement   # As input from dist.sensors
+from pet_mk_iv_msgs.msg import TripleBoolean         # As input from line follower sensors
 from geometry_msgs.msg  import TwistStamped          # AS output to velocity controller
 from pet_mk_iv_msgs.msg import LightBeacon           #
+from pet_mk_iv_msgs.msg import IrRemote
 
 class MissionNode(object):
     kLinearSpeed   = 0.2 # m/sec
@@ -20,21 +21,24 @@ class MissionNode(object):
 
     kForwardDistance = 300 # mm
     kSideDistance    = 150 # mm
- 
+
     def __init__(self):
         rospy.init_node("mission_impossible")
 
-        self.emergency_stop = False
+        self.is_stopped = True
 
         # Subscribe for Ultra Sonic distance sensors
         self.dist_sensors_left   = -1 # Infinity-"mm"
-        self.dist_sensors_middle = -1 # Infinity-"mm" 
+        self.dist_sensors_middle = -1 # Infinity-"mm"
         self.dist_sensors_right  = -1 # Infinity-"mm"
         self.dist_sub = rospy.Subscriber("dist_sensors", DistanceMeasurement, self.callback_dist_senors)
 
         # Subscribe for Line Follower sensors
         self.LF_sensors_msg = None
         self.LF_sub = rospy.Subscriber("line_followers", TripleBoolean, self.callback_LF_senors)
+
+        # Subscribe for Line Follower sensors
+        self.IR_sub = rospy.Subscriber("ir_remote", IrRemote, self.callback_IR_sensor)
 
         # Publishers
         self.vel_pub         = rospy.Publisher("cmd_vel", TwistStamped, queue_size=10)
@@ -46,7 +50,7 @@ class MissionNode(object):
         self.vel_msg.header.frame_id = "base_link"  # Vehicle local coordinate frame
 
         self.beacon_msg = LightBeacon()
-        self.beacon_msg.mode = LightBeacon.ROTATING_FAST
+        self.beacon_msg.mode = LightBeacon.ROTATING_SLOW
 
         rospy.wait_for_message("dist_sensors", DistanceMeasurement, timeout=10)
         rospy.wait_for_message("line_followers", TripleBoolean, timeout=10)
@@ -66,53 +70,51 @@ class MissionNode(object):
         self.check_for_stop_timer  = rospy.Timer(rospy.Duration(0, 100000000), self.check_for_stop)
         self.avoid_obstacles_timer = rospy.Timer(rospy.Duration(0, 100000000), self.avoid_obstacles)
 
+        # Next expected action is "Press Play on the remote IR-controller"
+        # self.start_handler() # <- To use this script without IR-remote... Then uncomment this row
         return
 
     def check_for_stop(self, msg):
-        # Stop criteria #1 ...
+        # Stop criteria #1: Any line detected -> STOP!
         if not (self.LF_sensors_msg.left and self.LF_sensors_msg.middle and self.LF_sensors_msg.right):
             rospy.logwarn("STOP! <= Line detected")
             self.row1_pub.publish("STOP")
-            self.emergency_stop = True
-            self.beacon_msg.mode = LightBeacon.OFF
-            self.beacon_mode_pub.publish(self.beacon_msg)
+            self.stop_handler()
 
-        # Stop criteria #2 ...       
-        if (0 < self.dist_sensors_middle < MissionNode.kForwardDistance and 
+        # Stop criteria #2: All distance sensors to close to obstacle -> STOP!
+        elif (0 < self.dist_sensors_middle < MissionNode.kForwardDistance and
             0 < self.dist_sensors_left   < MissionNode.kSideDistance and
             0 < self.dist_sensors_right  < MissionNode.kSideDistance ):
             rospy.logwarn("STOP! <= Obstacles all over the place")
             self.row1_pub.publish("STOP")
             self.row2_pub.publish("..road blocked..")
-            self.emergency_stop = True
-        
+            self.stop_handler()
+
         return
 
     def avoid_obstacles(self, msg):
-        if (self.emergency_stop):
+        if (self.is_stopped):
             self.vel_msg.twist.linear.x  = 0.0 # STOP! No propulsion
             self.vel_msg.twist.angular.z = 0.0 # STOP! No twist/turn
-
-            rospy.signal_shutdown("Mission accomplished")
 
         elif (0 < self.dist_sensors_middle < MissionNode.kForwardDistance):
             rospy.loginfo("Obstacle detected - Straight ahead")
             self.row2_pub.publish("Obstacle-Front")
             #Obstacle straight ahead => Turn Left or Right?
             self.vel_msg.twist.linear.x = 0.0
-     
+
             if (self.dist_sensors_left > self.dist_sensors_right):
                 self.vel_msg.twist.angular.z = self.kRotationSpeed  #Turn Left CCW
-            else: 
+            else:
                 self.vel_msg.twist.angular.z = -self.kRotationSpeed #Turn Right CW
-                
+
         elif (0 < self.dist_sensors_left < MissionNode.kSideDistance):
             rospy.loginfo("Obstacle detected - To the Left")
             self.row2_pub.publish("Obstacle-LEFT")
             self.vel_msg.twist.linear.x = 0.0
             self.vel_msg.twist.angular.z = -self.kRotationSpeed #Turn Right CW
 
-            
+
         elif (0 < self.dist_sensors_right < MissionNode.kSideDistance ):
             rospy.loginfo("Obstacle detected - To the Right")
             self.row2_pub.publish("Obstacle-RIGHT")
@@ -122,25 +124,53 @@ class MissionNode(object):
         else:
             rospy.loginfo("Run Forrest... RUN!")
             self.row2_pub.publish("Run Forrest,RUN!")
-            self.vel_msg.twist.linear.x = self.kLinearSpeed 
-            self.vel_msg.twist.angular.z = 0.0 
+            self.vel_msg.twist.linear.x = self.kLinearSpeed
+            self.vel_msg.twist.angular.z = 0.0
 
         self.vel_msg.header.stamp = rospy.Time.now()  # Need to set timestamp in message header before publish.
         self.vel_pub.publish(self.vel_msg)
-        return       
+        return
 
-    def callback_dist_senors(self, msg): 
-        if   msg.header.frame_id == "dist_sensor_right": 
+    def start_handler(self):
+        self.is_stopped = False
+        self.beacon_msg.mode = LightBeacon.ROTATING_FAST
+        self.beacon_mode_pub.publish(self.beacon_msg)
+
+    def stop_handler(self):
+        self.is_stopped = True
+        self.beacon_msg.mode = LightBeacon.ROTATING_SLOW
+        self.beacon_mode_pub.publish(self.beacon_msg)
+
+    def abort_handler(self):
+        self.is_stopped = True
+        self.beacon_msg.mode = LightBeacon.OFF
+        self.beacon_mode_pub.publish(self.beacon_msg)
+        rospy.loginfo("IR-remote STOP - Abort mission script")
+        self.row1_pub.publish("IR-remote STOP") 
+        self.row2_pub.publish("Abort mission")            
+        rospy.signal_shutdown("Mission script aborted")
+
+    def callback_dist_senors(self, msg):
+        if   msg.header.frame_id == "dist_sensor_right":
            self.dist_sensors_right = msg.distance        # mm
-           
+
         elif msg.header.frame_id == "dist_sensor_mid":
            self.dist_sensors_middle = msg.distance       # mm
-           
+
         elif msg.header.frame_id == "dist_sensor_left":
            self.dist_sensors_left = msg.distance         # mm
 
-    def callback_LF_senors(self, msg): 
+    def callback_LF_senors(self, msg):
         self.LF_sensors_msg = msg
+
+    def callback_IR_sensor(self, msg):
+        if (msg.key == IrRemote.PAUSE):
+            self.stop_handler()
+        elif (msg.key == IrRemote.PLAY):
+            self.start_handler()
+        elif (msg.key == IrRemote.STOP):
+            self.abort_handler()
+
 
 if __name__ == '__main__':
     mission_impossible = MissionNode()
