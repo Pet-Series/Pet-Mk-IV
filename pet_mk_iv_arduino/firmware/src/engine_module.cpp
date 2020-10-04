@@ -1,4 +1,4 @@
-#include "engines.h"
+#include "engine_module.h"
 
 #include <Arduino.h>
 
@@ -15,9 +15,9 @@
 namespace pet
 {
 
-Engines::Engines()
+EngineModule::EngineModule()
     : m_cmd_msg()
-    , m_subscriber("engine_command", &Engines::cmd_msg_callback, this)
+    , m_subscriber("engine_command", &EngineModule::cmd_msg_callback, this)
 {
     pinMode(kLeftReversePin, OUTPUT);
     pinMode(kLeftForwardPin, OUTPUT);
@@ -32,18 +32,18 @@ Engines::Engines()
     nh.subscribe(m_subscriber);
 }
 
-ros::Time Engines::callback(const TimerEvent& event)
+ros::Time EngineModule::callback(const TimerEvent& event)
 {
-    if (event.current_time < m_cmd_msg.header.stamp + Engines::timeout()) {
+    if (event.current_time < m_cmd_msg.header.stamp + EngineModule::timeout()) {
         set_engine_pwm(m_cmd_msg);
     } else {
         stop();
         // nh.logwarn("Engine timeout!");
     }
-    return event.desired_time + Engines::period();
+    return event.desired_time + EngineModule::period();
 }
 
-void Engines::stop()
+void EngineModule::stop()
 {
     digitalWrite(kLeftReversePin, LOW);
     digitalWrite(kLeftForwardPin, LOW);
@@ -53,7 +53,7 @@ void Engines::stop()
     analogWrite(kRightSpeedPin, 0);
 }
 
-void Engines::set_engine_pwm(const pet_mk_iv_msgs::EngineCommand& cmd)
+void EngineModule::set_engine_pwm(const pet_mk_iv_msgs::EngineCommand& cmd)
 {
     switch (cmd.left_direction)
     {

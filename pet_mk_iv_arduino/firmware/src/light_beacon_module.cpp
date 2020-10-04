@@ -1,4 +1,4 @@
-#include "light_beacon.h"
+#include "light_beacon_module.h"
 
 #include <pet_mk_iv_msgs/LightBeacon.h>
 
@@ -8,8 +8,8 @@
 namespace pet
 {
 
-LightBeacon::LightBeacon()
-    : m_subscriber("beacon_mode", &LightBeacon::mode_msg_callback, this)
+LightBeaconModule::LightBeaconModule()
+    : m_subscriber("beacon_mode", &LightBeaconModule::mode_msg_callback, this)
 {
     // Power up the LED Beacon by setting kServoVCCPin to High
     pinMode(kServoVCCPin, OUTPUT);
@@ -29,7 +29,7 @@ LightBeacon::LightBeacon()
     nh.subscribe(m_subscriber);
 }
 
-ros::Time LightBeacon::callback(const TimerEvent& event)
+ros::Time LightBeaconModule::callback(const TimerEvent& event)
 {
     // TODO: Where to say that current mode is changed? On write(On) or write(Off)?
     // If servo is in 'On' state we always want to set it to 'Off', regardless of mode.
@@ -48,11 +48,11 @@ ros::Time LightBeacon::callback(const TimerEvent& event)
     }
     else
     {
-        return event.desired_time + LightBeacon::period();
+        return event.desired_time + LightBeaconModule::period();
     }
 }
 
-void LightBeacon::mode_msg_callback(const pet_mk_iv_msgs::LightBeacon& msg)
+void LightBeaconModule::mode_msg_callback(const pet_mk_iv_msgs::LightBeacon& msg)
 {
     nh.loginfo("Recieved new mode");
     m_desired_mode = msg.mode;

@@ -2,9 +2,9 @@
 
 #include "timer.h"
 
-#include "engines.h"
+#include "engine_module.h"
 #include "line_sensor_module.h"
-#include "dist_sensors.h"
+#include "ultrasound_module.h"
 
 namespace pet
 {
@@ -13,7 +13,7 @@ Timer<4> g_timer{};
 
 ConfigResult configure_modules()
 {
-    pet::ArduinoModule* engine_module = new pet::Engines();
+    pet::ArduinoModule* engine_module = new pet::EngineModule();
     if (!engine_module) {
         return ConfigResult::AllocationError;
     }
@@ -29,7 +29,7 @@ ConfigResult configure_modules()
         return ConfigResult::TimerRegistrationError;
     }
 
-    pet::ArduinoModule* dist_sensor_module = new pet::DistSensors();
+    pet::ArduinoModule* dist_sensor_module = new pet::UltrasoundModule();
     if (!dist_sensor_module) {
         return ConfigResult::AllocationError;
     }

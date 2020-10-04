@@ -1,19 +1,18 @@
-#ifndef _PET_ENGINES_H
-#define _PET_ENGINES_H
+#ifndef PET_ENGINE_MODULE_H
+#define PET_ENGINE_MODULE_H
 
 #include <ros/time.h>
 #include <ros/duration.h>
 
 #include <pet_mk_iv_msgs/EngineCommand.h>
 
-#include "rosserial_node.h"
 #include "arduino_module.h"
 #include "timer.h"
 
 namespace pet
 {
 
-class Engines : public ArduinoModule
+class EngineModule : public ArduinoModule
 {
 private:
     static constexpr double kFrequency = 100;
@@ -28,7 +27,7 @@ private:
     static constexpr int kRightReversePin = 12;
 
 public:
-    Engines();
+    EngineModule();
 
     ros::Time callback(const TimerEvent& event) override;
 
@@ -50,9 +49,9 @@ private:
 
 private:
     pet_mk_iv_msgs::EngineCommand m_cmd_msg;
-    ros::Subscriber<pet_mk_iv_msgs::EngineCommand, Engines> m_subscriber;
+    ros::Subscriber<pet_mk_iv_msgs::EngineCommand, EngineModule> m_subscriber;
 };
 
 } // namespace pet
 
-#endif // _PET_ENGINES_H
+#endif // PET_ENGINE_MODULE_H

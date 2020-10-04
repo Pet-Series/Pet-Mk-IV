@@ -1,5 +1,5 @@
-#ifndef PET_LIGHT_BEACON_H
-#define PET_LIGHT_BEACON_H
+#ifndef PET_LIGHT_BEACON_MODULE_H
+#define PET_LIGHT_BEACON_MODULE_H
 
 #include <Servo.h>
 
@@ -13,7 +13,7 @@
 namespace pet
 {
 
-class LightBeacon : public ArduinoModule
+class LightBeaconModule : public ArduinoModule
 {
 private:
     static constexpr double kFrequency = 50;
@@ -32,7 +32,7 @@ private:
     static constexpr int kServoOff = 135;
 
 public:
-    LightBeacon();
+    LightBeaconModule();
 
     ros::Time callback(const TimerEvent& event) override;
 
@@ -51,9 +51,9 @@ private:
 
     int m_current_position = kServoOff;
 
-    ros::Subscriber<pet_mk_iv_msgs::LightBeacon, LightBeacon> m_subscriber;
+    ros::Subscriber<pet_mk_iv_msgs::LightBeacon, LightBeaconModule> m_subscriber;
 };
 
 } // namespace pet
 
-#endif // PET_LIGHT_BEACON_H
+#endif // PET_LIGHT_BEACON_MODULE_H

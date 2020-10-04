@@ -88,9 +88,9 @@ add_library(pet_arduino_uno INTERFACE)
 target_sources(pet_arduino_uno
   INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/uno/modules.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/dist_sensors.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ultrasound_module.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ultrasound.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engines.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine_module.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/line_sensor_module.cpp
 )
 target_include_directories(pet_arduino_uno
@@ -109,7 +109,7 @@ target_sources(pet_arduino_nano
   INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/nano/modules.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ir_remote_module.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/light_beacon.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/light_beacon_module.cpp
 )
 target_include_directories(pet_arduino_nano
   INTERFACE

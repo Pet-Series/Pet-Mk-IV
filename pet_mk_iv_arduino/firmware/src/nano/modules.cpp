@@ -3,7 +3,7 @@
 #include "timer.h"
 
 #include "ir_remote_module.h"
-#include "light_beacon.h"
+#include "light_beacon_module.h"
 
 namespace pet
 {
@@ -20,7 +20,7 @@ ConfigResult configure_modules()
         return ConfigResult::TimerRegistrationError;
     }
 
-    pet::ArduinoModule* light_beacon_module = new pet::LightBeacon();
+    pet::ArduinoModule* light_beacon_module = new pet::LightBeaconModule();
     if (!light_beacon_module) {
         return ConfigResult::AllocationError;
     }

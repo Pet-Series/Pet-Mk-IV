@@ -1,5 +1,5 @@
-#ifndef _PET_DISTSENSORS_H
-#define _PET_DISTSENSORS_H
+#ifndef PET_ULTRASOUND_MODULE_H
+#define PET_ULTRASOUND_MODULE_H
 
 #include <ros/time.h>
 #include <ros/duration.h>
@@ -14,7 +14,7 @@
 namespace pet
 {
 
-class DistSensors : public ArduinoModule
+class UltrasoundModule : public ArduinoModule
 {
 private:
     static constexpr double kFrequency = 30;
@@ -31,7 +31,7 @@ private:
     static constexpr int kEchoPinLeft      = 16;   // A2  "Left"
 
 public:
-    DistSensors();
+    UltrasoundModule();
 
     ros::Time callback(const TimerEvent& event) override;
 
@@ -49,4 +49,4 @@ private:
 
 } // namespace pet
 
-#endif
+#endif // PET_ULTRASOUND_MODULE_H

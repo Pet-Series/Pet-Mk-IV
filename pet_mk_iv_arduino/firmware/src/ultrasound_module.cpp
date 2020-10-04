@@ -1,4 +1,4 @@
-#include "dist_sensors.h"
+#include "ultrasound_module.h"
 
 #include <NewPing.h>
 
@@ -8,7 +8,7 @@
 namespace pet
 {
 
-DistSensors::DistSensors()
+UltrasoundModule::UltrasoundModule()
     : m_msg()
     , m_publisher(kTopicName, &m_msg)
 {
@@ -16,7 +16,7 @@ DistSensors::DistSensors()
     pet::nh.advertise(m_publisher);
 }
 
-ros::Time DistSensors::callback(const TimerEvent& event)
+ros::Time UltrasoundModule::callback(const TimerEvent& event)
 {
     m_sensors[m_current_sensor].stop_ping();
 
