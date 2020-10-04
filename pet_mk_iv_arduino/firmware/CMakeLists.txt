@@ -89,6 +89,7 @@ target_sources(pet_arduino_uno
   INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/uno/modules.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/dist_sensors.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ultrasound.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engines.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/line_sensor_module.cpp
 )
