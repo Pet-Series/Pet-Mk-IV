@@ -50,12 +50,11 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
 
-  
   <depend>rosserial_arduino</depend>
   <depend>rosserial_client</depend>
   <depend>std_msgs</depend>
   <depend>pet_mk_iv_msgs</depend>
-
+  <depend>pet_mcu_base</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

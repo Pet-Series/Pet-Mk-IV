@@ -10,4 +10,5 @@
 # $ catkin build pet_mk_iv_arduino
 # $ rosrun pet_mk_iv_arduino upload_firmware_uno
 
-catkin build --no-deps pet_mk_iv_arduino --make-args pet_mk_iv_arduino_firmware_arduino_uno-upload
+# catkin build --no-deps pet_mk_iv_arduino --make-args pet_mk_iv_arduino_firmware_arduino_uno-upload
+catkin build --no-deps pet_mk_iv_arduino --make-args pet_mk_iv_uno-upload

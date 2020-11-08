@@ -9,20 +9,13 @@ find_package(catkin REQUIRED COMPONENTS
   pet_mk_iv_msgs
 )
 
+find_package(pet_mcu_base REQUIRED)
+
+set(BUILD_SHARED_LIBS FALSE)
+set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
+set(EXECUTABLE_OUTPUT_PATH ${CATKIN_DEVEL_PREFIX}/lib/${PROJECT_NAME})
+
 catkin_package()
 
-rosserial_generate_ros_lib(
-  PACKAGE rosserial_arduino
-  SCRIPT make_libraries.py
-)
-
-rosserial_configure_client(
-  DIRECTORY firmware
-  TOOLCHAIN_FILE ${ROSSERIAL_ARDUINO_TOOLCHAIN}
-)
-
-rosserial_add_client_target(firmware arduino_uno ALL)
-rosserial_add_client_target(firmware arduino_uno-upload)
-
-rosserial_add_client_target(firmware arduino_nano ALL)
-rosserial_add_client_target(firmware arduino_nano-upload)
+add_subdirectory(pet_mk_iv_nano)
+add_subdirectory(pet_mk_iv_uno)

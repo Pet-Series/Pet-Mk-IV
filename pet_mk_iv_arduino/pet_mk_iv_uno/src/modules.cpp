@@ -1,6 +1,6 @@
 #include "modules.h"
 
-#include "timer.h"
+#include <timer.h>
 
 #include "engine_module.h"
 #include "line_sensor_module.h"
@@ -29,11 +29,11 @@ ConfigResult configure_modules()
         return ConfigResult::TimerRegistrationError;
     }
 
-    pet::ArduinoModule* dist_sensor_module = new pet::UltrasoundModule();
-    if (!dist_sensor_module) {
+    pet::ArduinoModule* ultrasound_module = new pet::UltrasoundModule();
+    if (!ultrasound_module) {
         return ConfigResult::AllocationError;
     }
-    if (!g_timer.register_module(dist_sensor_module)) {
+    if (!g_timer.register_module(ultrasound_module)) {
         return ConfigResult::TimerRegistrationError;
     }
 
