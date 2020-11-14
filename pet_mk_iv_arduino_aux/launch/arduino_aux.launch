@@ -1,9 +1,0 @@
-<launch>
-  <arg name="port"    default="/dev/ArduinoNano0"/>
-  <arg name="baud"    default="57600"/>
-
-  <node pkg="rosserial_python" type="serial_node.py" name="arduino_aux" output="screen">
-    <param name="port" value="$(arg port)"/>
-    <param name="baud" value="$(arg baud)"/>
-  </node>
-</launch>
