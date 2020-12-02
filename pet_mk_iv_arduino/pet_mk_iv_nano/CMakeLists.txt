@@ -25,7 +25,7 @@ function(target_copy_property TARGET_FROM TARGET_TO PROPERTY)
 endfunction()
 
 add_library(pet_mk_iv_nano_deps INTERFACE)
-foreach(DEPENDENCY pet::mcu_core pet::pet_ros_lib pet::ir_remote_module pet::irremote pet::light_beacon_module pet::servo)
+foreach(DEPENDENCY pet::mcu_core pet::ros_lib pet::ir_remote_module pet::irremote pet::light_beacon_module pet::servo)
   target_copy_property(${DEPENDENCY} pet_mk_iv_nano_deps INTERFACE_SOURCES)
   target_copy_property(${DEPENDENCY} pet_mk_iv_nano_deps INTERFACE_INCLUDE_DIRECTORIES)
 endforeach()

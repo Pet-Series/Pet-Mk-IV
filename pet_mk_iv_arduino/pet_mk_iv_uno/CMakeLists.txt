@@ -25,7 +25,7 @@ function(target_copy_property TARGET_FROM TARGET_TO PROPERTY)
 endfunction()
 
 add_library(pet_mk_iv_uno_deps INTERFACE)
-foreach(DEPENDENCY pet::mcu_core pet::pet_ros_lib pet::ultrasound_module pet::new_ping pet::engine_module pet::line_sensor_module)
+foreach(DEPENDENCY pet::mcu_core pet::ros_lib pet::ultrasound_module pet::new_ping pet::engine_module pet::line_sensor_module)
   target_copy_property(${DEPENDENCY} pet_mk_iv_uno_deps INTERFACE_SOURCES)
   target_copy_property(${DEPENDENCY} pet_mk_iv_uno_deps INTERFACE_INCLUDE_DIRECTORIES)
 endforeach()
