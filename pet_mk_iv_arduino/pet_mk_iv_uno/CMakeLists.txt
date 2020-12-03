@@ -2,6 +2,14 @@ cmake_minimum_required(VERSION 3.10.2)
 
 project(pet_mk_iv_uno)
 
+find_package(pet_mcu_base REQUIRED
+  COMPONENTS
+    core
+    engine_module
+    line_sensor_module
+    ultrasound_module
+)
+
 include(${ROSSERIAL_ARDUINO_TOOLCHAIN})
 include(Platform/Arduino)
 

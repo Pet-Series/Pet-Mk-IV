@@ -9,8 +9,6 @@ find_package(catkin REQUIRED COMPONENTS
   pet_mk_iv_msgs
 )
 
-find_package(pet_mcu_base REQUIRED)
-
 set(BUILD_SHARED_LIBS FALSE)
 set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
 set(EXECUTABLE_OUTPUT_PATH ${CATKIN_DEVEL_PREFIX}/lib/${PROJECT_NAME})
