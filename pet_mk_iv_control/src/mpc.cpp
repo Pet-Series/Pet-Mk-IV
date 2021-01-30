@@ -21,7 +21,7 @@
 #include <ugl_ros/convert_ugl.h>
 
 #include "pet_mk_iv_control/kinematic_model.h"
-#include "pet_mk_iv_control/parameterization.h"
+#include "pet_mk_iv_control/parameterization2d.h"
 #include "pet_mk_iv_control/residuals.h"
 
 namespace pet::mpc
@@ -29,9 +29,9 @@ namespace pet::mpc
 
 Solver::Solver(const Options& options)
     : m_options(options)
-    , m_quaternions(1, Eigen::Quaterniond::Identity())
-    , m_positions(1, Eigen::Vector3d::Zero())
-    , m_twists(1, Eigen::Matrix<double,6,1>::Zero())
+    , m_rotations(1, Eigen::Matrix2d::Identity())
+    , m_positions(1, Eigen::Vector2d::Zero())
+    , m_twists(1, Eigen::Vector3d::Zero())
     , m_reference_loss_function(nullptr, m_options.reference_loss_factor, ceres::TAKE_OWNERSHIP)
     , m_velocity_loss_function(nullptr, m_options.velocity_loss_factor, ceres::TAKE_OWNERSHIP)
     , m_constraint_penalty_coefficient_handle(nullptr, ceres::TAKE_OWNERSHIP)
@@ -44,16 +44,16 @@ void Solver::set_reference_path(const nav_msgs::Path& reference_path)
     m_problem_size = std::min(reference_path.poses.size(), m_options.max_num_poses);
 
     m_reference_positions.clear();
-    m_reference_quaternions.clear();
+    m_reference_rotations.clear();
     m_reference_positions.reserve(m_problem_size);
-    m_reference_quaternions.reserve(m_problem_size);
+    m_reference_rotations.reserve(m_problem_size);
 
     /// TODO: Transform reference_path into correct tf frame.
     for (std::size_t i = 0; i < m_problem_size; ++i)
     {
         const geometry_msgs::Pose& pose = reference_path.poses[i].pose;
-        m_reference_positions.emplace_back(pose.position.x, pose.position.y, pose.position.z);
-        m_reference_quaternions.emplace_back(pose.orientation.w, pose.orientation.x, pose.orientation.y, pose.orientation.z);
+        m_reference_positions.emplace_back(pose.position.x, pose.position.y);
+        m_reference_rotations.emplace_back(SO2<double>::from_quaternion(tf2::fromMsg(pose.orientation)));
     }
     m_reference_path_set = true;
 }
@@ -61,18 +61,19 @@ void Solver::set_reference_path(const nav_msgs::Path& reference_path)
 void Solver::set_initial_pose(const geometry_msgs::PoseStamped& initial_pose)
 {
     m_positions.clear();
-    m_quaternions.clear();
+    m_rotations.clear();
     /// TODO: Transform initial_pose into correct tf frame.
     const geometry_msgs::Pose& pose = initial_pose.pose;
-    m_positions.emplace_back(pose.position.x, pose.position.y, pose.position.z);
-    m_quaternions.emplace_back(pose.orientation.w, pose.orientation.x, pose.orientation.y, pose.orientation.z);
+    m_positions.emplace_back(pose.position.x, pose.position.y);
+    m_rotations.emplace_back(SO2<double>::from_quaternion(tf2::fromMsg(pose.orientation)));
 }
 
 void Solver::set_initial_twist(const geometry_msgs::TwistStamped& initial_twist)
 {
     m_twists.clear();
     /// TODO: Transform initial_twist into correct tf frame.
-    m_twists.push_back(ugl_ros::fromMsg(initial_twist.twist));
+    const auto& twist = initial_twist.twist;
+    m_twists.emplace_back(twist.angular.z, twist.linear.x, twist.linear.y);
 }
 
 void Solver::solve()
@@ -122,13 +123,9 @@ nav_msgs::Path Solver::get_optimal_path() const
     for (std::size_t i = 0; i < m_problem_size; ++i)
     {
         geometry_msgs::PoseStamped pose{};
-        pose.pose.orientation.x = m_quaternions[i].x();
-        pose.pose.orientation.y = m_quaternions[i].y();
-        pose.pose.orientation.z = m_quaternions[i].z();
-        pose.pose.orientation.w = m_quaternions[i].w();
+        pose.pose.orientation = tf2::toMsg(SO2<double>::to_quaternion(m_rotations[i]));
         pose.pose.position.x = m_positions[i].x();
         pose.pose.position.y = m_positions[i].y();
-        pose.pose.position.z = m_positions[i].z();
         optimal_path.poses.push_back(pose);
     }
     return optimal_path;
@@ -137,15 +134,14 @@ nav_msgs::Path Solver::get_optimal_path() const
 void Solver::build_optimization_problem(ceres::Problem& problem)
 {
     // ceres::LossFunction* no_loss_function = nullptr;
-    ceres::LocalParameterization* quaternion_parameterization = new ceres::EigenQuaternionParameterization{};
-    ceres::LocalParameterization* twist_2d_parameterization = new ceres::SubsetParameterization{6, {0,1,4,5}};
-    ceres::LocalParameterization* position_2d_parameterization = new ceres::SubsetParameterization{3, {2}};
+    ceres::LocalParameterization* rotation2d_parameterization = new Rotation2DParameterization{};
+    ceres::LocalParameterization* twist_diffdrive_parameterization = new ceres::SubsetParameterization{3, {2}};
 
     // Initial pose & twist are constant parameters.
-    problem.AddParameterBlock(m_quaternions[0].coeffs().data(), 4, quaternion_parameterization);
-    problem.AddParameterBlock(m_positions[0].data(), 3, position_2d_parameterization);
-    problem.AddParameterBlock(m_twists[0].data(), 6, twist_2d_parameterization);
-    problem.SetParameterBlockConstant(m_quaternions[0].coeffs().data());
+    problem.AddParameterBlock(m_rotations[0].data(), 4, rotation2d_parameterization);
+    problem.AddParameterBlock(m_positions[0].data(), 2);
+    problem.AddParameterBlock(m_twists[0].data(), 3, twist_diffdrive_parameterization);
+    problem.SetParameterBlockConstant(m_rotations[0].data());
     problem.SetParameterBlockConstant(m_positions[0].data());
     problem.SetParameterBlockConstant(m_twists[0].data());
 
@@ -153,25 +149,25 @@ void Solver::build_optimization_problem(ceres::Problem& problem)
     // residual is constant and the velocity residual is undefined.
     for (std::size_t i = 1; i < m_problem_size; ++i)
     {
-        problem.AddParameterBlock(m_quaternions[i].coeffs().data(), 4, quaternion_parameterization);
-        problem.AddParameterBlock(m_positions[i].data(), 3, position_2d_parameterization);
+        problem.AddParameterBlock(m_rotations[i].data(), 4, rotation2d_parameterization);
+        problem.AddParameterBlock(m_positions[i].data(), 2);
 
-        problem.AddParameterBlock(m_reference_quaternions[i].coeffs().data(), 4, quaternion_parameterization);
-        problem.AddParameterBlock(m_reference_positions[i].data(), 3, position_2d_parameterization);
+        problem.AddParameterBlock(m_reference_rotations[i].data(), 4, rotation2d_parameterization);
+        problem.AddParameterBlock(m_reference_positions[i].data(), 2);
 
-        problem.AddParameterBlock(m_twists[i].data(), 6, twist_2d_parameterization);
+        problem.AddParameterBlock(m_twists[i].data(), 3, twist_diffdrive_parameterization);
 
         // Do not optimize over reference path parameters.
-        problem.SetParameterBlockConstant(m_reference_quaternions[i].coeffs().data());
+        problem.SetParameterBlockConstant(m_reference_rotations[i].data());
         problem.SetParameterBlockConstant(m_reference_positions[i].data());
 
         // Residual block for reference path error.
         problem.AddResidualBlock(
                 ReferencePathResidual::Create(),
                 &m_reference_loss_function,
-                m_reference_quaternions[i].coeffs().data(),
+                m_reference_rotations[i].data(),
                 m_reference_positions[i].data(),
-                m_quaternions[i].coeffs().data(),
+                m_rotations[i].data(),
                 m_positions[i].data()
         );
 
@@ -187,9 +183,9 @@ void Solver::build_optimization_problem(ceres::Problem& problem)
         problem.AddResidualBlock(
                 KinematicConstraintPenaltyResidual::Create(m_options.time_step),
                 &m_constraint_penalty_coefficient_handle,
-                m_quaternions[i].coeffs().data(),
+                m_rotations[i].data(),
                 m_positions[i].data(),
-                m_quaternions[i-1].coeffs().data(),
+                m_rotations[i-1].data(),
                 m_positions[i-1].data(),
                 m_twists[i-1].data()
         );
@@ -200,12 +196,12 @@ void Solver::generate_initial_values()
 {
     const auto twist = m_twists[0];
     const auto dt = m_options.time_step;
-    auto prev_pose = Pose<double>{m_quaternions[0].toRotationMatrix(), m_positions[0]};
+    auto prev_pose = Pose2D<double>{m_rotations[0], m_positions[0]};
     for (std::size_t i = 1; i < m_problem_size; ++i)
     {
         const auto& next_pose = KinematicModel::propagate(prev_pose, twist, dt);
-        m_positions.emplace_back(next_pose.position);
-        m_quaternions.emplace_back(next_pose.rotation);
+        m_positions.push_back(next_pose.position);
+        m_rotations.push_back(next_pose.rotation);
         m_twists.push_back(twist);
         prev_pose = next_pose;
     }

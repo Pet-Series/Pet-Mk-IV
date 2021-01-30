@@ -1,7 +1,7 @@
 #ifndef PET_CONTROL_KINEMATIC_MODEL_H
 #define PET_CONTROL_KINEMATIC_MODEL_H
 
-#include "pet_mk_iv_control/parameterization.h"
+#include "pet_mk_iv_control/pose2d.h"
 
 namespace pet::mpc
 {
@@ -9,10 +9,10 @@ namespace pet::mpc
 class KinematicModel
 {
 public:
-    template<typename ScalarType>
-    static Pose<ScalarType> propagate(const Pose<ScalarType>& state, const Eigen::Matrix<ScalarType, 6, 1>& twist, double dt)
+    template<typename Scalar>
+    static Pose2D<Scalar> propagate(const Pose2D<Scalar>& state, const typename Pose2D<Scalar>::TangentType& twist, double dt)
     {
-        return oplus<ScalarType>(state, twist*dt);
+        return oplus<Scalar>(state, twist*dt);
     }
 };
 

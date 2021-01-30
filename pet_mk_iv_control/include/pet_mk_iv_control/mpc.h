@@ -16,7 +16,7 @@
 
 #include <ceres/ceres.h>
 
-#include "pet_mk_iv_control/parameterization.h"
+#include "pet_mk_iv_control/parameterization2d.h"
 
 namespace pet::mpc
 {
@@ -59,13 +59,13 @@ private:
 private:
     Options m_options{};
 
-    std::vector<Eigen::Quaterniond> m_quaternions{};
-    std::vector<Eigen::Vector3d> m_positions{};
+    std::vector<Pose2D<double>::RotationType> m_rotations{};
+    std::vector<Pose2D<double>::PointType> m_positions{};
 
-    std::vector<Eigen::Quaterniond> m_reference_quaternions{};
-    std::vector<Eigen::Vector3d> m_reference_positions{};
+    std::vector<Pose2D<double>::RotationType> m_reference_rotations{};
+    std::vector<Pose2D<double>::PointType> m_reference_positions{};
 
-    std::vector<Eigen::Matrix<double,6,1>> m_twists{};
+    std::vector<Pose2D<double>::TangentType> m_twists{};
 
     bool m_reference_path_set = false;
     std::size_t m_problem_size = 0;
