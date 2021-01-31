@@ -92,7 +92,7 @@ void Solver::solve()
     build_optimization_problem(problem);
 
     ceres::Solver::Options solver_options;
-    solver_options.check_gradients = true;
+    // solver_options.check_gradients = true;
     ceres::Solver::Summary summary;
 
     int iteration = 0;
@@ -217,7 +217,7 @@ int main(int argc, char** argv)
 
     nav_msgs::Path reference_path;
     reference_path.header.frame_id = "map";
-    for (int i = 0; i < 10; ++i)
+    for (int i = 0; i < 50; ++i)
     {
         geometry_msgs::PoseStamped pose{};
         pose.pose.position.x = 0.1 * i;
@@ -235,12 +235,8 @@ int main(int argc, char** argv)
     initial_pose.pose.position.x = 0.0;
     initial_pose.pose.position.y = 0.0;
     initial_pose.pose.position.z = 0.0;
-    initial_pose.pose.orientation.x = 0.0;
-    initial_pose.pose.orientation.y = 0.0;
-    initial_pose.pose.orientation.z = 0.0;
-    initial_pose.pose.orientation.w = 1.0;
-    // const auto initial_quat = ugl::math::to_quat(90.0*3.1415/180.0, Eigen::Vector3d::UnitZ());
-    // initial_pose.pose.orientation = tf2::toMsg(initial_quat);
+    const auto initial_quat = ugl::math::to_quat(90.0*3.1415/180.0, Eigen::Vector3d::UnitZ());
+    initial_pose.pose.orientation = tf2::toMsg(initial_quat);
 
     /// TODO: Read options from ROS-parameters.
     pet::mpc::Solver solver{pet::mpc::Options{}};
