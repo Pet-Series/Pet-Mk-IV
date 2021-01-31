@@ -53,7 +53,6 @@ catkin_package(
 add_executable(mpc
   src/mpc.cpp
   src/kinematic_model.cpp
-  src/parameterization.cpp
   src/parameterization2d.cpp
   src/pose2d.cpp
   src/residuals.cpp
