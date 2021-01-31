@@ -27,7 +27,7 @@
 namespace pet::mpc
 {
 
-Solver::Solver(const Options& options)
+Mpc::Mpc(const Options& options)
     : m_options(options)
     , m_rotations(1, Eigen::Matrix2d::Identity())
     , m_positions(1, Eigen::Vector2d::Zero())
@@ -38,7 +38,7 @@ Solver::Solver(const Options& options)
 {
 }
 
-void Solver::set_reference_path(const nav_msgs::Path& reference_path)
+void Mpc::set_reference_path(const nav_msgs::Path& reference_path)
 {
     ROS_ASSERT(reference_path.poses.size() > 0);
     m_problem_size = std::min(reference_path.poses.size(), m_options.max_num_poses);
@@ -58,7 +58,7 @@ void Solver::set_reference_path(const nav_msgs::Path& reference_path)
     m_reference_path_set = true;
 }
 
-void Solver::set_initial_pose(const geometry_msgs::PoseStamped& initial_pose)
+void Mpc::set_initial_pose(const geometry_msgs::PoseStamped& initial_pose)
 {
     m_positions.clear();
     m_rotations.clear();
@@ -68,7 +68,7 @@ void Solver::set_initial_pose(const geometry_msgs::PoseStamped& initial_pose)
     m_rotations.emplace_back(SO2<double>::from_quaternion(tf2::fromMsg(pose.orientation)));
 }
 
-void Solver::set_initial_twist(const geometry_msgs::TwistStamped& initial_twist)
+void Mpc::set_initial_twist(const geometry_msgs::TwistStamped& initial_twist)
 {
     m_twists.clear();
     /// TODO: Transform initial_twist into correct tf frame.
@@ -76,10 +76,10 @@ void Solver::set_initial_twist(const geometry_msgs::TwistStamped& initial_twist)
     m_twists.emplace_back(twist.angular.z, twist.linear.x, twist.linear.y);
 }
 
-void Solver::solve()
+void Mpc::solve()
 {
     if (!m_reference_path_set) {
-        constexpr auto error_text = "Reference path must be set before calling Solver::solve()!";
+        constexpr auto error_text = "Reference path must be set before calling Mpc::solve()!";
         ROS_ERROR(error_text);
         throw error_text;
     }
@@ -116,7 +116,7 @@ void Solver::solve()
     // std::cout << summary.FullReport() << "\n";
 }
 
-nav_msgs::Path Solver::get_optimal_path() const
+nav_msgs::Path Mpc::get_optimal_path() const
 {
     nav_msgs::Path optimal_path{};
     optimal_path.header.frame_id = "map";
@@ -131,7 +131,7 @@ nav_msgs::Path Solver::get_optimal_path() const
     return optimal_path;
 }
 
-void Solver::build_optimization_problem(ceres::Problem& problem)
+void Mpc::build_optimization_problem(ceres::Problem& problem)
 {
     // ceres::LossFunction* no_loss_function = nullptr;
     ceres::LocalParameterization* rotation2d_parameterization = new Rotation2DParameterization{};
@@ -192,7 +192,7 @@ void Solver::build_optimization_problem(ceres::Problem& problem)
     }
 }
 
-void Solver::generate_initial_values()
+void Mpc::generate_initial_values()
 {
     const auto twist = m_twists[0];
     const auto dt = m_options.time_step;
@@ -239,7 +239,7 @@ int main(int argc, char** argv)
     initial_pose.pose.orientation = tf2::toMsg(initial_quat);
 
     /// TODO: Read options from ROS-parameters.
-    pet::mpc::Solver solver{pet::mpc::Options{}};
+    pet::mpc::Mpc solver{pet::mpc::Options{}};
     solver.set_reference_path(reference_path);
     solver.set_initial_pose(initial_pose);
     solver.solve();

@@ -35,10 +35,10 @@ struct Options
     double velocity_loss_factor = 1.0;
 };
 
-class Solver
+class Mpc
 {
 public:
-    Solver(const Options& options);
+    Mpc(const Options& options);
 
     void set_reference_path(const nav_msgs::Path& reference_path);
 
