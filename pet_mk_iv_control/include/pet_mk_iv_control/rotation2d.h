@@ -49,7 +49,7 @@ struct SO2
     static MatrixType left_jacobian(const Scalar& phi)
     {
         constexpr double kTolerance = 1e-10;
-        if (phi < kTolerance) {
+        if (abs(phi) < kTolerance) {
             return MatrixType::Identity() + 0.5 * hat(phi);
         }
         return MatrixType::Identity() * sin(phi) / phi + SO2<double>::hat(1.0) * (1.0 - cos(phi)) / phi;
@@ -63,7 +63,7 @@ struct SO2
     static MatrixType left_jacobian_inv(const Scalar& phi)
     {
         constexpr double kTolerance = 1e-10;
-        if (phi < kTolerance) {
+        if (abs(phi) < kTolerance) {
             return MatrixType::Identity() - 0.5 * hat(phi);
         }
         return 0.5 * phi*phi / (1.0 - cos(phi)) * left_jacobian(phi).transpose();
