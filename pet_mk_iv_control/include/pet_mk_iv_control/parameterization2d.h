@@ -8,7 +8,7 @@
 #include "pet_mk_iv_control/rotation2d.h"
 #include "pet_mk_iv_control/pose2d.h"
 
-namespace pet::mpc
+namespace pet::control
 {
 
 struct Rotation2DPlus
@@ -30,6 +30,6 @@ struct Rotation2DPlus
 
 using Rotation2DParameterization = ceres::AutoDiffLocalParameterization<Rotation2DPlus, Rotation2DPlus::kGlobalSize, Rotation2DPlus::kLocalSize>;
 
-} // namespace pet::mpc
+} // namespace pet::control
 
 #endif // PET_CONTROL_PARAMETERIZATION_2D_H

@@ -3,7 +3,7 @@
 
 #include "pet_mk_iv_control/pose2d.h"
 
-namespace pet::mpc
+namespace pet::control
 {
 
 class KinematicModel
@@ -16,6 +16,6 @@ public:
     }
 };
 
-}
+} // namespace pet::control
 
 #endif // PET_CONTROL_KINEMATIC_MODEL_H

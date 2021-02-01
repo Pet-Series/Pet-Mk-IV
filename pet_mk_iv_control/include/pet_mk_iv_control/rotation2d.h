@@ -4,7 +4,7 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
-namespace pet::mpc
+namespace pet::control
 {
 
 template<typename Scalar>
@@ -83,6 +83,6 @@ struct SO2
     }
 };
 
-} // namespace pet::mpc
+} // namespace pet::control
 
 #endif // PET_CONTROL_ROTATION2D_H

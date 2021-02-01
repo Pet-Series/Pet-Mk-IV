@@ -18,7 +18,7 @@
 
 #include "pet_mk_iv_control/parameterization2d.h"
 
-namespace pet::mpc
+namespace pet::control
 {
 
 struct Options
@@ -74,6 +74,6 @@ private:
     ceres::LossFunctionWrapper m_constraint_penalty_coefficient_handle;
 };
 
-} // namespace pet::mpc
+} // namespace pet::control
 
 #endif // PET_CONTROL_MPC_H

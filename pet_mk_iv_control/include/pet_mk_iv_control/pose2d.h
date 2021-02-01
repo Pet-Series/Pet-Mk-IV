@@ -5,7 +5,7 @@
 
 #include "pet_mk_iv_control/rotation2d.h"
 
-namespace pet::mpc
+namespace pet::control
 {
 
 template<typename Scalar>
@@ -82,6 +82,6 @@ typename Pose2D<Scalar>::TangentType ominus(const Pose2D<Scalar>& lhs, const Pos
     return Pose2D<Scalar>::log(inverse(rhs) * lhs);
 }
 
-} // namespace pet::mpc
+} // namespace pet::control
 
 #endif // PET_CONTROL_POSE2D_H

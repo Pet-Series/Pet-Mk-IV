@@ -24,7 +24,7 @@
 #include "pet_mk_iv_control/parameterization2d.h"
 #include "pet_mk_iv_control/residuals.h"
 
-namespace pet::mpc
+namespace pet::control
 {
 
 Mpc::Mpc(const Options& options)
@@ -207,7 +207,7 @@ void Mpc::generate_initial_values()
     }
 }
 
-} // namespace pet::mpc
+} // namespace pet::control
 
 
 int main(int argc, char** argv)

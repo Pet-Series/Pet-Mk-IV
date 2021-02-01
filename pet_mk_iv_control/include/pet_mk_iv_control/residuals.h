@@ -9,7 +9,7 @@
 #include "pet_mk_iv_control/kinematic_model.h"
 #include "pet_mk_iv_control/parameterization2d.h"
 
-namespace pet::mpc
+namespace pet::control
 {
 
 class ReferencePathResidual
@@ -108,6 +108,6 @@ private:
     static constexpr int kTwistSize = 3;
 };
 
-} // namespace pet::mpc
+} // namespace pet::control
 
 #endif // PET_CONTROL_RESIDUALS_H
