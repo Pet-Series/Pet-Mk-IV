@@ -16,7 +16,13 @@ namespace
 pet::control::Mpc::Options load_mpc_parameters(ros::NodeHandle& nh)
 {
     pet::control::Mpc::Options options{};
-    /// TODO: Read ROS-parameters.
+    options.max_num_poses           = nh.param("mpc/max_num_poses", options.max_num_poses);
+    options.time_step               = nh.param("mpc/time_step", options.time_step);
+    options.max_penalty_iterations  = nh.param("mpc/max_penalty_iterations", options.max_penalty_iterations);
+    options.penalty_increase_factor = nh.param("mpc/penalty_increase_factor", options.penalty_increase_factor);
+    options.max_constraint_cost     = nh.param("mpc/max_constraint_cost", options.max_constraint_cost);
+    options.reference_loss_factor   = nh.param("mpc/reference_loss_factor", options.reference_loss_factor);
+    options.velocity_loss_factor    = nh.param("mpc/velocity_loss_factor", options.velocity_loss_factor);
     return options;
 }
 
