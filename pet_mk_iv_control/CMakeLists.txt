@@ -50,7 +50,7 @@ catkin_package(
 ## Build ##
 ###########
 
-add_executable(mpc
+add_library(mpc SHARED
   src/mpc.cpp
   src/kinematic_model.cpp
   src/parameterization2d.cpp
@@ -72,6 +72,17 @@ target_link_libraries(mpc
     ugl::math
     # ugl::lie_group
     ${catkin_LIBRARIES}
+  PRIVATE
+    project_options
+    project_warnings
+)
+
+add_executable(mpc_node
+  src/mpc_node.cpp
+)
+target_link_libraries(mpc_node
+  PUBLIC
+    mpc
   PRIVATE
     project_options
     project_warnings

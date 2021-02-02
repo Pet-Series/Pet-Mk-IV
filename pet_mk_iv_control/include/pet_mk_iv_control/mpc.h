@@ -5,8 +5,6 @@
 #include <utility>
 #include <vector>
 
-#include <ros/ros.h>
-
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
@@ -21,22 +19,23 @@
 namespace pet::control
 {
 
-struct Options
-{
-    int max_num_poses = 100;
-
-    double time_step = 0.01;
-
-    int max_penalty_iterations = 8;
-    double penalty_increase_factor = 5.0;
-    double max_constraint_cost = 10e-3;
-
-    double reference_loss_factor = 20.0;
-    double velocity_loss_factor = 1.0;
-};
-
 class Mpc
 {
+public:
+    struct Options
+    {
+        int max_num_poses = 100;
+
+        double time_step = 0.01;
+
+        int max_penalty_iterations = 8;
+        double penalty_increase_factor = 5.0;
+        double max_constraint_cost = 10e-3;
+
+        double reference_loss_factor = 20.0;
+        double velocity_loss_factor = 1.0;
+    };
+
 public:
     Mpc(const Options& options);
 
