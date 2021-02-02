@@ -23,7 +23,7 @@ namespace pet::control
 
 struct Options
 {
-    std::size_t max_num_poses = 100;
+    int max_num_poses = 100;
 
     double time_step = 0.01;
 
@@ -68,7 +68,7 @@ private:
     std::vector<Pose2D<double>::TangentType> m_twists{};
 
     bool m_reference_path_set = false;
-    std::size_t m_problem_size = 0;
+    int m_problem_size = 0;
     ceres::ScaledLoss m_reference_loss_function;
     ceres::ScaledLoss m_velocity_loss_function;
     ceres::LossFunctionWrapper m_constraint_penalty_coefficient_handle;

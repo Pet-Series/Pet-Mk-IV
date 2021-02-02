@@ -41,7 +41,7 @@ Mpc::Mpc(const Options& options)
 void Mpc::set_reference_path(const nav_msgs::Path& reference_path)
 {
     ROS_ASSERT(reference_path.poses.size() > 0);
-    m_problem_size = std::min(reference_path.poses.size(), m_options.max_num_poses);
+    m_problem_size = std::min<int>(reference_path.poses.size(), m_options.max_num_poses);
 
     m_reference_positions.clear();
     m_reference_rotations.clear();
@@ -49,7 +49,7 @@ void Mpc::set_reference_path(const nav_msgs::Path& reference_path)
     m_reference_rotations.reserve(m_problem_size);
 
     /// TODO: Transform reference_path into correct tf frame.
-    for (std::size_t i = 0; i < m_problem_size; ++i)
+    for (int i = 0; i < m_problem_size; ++i)
     {
         const geometry_msgs::Pose& pose = reference_path.poses[i].pose;
         m_reference_positions.emplace_back(pose.position.x, pose.position.y);
@@ -120,7 +120,7 @@ nav_msgs::Path Mpc::get_optimal_path() const
 {
     nav_msgs::Path optimal_path{};
     optimal_path.header.frame_id = "map";
-    for (std::size_t i = 0; i < m_problem_size; ++i)
+    for (int i = 0; i < m_problem_size; ++i)
     {
         geometry_msgs::PoseStamped pose{};
         pose.pose.orientation = tf2::toMsg(SO2<double>::to_quaternion(m_rotations[i]));
@@ -147,7 +147,7 @@ void Mpc::build_optimization_problem(ceres::Problem& problem)
 
     // Start loop with the second element. For the first element the reference path
     // residual is constant and the velocity residual is undefined.
-    for (std::size_t i = 1; i < m_problem_size; ++i)
+    for (int i = 1; i < m_problem_size; ++i)
     {
         problem.AddParameterBlock(m_rotations[i].data(), 4, rotation2d_parameterization);
         problem.AddParameterBlock(m_positions[i].data(), 2);
@@ -197,7 +197,7 @@ void Mpc::generate_initial_values()
     const auto twist = m_twists[0];
     const auto dt = m_options.time_step;
     auto prev_pose = Pose2D<double>{m_rotations[0], m_positions[0]};
-    for (std::size_t i = 1; i < m_problem_size; ++i)
+    for (int i = 1; i < m_problem_size; ++i)
     {
         const auto& next_pose = KinematicModel::propagate(prev_pose, twist, dt);
         m_positions.push_back(next_pose.position);
