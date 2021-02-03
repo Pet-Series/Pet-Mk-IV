@@ -13,6 +13,7 @@
 
 #include <ceres/ceres.h>
 
+#include "pet_mk_iv_control/kinematic_model.h"
 #include "pet_mk_iv_control/parameterization2d.h"
 
 namespace pet::control
@@ -36,7 +37,7 @@ public:
     };
 
 public:
-    Mpc(const Options& options);
+    Mpc(const KinematicModel& kinematic_model, const Options& options);
 
     void set_reference_path(const nav_msgs::Path& reference_path);
 
@@ -55,6 +56,7 @@ private:
     void generate_initial_values();
 
 private:
+    KinematicModel m_kinematic_model;
     Options m_options{};
 
     std::vector<Pose2D<double>::RotationType> m_rotations{};

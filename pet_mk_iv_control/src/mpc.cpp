@@ -26,8 +26,9 @@
 namespace pet::control
 {
 
-Mpc::Mpc(const Options& options)
-    : m_options(options)
+Mpc::Mpc(const KinematicModel& kinematic_model, const Options& options)
+    : m_kinematic_model(kinematic_model)
+    , m_options(options)
     , m_rotations(1, Eigen::Matrix2d::Identity())
     , m_positions(1, Eigen::Vector2d::Zero())
     , m_twists(1, Eigen::Vector3d::Zero())

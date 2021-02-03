@@ -1,1 +1,6 @@
-max_penalty_iterations: 6
+mpc:
+  max_penalty_iterations: 6
+
+kinematics:
+  max_linear_speed: 0.5
+  max_angular_speed: 4.0

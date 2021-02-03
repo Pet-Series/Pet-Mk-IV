@@ -9,6 +9,7 @@
 #include <ugl_ros/convert_tf2.h>
 
 #include "pet_mk_iv_control/mpc.h"
+#include "pet_mk_iv_control/kinematic_model.h"
 
 namespace
 {
@@ -24,6 +25,14 @@ pet::control::Mpc::Options load_mpc_parameters(ros::NodeHandle& nh)
     options.reference_loss_factor   = nh.param("mpc/reference_loss_factor", options.reference_loss_factor);
     options.velocity_loss_factor    = nh.param("mpc/velocity_loss_factor", options.velocity_loss_factor);
     return options;
+}
+
+pet::control::KinematicModel::Parameters load_kinematic_parameters(ros::NodeHandle& nh)
+{
+    pet::control::KinematicModel::Parameters params{};
+    params.max_linear_speed         = nh.param("kinematics/max_linear_speed", params.max_linear_speed);
+    params.max_angular_speed        = nh.param("kinematics/max_angular_speed", params.max_angular_speed);
+    return params;
 }
 
 } // namespace
@@ -60,8 +69,9 @@ int main(int argc, char** argv)
     ros::NodeHandle nh("");
     ros::NodeHandle nh_private("~");
 
+    auto model = pet::control::KinematicModel{load_kinematic_parameters(nh_private)};
     auto options = load_mpc_parameters(nh_private);
-    pet::control::Mpc solver{options};
+    pet::control::Mpc solver{model, options};
     solver.set_reference_path(reference_path);
     solver.set_initial_pose(initial_pose);
     solver.solve();
