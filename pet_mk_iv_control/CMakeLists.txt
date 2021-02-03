@@ -70,7 +70,6 @@ target_link_libraries(mpc
     Eigen3::Eigen
     Ceres::ceres
     ugl::math
-    # ugl::lie_group
     ${catkin_LIBRARIES}
   PRIVATE
     project_options

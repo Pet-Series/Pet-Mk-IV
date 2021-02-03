@@ -1,7 +1,6 @@
 #ifndef PET_CONTROL_MPC_H
 #define PET_CONTROL_MPC_H
 
-#include <array>
 #include <utility>
 #include <vector>
 

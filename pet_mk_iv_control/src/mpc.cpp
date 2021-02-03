@@ -15,7 +15,6 @@
 #include <nav_msgs/Path.h>
 
 #include <ugl/math/quaternion.h>
-#include <ugl/lie_group/pose.h>
 
 #include <ugl_ros/convert_tf2.h>
 #include <ugl_ros/convert_ugl.h>
@@ -101,7 +100,8 @@ void Mpc::solve()
     {
         m_constraint_penalty_coefficient_handle.Reset(new ceres::ScaledLoss{nullptr, penalty_coefficient, ceres::TAKE_OWNERSHIP}, ceres::TAKE_OWNERSHIP);
         ceres::Solve(solver_options, &problem, &summary);
-        std::cout << summary.FullReport() << "\n";
+        // std::cout << summary.FullReport() << "\n";
+        ROS_INFO("%s", summary.BriefReport().c_str());
 
         /// TODO: If constraint_residual[i] < kMaxConstraintCost then break here.
 
