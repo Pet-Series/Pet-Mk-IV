@@ -55,6 +55,8 @@ private:
     /// @brief Generate initial values from initial pose and twist assuming no change in twist over time.
     void generate_initial_values();
 
+    bool is_feasible(const ceres::Problem& problem) const;
+
 private:
     KinematicModel m_kinematic_model;
     Options m_options{};
@@ -72,6 +74,8 @@ private:
     ceres::ScaledLoss m_reference_loss_function;
     ceres::ScaledLoss m_velocity_loss_function;
     ceres::LossFunctionWrapper m_constraint_penalty_coefficient_handle;
+
+    std::vector<ceres::ResidualBlockId> m_kinematic_constraint_residuals{};
 };
 
 } // namespace pet::control

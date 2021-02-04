@@ -99,14 +99,17 @@ void Mpc::solve()
     double penalty_coefficient = 1;
     while (iteration < m_options.max_penalty_iterations)
     {
+        ++iteration;
         m_constraint_penalty_coefficient_handle.Reset(new ceres::ScaledLoss{nullptr, penalty_coefficient, ceres::TAKE_OWNERSHIP}, ceres::TAKE_OWNERSHIP);
         ceres::Solve(solver_options, &problem, &summary);
         // std::cout << summary.FullReport() << "\n";
         ROS_INFO("%s", summary.BriefReport().c_str());
 
-        /// TODO: If constraint_residual[i] < kMaxConstraintCost then break here.
+        if (is_feasible(problem)) {
+            ROS_INFO("Feasible solution found on iteration %i.", iteration);
+            break;
+        }
 
-        ++iteration;
         penalty_coefficient *= m_options.penalty_increase_factor;
     }
     if (iteration >= m_options.max_penalty_iterations) {
@@ -146,6 +149,8 @@ void Mpc::build_optimization_problem(ceres::Problem& problem)
     problem.SetParameterBlockConstant(m_positions[0].data());
     problem.SetParameterBlockConstant(m_twists[0].data());
 
+    m_kinematic_constraint_residuals.clear();
+
     // Start loop with the second element. For the first element the reference path
     // residual is constant and the velocity residual is undefined.
     for (int i = 1; i < m_problem_size; ++i)
@@ -181,7 +186,7 @@ void Mpc::build_optimization_problem(ceres::Problem& problem)
         );
 
         // Residual block for kinematic constraint penalty.
-        problem.AddResidualBlock(
+        auto residual_id = problem.AddResidualBlock(
                 KinematicConstraintPenaltyResidual::Create(m_options.time_step),
                 &m_constraint_penalty_coefficient_handle,
                 m_rotations[i].data(),
@@ -190,6 +195,7 @@ void Mpc::build_optimization_problem(ceres::Problem& problem)
                 m_positions[i-1].data(),
                 m_twists[i-1].data()
         );
+        m_kinematic_constraint_residuals.push_back(residual_id);
     }
 }
 
@@ -206,6 +212,20 @@ void Mpc::generate_initial_values()
         m_twists.push_back(twist);
         prev_pose = next_pose;
     }
+}
+
+bool Mpc::is_feasible(const ceres::Problem& problem) const
+{
+    for (const auto& id: m_kinematic_constraint_residuals)
+    {
+        double cost;
+        [[maybe_unused]] bool success = problem.EvaluateResidualBlock(id, false, &cost, nullptr, nullptr);
+        ROS_ASSERT_MSG(success, "Could not evaluate feasibility of kinematic constraint residual block!");
+        if (cost > m_options.max_constraint_cost) {
+            return false;
+        }
+    }
+    return true;
 }
 
 } // namespace pet::control
