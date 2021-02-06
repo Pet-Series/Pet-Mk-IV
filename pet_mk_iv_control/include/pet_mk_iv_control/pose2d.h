@@ -52,6 +52,11 @@ struct Pose2D
         tau << phi, rho;
         return tau;
     }
+
+    static Pose2D<Scalar> Identity()
+    {
+        return {Pose2D<Scalar>::RotationType::Identity(), Pose2D<Scalar>::PointType::Zero()};
+    }
 };
 
 template<typename Scalar>
