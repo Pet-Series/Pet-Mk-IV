@@ -61,15 +61,14 @@ private:
     KinematicModel m_kinematic_model;
     Options m_options{};
 
-    std::vector<Pose2D<double>::RotationType> m_rotations{};
-    std::vector<Pose2D<double>::PointType> m_positions{};
+    Pose2D<double> m_initial_pose = Pose2D<double>::Identity();
+    Pose2D<double>::TangentType m_initial_twist = Pose2D<double>::TangentType::Zero();
 
-    std::vector<Pose2D<double>::RotationType> m_reference_rotations{};
-    std::vector<Pose2D<double>::PointType> m_reference_positions{};
-
+    std::vector<Pose2D<double>> m_optimal_path{};
+    std::vector<Pose2D<double>> m_reference_path{};
     std::vector<Pose2D<double>::TangentType> m_twists{};
 
-    bool m_reference_path_set = false;
+    bool m_reference_path_is_set = false;
     int m_problem_size = 0;
     ceres::ScaledLoss m_reference_loss_function;
     ceres::ScaledLoss m_velocity_loss_function;
