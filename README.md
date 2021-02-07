@@ -1,39 +1,43 @@
 <h1 align="center">Welcome to the Pet-Mk-IV repository👋</h1>
 
- https://github.com/kullken/Pet-Mk-IV.git/
-
-
+# Source code to our Pet series micro robots #
+The main objective/scope for this repository is to control the part of the software (and parameter settings) that is unique for this Pet Mark IV (four) robot.
+- Simplification: As MCU we mainly using Arduino compatible hardware, like Arduino UNO and Arduino NANO. 
+- Standardisation: As system integration tool (Middle ware) we use ROS. Each MCU act as an ROS-serial device. 
+- Modularisation: We have tried to make the code as generic/common as possible. 
 
 # Prerequisites
-### Developing Environment
- - [X] Visual Studio Code@ Local PC
-   - https://code.visualstudio.com/
- - [X] Arduino IDE @ RPi target system.
-   - https://www.arduino.cc/en/Main/Software
- - [X] Arduino IDE @ RPi - Library: ROS-serial
-   https://www.arduinolibraries.info/libraries/rosserial-arduino-library
- - [X] Arduino IDE @ RPi - Library: New-Ping 
-   - https://bitbucket.org/teckel12/arduino-new-ping
-   - https://github.com/eliteio/Arduino_New_Ping
- - [X] Python 2 (using various ROS-API)
- - [X] cmake for building ROS via catkin/cmake
- - [X] cmake for building Arduino firmware/sketches
- - [X] This Git-repo.
- 
-### Target Environment: Main ECU/MCU (Single Board Computer, SBC) 
+### Developing workstation (PC)
+ - [X] Visual Studio Code@ Local PC: https://code.visualstudio.com/
+ - [X] SSH authentication vs. ECU/SBC
+   
+
+### Target Environment: Main ECU/SBC 
  - [x] Raspberry PI model 3
        Raspbian Buster (Debian Buster 10)
  - [X] ROS Melodic Ubuntu Bionic (but we compile from source anyway on the RPi/Raspbian).
+ - [X] cmake for building ROS via catkin/cmake
+ - [X] cmake for building Arduino firmware/sketches
+ - [X] Python 2 (using various ROS-API)
  - [X] Arduino IDE (Not for the IDE itself... mainly for get/manage IDE-libraries).
+ - [X] Arduino Library:
+    - **ROS-serial** Library for Arduino: https://www.arduinolibraries.info/libraries/rosserial-arduino-library
+    - **Servo** Library for Arduino:	https://github.com/arduino-libraries/Servo
+    - **IRremote** Library for Arduino:	https://github.com/Arduino-IRremote/Arduino-IRremote
+    - **NewPing** Ultrasonic sensor Library for Arduino:	https://bitbucket.org/teckel12/arduino-new-ping/wiki/
  - [X] cmake upload firmware from RPi > Arduino system  (No use of Arduino IDE)
+ - [X] SSH authentication vs. Github repositories
+ - [X] Clone of Git-repo https://github.com/kullken/Pet-Mk-IV  <- This repo!
+ - [X] Clone of Git-repo https://github.com/kullken/pet_mcu_base
  
-### Target Environment: Sub-ECU #1
+### Target Environment: Sub-ECU/MCU #1
  - [X] Arduino UNO R3 via serial/USB-cable -> RPi
  - [X] Firmware <- https://github.com/kullken/pet_mcu_base
 
-### Target Environment: Sub-ECU #2
+### Target Environment: Sub-ECU/MCU #2
  - [X] Arduino Nano via serial/USB-cable -> RPi
  - [X] Firmware <- https://github.com/kullken/pet_mcu_base
+
  
 ### Installing
      ...
@@ -50,9 +54,9 @@
   - [x] **Sensor:** 3x CTRT5000 Infrared sensors for tracing
   - [x] **Engine controller:** L298N Dual H Bridge Step/DC-motor controller
 - [X] **Auxiliary-ECU #2:** Arduino Nano
-  - [X] **Power by:** Chassis battery pack
-  - [ ] **Sensor:** 1x KY-022 (1838T) Infrared(IR) Receiver 
-  - [ ] **Flash light** Flash/Strobe light
+  - [x] **Power by:** Chassis battery pack
+  - [x] **Sensor:** 1x KY-022(1838T) Infrared(IR) receiver 
+  - [x] **Flash light** Flash/Strobe light
 - [X] **Chassis: Zumo with belt drive**
   - [x] **Power source:** 6x AAA-batteries (4+2 config => 6*1,2V=7,2V)
   - [X] **Engines:** 2x Electrical engines (Controlled via "L298N Dual H Bridge"@Sub-ECU #1: Arduino UNO R3)
@@ -64,16 +68,20 @@
 # External references
 - ROS.org
   - http://wiki.ros.org/
-- GitHub cheat sheets
-  - https://guides.github.com/features/mastering-markdown/
-  - https://help.github.com/en/github/writing-on-github/basic-writing-and-formatting-syntax
-  - https://www.webfx.com/tools/emoji-cheat-sheet/
+  - http://wiki.ros.org/rosserial
 
 # Glossary
 **Buzzword** | **My interpretation**
----------| -----------------
+---------|-----------------
 **ECU**	| [Electronic Control Unit](https://en.wikipedia.org/wiki/Electronic_control_unit)
 **IDE** | [Integrated_Development_Environment](https://en.wikipedia.org/wiki/Integrated_development_environment)
 **MCU** | [Micro Control Unit](https://en.wikipedia.org/wiki/Microcontroller)
 **Pet** | Not an abbreviation. Simply names of our virtual pets (aka. Robots)
+**ROS** | [Robot Operating System](https://en.wikipedia.org/wiki/Robot_Operating_System)
+**ROSserial** | [core of rosserial for ROS](https://github.com/ros-drivers/rosserial)
 **SBC** | [Single Board Computer](https://en.wikipedia.org/wiki/Single-board_computer)
+
+For my own convenience - Some GitHub cheat sheets
+  - https://guides.github.com/features/mastering-markdown/
+  - https://help.github.com/en/github/writing-on-github/basic-writing-and-formatting-syntax
+  - https://www.webfx.com/tools/emoji-cheat-sheet/
