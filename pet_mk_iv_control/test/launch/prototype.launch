@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<launch>
+    <node pkg="pet_mk_iv_control" type="prototype_test" name="controller" output="screen">
+        <rosparam command="load" file="$(find pet_mk_iv_control)/config/mpc_parameters.yaml"/>
+    </node>
+</launch>
