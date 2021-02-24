@@ -14,7 +14,7 @@
 #include <ceres/ceres.h>
 
 #include "pet_mk_iv_control/kinematic_model.h"
-#include "pet_mk_iv_control/parameterization2d.h"
+#include "pet_mk_iv_control/pose2d.h"
 
 namespace pet::control
 {
@@ -39,15 +39,18 @@ public:
 public:
     Mpc(const KinematicModel& kinematic_model, const Options& options);
 
-    void set_reference_path(const nav_msgs::Path& reference_path);
+    void set_reference_path(const nav_msgs::Path& reference_path_ros);
+    void set_reference_path(const std::vector<Pose2D<double>>& reference_path);
 
     void set_initial_pose(const geometry_msgs::PoseStamped& initial_pose);
+    void set_initial_pose(const Pose2D<double>& initial_pose);
 
     void set_initial_twist(const geometry_msgs::TwistStamped& initial_twist);
+    void set_initial_twist(const Pose2D<double>::TangentType& initial_twist);
+
+    const std::vector<Pose2D<double>>& get_optimal_path() const;
 
     void solve();
-
-    nav_msgs::Path get_optimal_path() const;
 
 private:
     void build_optimization_problem(ceres::Problem& problem);

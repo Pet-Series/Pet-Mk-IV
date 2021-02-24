@@ -20,7 +20,7 @@
 #include <ugl_ros/convert_ugl.h>
 
 #include "pet_mk_iv_control/kinematic_model.h"
-#include "pet_mk_iv_control/parameterization2d.h"
+#include "pet_mk_iv_control/pose2d.h"
 #include "pet_mk_iv_control/residuals.h"
 
 namespace pet::control
@@ -35,17 +35,13 @@ Mpc::Mpc(const KinematicModel& kinematic_model, const Options& options)
 {
 }
 
-void Mpc::set_reference_path(const nav_msgs::Path& reference_path)
+void Mpc::set_reference_path(const nav_msgs::Path& reference_path_ros)
 {
-    ROS_ASSERT(reference_path.poses.size() > 0);
-    // m_problem_size = std::min<int>(reference_path.poses.size(), m_options.max_num_poses);
-    m_problem_size = reference_path.poses.size();
-    m_reference_path.clear();
-    m_reference_path.reserve(m_problem_size);
-
     /// TODO: Transform reference_path into correct tf frame.
+    std::vector<Pose2D<double>> reference_path{};
+    m_reference_path.reserve(reference_path_ros.poses.size());
     std::transform(
-        std::cbegin(reference_path.poses), std::cend(reference_path.poses),
+        std::cbegin(reference_path_ros.poses), std::cend(reference_path_ros.poses),
         std::back_insert_iterator(m_reference_path),
         [](const auto& in_pose) {
             Pose2D<double> out_pose;
@@ -55,22 +51,50 @@ void Mpc::set_reference_path(const nav_msgs::Path& reference_path)
             return out_pose;
         }
     );
+    set_reference_path(reference_path);
+}
+
+void Mpc::set_reference_path(const std::vector<Pose2D<double>>& reference_path)
+{
+    ROS_ASSERT(reference_path.size() > 0);
+    // m_problem_size = std::min<int>(reference_path.size(), m_options.max_num_poses);
+    m_problem_size = reference_path.size();
+
+    /// TODO: Interpolate between poses in reference_path so that m_reference_path have desired timestep and size.
+    m_reference_path = reference_path;
     m_reference_path_is_set = true;
 }
 
-void Mpc::set_initial_pose(const geometry_msgs::PoseStamped& initial_pose)
+void Mpc::set_initial_pose(const geometry_msgs::PoseStamped& initial_pose_ros)
 {
     /// TODO: Transform initial_pose into correct tf frame.
-    m_initial_pose.position.x() = initial_pose.pose.position.x;
-    m_initial_pose.position.y() = initial_pose.pose.position.y;
-    m_initial_pose.rotation = SO2<double>::from_quaternion(tf2::fromMsg(initial_pose.pose.orientation));
+    Pose2D<double> initial_pose{};
+    initial_pose.position.x() = initial_pose_ros.pose.position.x;
+    initial_pose.position.y() = initial_pose_ros.pose.position.y;
+    initial_pose.rotation = SO2<double>::from_quaternion(tf2::fromMsg(initial_pose_ros.pose.orientation));
+    set_initial_pose(initial_pose);
 }
 
-void Mpc::set_initial_twist(const geometry_msgs::TwistStamped& initial_twist)
+void Mpc::set_initial_pose(const Pose2D<double>& initial_pose)
+{
+    m_initial_pose = initial_pose;
+}
+
+void Mpc::set_initial_twist(const geometry_msgs::TwistStamped& initial_twist_ros)
 {
     /// TODO: Transform initial_twist into correct tf frame.
-    const auto& twist = initial_twist.twist;
-    m_initial_twist = Pose2D<double>::TangentType{twist.angular.z, twist.linear.x, twist.linear.y};
+    const auto& twist = initial_twist_ros.twist;
+    set_initial_twist(Pose2D<double>::TangentType{twist.angular.z, twist.linear.x, twist.linear.y});
+}
+
+void Mpc::set_initial_twist(const Pose2D<double>::TangentType& initial_twist)
+{
+    m_initial_twist = initial_twist;
+}
+
+const std::vector<Pose2D<double>>& Mpc::get_optimal_path() const
+{
+    return m_optimal_path;
 }
 
 void Mpc::solve()
@@ -115,21 +139,6 @@ void Mpc::solve()
 
     // std::cout << summary.BriefReport() << "\n";
     // std::cout << summary.FullReport() << "\n";
-}
-
-nav_msgs::Path Mpc::get_optimal_path() const
-{
-    nav_msgs::Path optimal_path{};
-    optimal_path.header.frame_id = "map";
-    for (int i = 0; i < m_problem_size; ++i)
-    {
-        geometry_msgs::PoseStamped pose{};
-        pose.pose.orientation = tf2::toMsg(SO2<double>::to_quaternion(m_optimal_path[i].rotation));
-        pose.pose.position.x = m_optimal_path[i].position.x();
-        pose.pose.position.y = m_optimal_path[i].position.y();
-        optimal_path.poses.push_back(pose);
-    }
-    return optimal_path;
 }
 
 void Mpc::build_optimization_problem(ceres::Problem& problem)

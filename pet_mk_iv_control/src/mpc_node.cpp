@@ -11,6 +11,8 @@
 #include "pet_mk_iv_control/mpc.h"
 #include "pet_mk_iv_control/kinematic_model.h"
 
+namespace pet::control
+{
 namespace
 {
 
@@ -35,7 +37,24 @@ pet::control::KinematicModel::Parameters load_kinematic_parameters(ros::NodeHand
     return params;
 }
 
+nav_msgs::Path to_path_msg(const std::vector<Pose2D<double>>& path)
+{
+    nav_msgs::Path path_msg{};
+    path_msg.header.frame_id = "map";
+    for (const auto& pose: path)
+    {
+        geometry_msgs::PoseStamped pose_msg{};
+        pose_msg.pose.orientation = tf2::toMsg(SO2<double>::to_quaternion(pose.rotation));
+        pose_msg.pose.position.x = pose.position.x();
+        pose_msg.pose.position.y = pose.position.y();
+        path_msg.poses.push_back(pose_msg);
+    }
+    return path_msg;
+}
+
 } // namespace
+
+} // namespace pet::control
 
 
 int main(int argc, char** argv)
@@ -69,19 +88,19 @@ int main(int argc, char** argv)
     ros::NodeHandle nh("");
     ros::NodeHandle nh_private("~");
 
-    auto model = pet::control::KinematicModel{load_kinematic_parameters(nh_private)};
-    auto options = load_mpc_parameters(nh_private);
+    auto model = pet::control::KinematicModel{pet::control::load_kinematic_parameters(nh_private)};
+    auto options = pet::control::load_mpc_parameters(nh_private);
     pet::control::Mpc solver{model, options};
     solver.set_reference_path(reference_path);
     solver.set_initial_pose(initial_pose);
     solver.solve();
-    const nav_msgs::Path optimal_path = solver.get_optimal_path();
+    const auto optimal_path = solver.get_optimal_path();
 
     ros::Publisher reference_path_publisher = nh.advertise<nav_msgs::Path>("reference_path", 10, true);
     ros::Publisher optimal_path_publisher = nh.advertise<nav_msgs::Path>("optimal_path", 10, true);
 
     reference_path_publisher.publish(reference_path);
-    optimal_path_publisher.publish(optimal_path);
+    optimal_path_publisher.publish(pet::control::to_path_msg(optimal_path));
 
     ros::spin();
 
