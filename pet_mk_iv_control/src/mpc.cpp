@@ -168,6 +168,10 @@ void Mpc::build_optimization_problem(ceres::Problem& problem)
         problem.AddParameterBlock(m_reference_path[i].position.data(), 2);
 
         problem.AddParameterBlock(m_twists[i].data(), 3, twist_diffdrive_parameterization);
+        problem.SetParameterUpperBound(m_twists[i].data(), 0, m_kinematic_model.get_max_angular_speed());
+        problem.SetParameterUpperBound(m_twists[i].data(), 1, m_kinematic_model.get_max_linear_speed());
+        problem.SetParameterLowerBound(m_twists[i].data(), 0, -m_kinematic_model.get_max_angular_speed());
+        problem.SetParameterLowerBound(m_twists[i].data(), 1, -m_kinematic_model.get_max_linear_speed());
 
         // Do not optimize over reference path parameters.
         problem.SetParameterBlockConstant(m_reference_path[i].rotation.data());
