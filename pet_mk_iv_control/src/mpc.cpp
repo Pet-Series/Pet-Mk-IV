@@ -126,7 +126,7 @@ void Mpc::solve()
         // std::cout << summary.FullReport() << "\n";
         ROS_INFO("%s", summary.BriefReport().c_str());
 
-        if (is_feasible(problem)) {
+        if (is_kinematically_feasible(problem)) {
             ROS_INFO("Feasible solution found on iteration %i.", iteration);
             break;
         }
@@ -227,7 +227,7 @@ void Mpc::generate_initial_values()
     }
 }
 
-bool Mpc::is_feasible(const ceres::Problem& problem) const
+bool Mpc::is_kinematically_feasible(const ceres::Problem& problem) const
 {
     for (const auto& id: m_kinematic_constraint_residuals)
     {

@@ -58,7 +58,7 @@ private:
     /// @brief Generate initial values from initial pose and twist assuming no change in twist over time.
     void generate_initial_values();
 
-    bool is_feasible(const ceres::Problem& problem) const;
+    bool is_kinematically_feasible(const ceres::Problem& problem) const;
 
 private:
     KinematicModel m_kinematic_model;
