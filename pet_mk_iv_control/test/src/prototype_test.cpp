@@ -88,6 +88,8 @@ nav_msgs::Path to_path_msg(const std::vector<Pose2D<double>>& path)
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, "mpc_node");
+    ros::NodeHandle nh{""};
+
     google::InitGoogleLogging(argv[0]);
 
     auto initial_pose = pet::control::Pose2D<double>::Identity();
@@ -108,7 +110,6 @@ int main(int argc, char** argv)
     solver.solve();
     const auto optimal_path = solver.get_optimal_path();
 
-    ros::NodeHandle nh("");
     ros::Publisher reference_path_publisher = nh.advertise<nav_msgs::Path>("reference_path", 10, true);
     ros::Publisher optimal_path_publisher = nh.advertise<nav_msgs::Path>("optimal_path", 10, true);
 
