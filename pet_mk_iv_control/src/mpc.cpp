@@ -27,6 +27,11 @@
 namespace pet::control
 {
 
+Mpc::Setpoint::Setpoint(double t_time_stamp, Pose2D<double> t_pose)
+    : time_stamp(t_time_stamp)
+    , pose(t_pose)
+{}
+
 Mpc::Mpc(const KinematicModel& kinematic_model, const Options& options)
     : m_kinematic_model(kinematic_model)
     , m_options(options)
@@ -39,29 +44,40 @@ Mpc::Mpc(const KinematicModel& kinematic_model, const Options& options)
 
 void Mpc::set_reference_path(const nav_msgs::Path& reference_path_ros)
 {
+    ROS_ASSERT_MSG(!reference_path_ros.poses.empty(), "Provided reference path must be non-empty!");
     /// TODO: Transform reference_path into correct tf frame.
-    std::vector<Pose2D<double>> reference_path{};
-    m_reference_path.reserve(reference_path_ros.poses.size());
+    std::vector<Setpoint> reference_path{};
+    reference_path.reserve(reference_path_ros.poses.size());
+    const auto t0 = reference_path_ros.poses.front().header.stamp;
     std::transform(
         std::cbegin(reference_path_ros.poses), std::cend(reference_path_ros.poses),
-        std::back_insert_iterator(m_reference_path),
-        [](const auto& in_pose) {
-            Pose2D<double> out_pose;
-            out_pose.position.x() = in_pose.pose.position.x;
-            out_pose.position.y() = in_pose.pose.position.y;
-            out_pose.rotation = SO2<double>::from_quaternion(tf2::fromMsg(in_pose.pose.orientation));
-            return out_pose;
+        std::back_insert_iterator(reference_path),
+        [&](const geometry_msgs::PoseStamped& in_pose) {
+            Setpoint setpoint;
+            setpoint.time_stamp = (in_pose.header.stamp - t0).toSec();
+            setpoint.pose.position.x() = in_pose.pose.position.x;
+            setpoint.pose.position.y() = in_pose.pose.position.y;
+            setpoint.pose.rotation = SO2<double>::from_quaternion(tf2::fromMsg(in_pose.pose.orientation));
+            return setpoint;
         }
     );
     set_reference_path(reference_path);
 }
 
-void Mpc::set_reference_path(const std::vector<Pose2D<double>>& reference_path)
+void Mpc::set_reference_path(const std::vector<Setpoint>& reference_path)
 {
     ROS_ASSERT_MSG(!reference_path.empty(), "Provided reference path must be non-empty!");
 
     /// TODO: Interpolate between poses in reference_path so that m_reference_path have desired timestep and size.
-    m_reference_path = reference_path;
+    m_reference_path.clear();
+    m_reference_path.reserve(m_problem_size);
+    std::transform(
+        std::cbegin(reference_path), std::cend(reference_path),
+        std::back_insert_iterator(m_reference_path),
+        [](const Setpoint& setpoint) {
+            return setpoint.pose;
+        }
+    );
     m_reference_path_is_set = true;
 }
 
@@ -92,9 +108,16 @@ void Mpc::set_initial_twist(const Pose2D<double>::TangentType& initial_twist)
     m_initial_twist = initial_twist;
 }
 
-const std::vector<Pose2D<double>>& Mpc::get_optimal_path() const
+std::vector<Mpc::Setpoint> Mpc::get_optimal_path() const
 {
-    return m_optimal_path;
+    /// TODO: Assert solution is found.
+    std::vector<Setpoint> setpoints{};
+    setpoints.reserve(m_problem_size);
+    for (int i = 0; i < m_problem_size; ++i)
+    {
+        setpoints.emplace_back(m_options.time_step*i, m_optimal_path.at(i));
+    }
+    return setpoints;
 }
 
 void Mpc::solve()

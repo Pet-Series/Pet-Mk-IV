@@ -37,16 +37,17 @@ KinematicModel::Parameters load_kinematic_parameters(ros::NodeHandle& nh)
     return params;
 }
 
-nav_msgs::Path to_path_msg(const std::vector<Pose2D<double>>& path)
+nav_msgs::Path to_path_msg(const std::vector<Mpc::Setpoint>& path)
 {
     nav_msgs::Path path_msg{};
     path_msg.header.frame_id = "map";
-    for (const auto& pose: path)
+    for (const auto& setpoint: path)
     {
         geometry_msgs::PoseStamped pose_msg{};
-        pose_msg.pose.orientation = tf2::toMsg(SO2<double>::to_quaternion(pose.rotation));
-        pose_msg.pose.position.x = pose.position.x();
-        pose_msg.pose.position.y = pose.position.y();
+        pose_msg.header.stamp = ros::Time(setpoint.time_stamp);
+        pose_msg.pose.orientation = tf2::toMsg(SO2<double>::to_quaternion(setpoint.pose.rotation));
+        pose_msg.pose.position.x = setpoint.pose.position.x();
+        pose_msg.pose.position.y = setpoint.pose.position.y();
         path_msg.poses.push_back(pose_msg);
     }
     return path_msg;

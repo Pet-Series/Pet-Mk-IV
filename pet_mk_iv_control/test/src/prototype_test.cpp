@@ -19,7 +19,7 @@ Mpc create_mpc_solver()
     return Mpc{model, options};
 }
 
-std::vector<Pose2D<double>> create_reference_path()
+std::vector<Mpc::Setpoint> create_reference_path()
 {
     const Pose2D<double> initial_pose = Pose2D<double>::Identity();
 
@@ -28,13 +28,13 @@ std::vector<Pose2D<double>> create_reference_path()
     const double y_vel   = 0.0;
     const Pose2D<double>::TangentType twist{yaw_vel, x_vel, y_vel};
 
-    std::vector<Pose2D<double>> reference_path;
-    reference_path.push_back(initial_pose);
-    for (int i = 0; i < 100; ++i)
+    std::vector<Mpc::Setpoint> reference_path;
+    reference_path.emplace_back(0.0, initial_pose);
+    for (int i = 1; i <= 100; ++i)
     {
         constexpr double dt = 0.05;
-        const auto pose = KinematicModel::propagate(reference_path.back(), twist, dt);
-        reference_path.push_back(pose);
+        const auto pose = KinematicModel::propagate(reference_path.back().pose, twist, dt);
+        reference_path.emplace_back(dt*i, pose);
     }
 
     return reference_path;

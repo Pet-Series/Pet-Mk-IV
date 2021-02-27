@@ -35,11 +35,20 @@ public:
         double velocity_loss_factor = 1.0;
     };
 
+    struct Setpoint
+    {
+        double time_stamp;
+        Pose2D<double> pose;
+
+        Setpoint() = default;
+        Setpoint(double t_time_stamp, Pose2D<double> t_pose);
+    };
+
 public:
     Mpc(const KinematicModel& kinematic_model, const Options& options);
 
     void set_reference_path(const nav_msgs::Path& reference_path_ros);
-    void set_reference_path(const std::vector<Pose2D<double>>& reference_path);
+    void set_reference_path(const std::vector<Setpoint>& reference_path);
 
     void set_initial_pose(const geometry_msgs::PoseStamped& initial_pose);
     void set_initial_pose(const Pose2D<double>& initial_pose);
@@ -47,7 +56,7 @@ public:
     void set_initial_twist(const geometry_msgs::TwistStamped& initial_twist);
     void set_initial_twist(const Pose2D<double>::TangentType& initial_twist);
 
-    const std::vector<Pose2D<double>>& get_optimal_path() const;
+    std::vector<Setpoint> get_optimal_path() const;
 
     void solve();
 

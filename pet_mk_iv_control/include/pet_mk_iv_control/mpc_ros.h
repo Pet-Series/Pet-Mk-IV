@@ -17,7 +17,7 @@ Mpc::Options load_mpc_parameters(ros::NodeHandle& nh);
 
 KinematicModel::Parameters load_kinematic_parameters(ros::NodeHandle& nh);
 
-nav_msgs::Path to_path_msg(const std::vector<Pose2D<double>>& path);
+nav_msgs::Path to_path_msg(const std::vector<Mpc::Setpoint>& path);
 
 } // namespace pet::control
 
