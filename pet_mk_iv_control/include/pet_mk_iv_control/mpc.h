@@ -24,8 +24,7 @@ class Mpc
 public:
     struct Options
     {
-        int max_num_poses = 100;
-
+        double time_horizon = 2.0;
         double time_step = 0.01;
 
         int max_penalty_iterations = 8;

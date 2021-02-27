@@ -1,6 +1,7 @@
 #include "pet_mk_iv_control/mpc.h"
 
 #include <algorithm>
+#include <cmath>
 #include <utility>
 #include <vector>
 
@@ -33,6 +34,7 @@ Mpc::Mpc(const KinematicModel& kinematic_model, const Options& options)
     , m_velocity_loss_function(nullptr, m_options.velocity_loss_factor, ceres::TAKE_OWNERSHIP)
     , m_constraint_penalty_coefficient_handle(nullptr, ceres::TAKE_OWNERSHIP)
 {
+    m_problem_size = std::ceil(m_options.time_horizon / m_options.time_step);
 }
 
 void Mpc::set_reference_path(const nav_msgs::Path& reference_path_ros)
@@ -56,9 +58,7 @@ void Mpc::set_reference_path(const nav_msgs::Path& reference_path_ros)
 
 void Mpc::set_reference_path(const std::vector<Pose2D<double>>& reference_path)
 {
-    ROS_ASSERT(reference_path.size() > 0);
-    // m_problem_size = std::min<int>(reference_path.size(), m_options.max_num_poses);
-    m_problem_size = reference_path.size();
+    ROS_ASSERT_MSG(!reference_path.empty(), "Provided reference path must be non-empty!");
 
     /// TODO: Interpolate between poses in reference_path so that m_reference_path have desired timestep and size.
     m_reference_path = reference_path;

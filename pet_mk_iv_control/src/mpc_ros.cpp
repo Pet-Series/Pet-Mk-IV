@@ -19,7 +19,7 @@ namespace pet::control
 Mpc::Options load_mpc_parameters(ros::NodeHandle& nh)
 {
     Mpc::Options options{};
-    options.max_num_poses           = nh.param("mpc/max_num_poses", options.max_num_poses);
+    options.time_horizon           = nh.param("mpc/time_horizon", options.time_horizon);
     options.time_step               = nh.param("mpc/time_step", options.time_step);
     options.max_penalty_iterations  = nh.param("mpc/max_penalty_iterations", options.max_penalty_iterations);
     options.penalty_increase_factor = nh.param("mpc/penalty_increase_factor", options.penalty_increase_factor);
