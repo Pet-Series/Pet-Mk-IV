@@ -76,12 +76,19 @@ target_link_libraries(mpc
     project_warnings
 )
 
-add_executable(mpc_node
+add_library(mpc_ros
   src/mpc_node.cpp
+  src/mpc_ros.cpp
 )
-target_link_libraries(mpc_node
+target_include_directories(mpc_ros
+  PUBLIC
+    include
+    ${catkin_INCLUDE_DIRS}
+)
+target_link_libraries(mpc_ros
   PUBLIC
     mpc
+    ${catkin_LIBRARIES}
   PRIVATE
     project_options
     project_warnings

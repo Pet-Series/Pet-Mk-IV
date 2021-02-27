@@ -10,6 +10,7 @@ target_include_directories(prototype_test
 target_link_libraries(prototype_test
   PUBLIC
     mpc
+    mpc_ros
     ugl::math
     ${catkin_LIBRARIES}
   PRIVATE
