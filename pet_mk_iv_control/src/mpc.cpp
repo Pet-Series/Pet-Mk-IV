@@ -9,13 +9,9 @@
 
 #include <ceres/ceres.h>
 
-#include <geometry_msgs/Pose.h>
 #include <geometry_msgs/PoseStamped.h>
-#include <geometry_msgs/Twist.h>
 #include <geometry_msgs/TwistStamped.h>
 #include <nav_msgs/Path.h>
-
-#include <ugl/math/quaternion.h>
 
 #include <ugl_ros/convert_tf2.h>
 #include <ugl_ros/convert_ugl.h>
