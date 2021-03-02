@@ -31,11 +31,11 @@ Mpc::Setpoint::Setpoint(double t_time_stamp, Pose2D<double> t_pose)
 Mpc::Mpc(const KinematicModel& kinematic_model, const Options& options)
     : m_kinematic_model(kinematic_model)
     , m_options(options)
+    , m_problem_size(std::ceil(m_options.time_horizon / m_options.time_step))
     , m_reference_loss_function(nullptr, m_options.reference_loss_factor, ceres::TAKE_OWNERSHIP)
     , m_velocity_loss_function(nullptr, m_options.velocity_loss_factor, ceres::TAKE_OWNERSHIP)
     , m_constraint_penalty_coefficient_handle(nullptr, ceres::TAKE_OWNERSHIP)
 {
-    m_problem_size = std::ceil(m_options.time_horizon / m_options.time_step);
 }
 
 void Mpc::set_reference_path(const nav_msgs::Path& reference_path_ros)

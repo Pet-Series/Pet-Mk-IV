@@ -77,7 +77,7 @@ private:
     std::vector<Pose2D<double>::TangentType> m_twists{};
 
     bool m_reference_path_is_set = false;
-    int m_problem_size = 0;
+    int m_problem_size;
     ceres::ScaledLoss m_reference_loss_function;
     ceres::ScaledLoss m_velocity_loss_function;
     ceres::LossFunctionWrapper m_constraint_penalty_coefficient_handle;
