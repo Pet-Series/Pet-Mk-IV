@@ -7,6 +7,7 @@
 #include "pet_mk_iv_control/mpc_ros.h"
 #include "pet_mk_iv_control/kinematic_model.h"
 #include "pet_mk_iv_control/pose2d.h"
+#include "pet_mk_iv_control/setpoint.h"
 
 namespace pet::control
 {
@@ -19,7 +20,7 @@ Mpc create_mpc_solver()
     return Mpc{model, options};
 }
 
-std::vector<Mpc::Setpoint> create_reference_path()
+std::vector<Setpoint> create_reference_path()
 {
     const Pose2D<double> initial_pose = Pose2D<double>::Identity();
 
@@ -28,7 +29,7 @@ std::vector<Mpc::Setpoint> create_reference_path()
     const double y_vel   = 0.0;
     const Pose2D<double>::TangentType twist{yaw_vel, x_vel, y_vel};
 
-    std::vector<Mpc::Setpoint> reference_path;
+    std::vector<Setpoint> reference_path;
     reference_path.emplace_back(0.0, initial_pose);
     for (int i = 1; i <= 100; ++i)
     {

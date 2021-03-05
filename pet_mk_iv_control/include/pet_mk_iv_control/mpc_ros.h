@@ -9,6 +9,7 @@
 #include "pet_mk_iv_control/mpc.h"
 #include "pet_mk_iv_control/kinematic_model.h"
 #include "pet_mk_iv_control/pose2d.h"
+#include "pet_mk_iv_control/setpoint.h"
 
 namespace pet::control
 {
@@ -17,7 +18,7 @@ Mpc::Options load_mpc_parameters(ros::NodeHandle& nh);
 
 KinematicModel::Parameters load_kinematic_parameters(ros::NodeHandle& nh);
 
-nav_msgs::Path to_path_msg(const std::vector<Mpc::Setpoint>& path);
+nav_msgs::Path to_path_msg(const std::vector<Setpoint>& path);
 
 } // namespace pet::control
 

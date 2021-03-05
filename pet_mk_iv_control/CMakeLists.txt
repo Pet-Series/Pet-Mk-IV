@@ -57,6 +57,7 @@ add_library(mpc SHARED
   src/pose2d.cpp
   src/residuals.cpp
   src/rotation2d.cpp
+  src/setpoint.cpp
 )
 
 target_include_directories(mpc

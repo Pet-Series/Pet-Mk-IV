@@ -19,14 +19,10 @@
 #include "pet_mk_iv_control/kinematic_model.h"
 #include "pet_mk_iv_control/pose2d.h"
 #include "pet_mk_iv_control/residuals.h"
+#include "pet_mk_iv_control/setpoint.h"
 
 namespace pet::control
 {
-
-Mpc::Setpoint::Setpoint(double t_time_stamp, Pose2D<double> t_pose)
-    : time_stamp(t_time_stamp)
-    , pose(t_pose)
-{}
 
 Mpc::Mpc(const KinematicModel& kinematic_model, const Options& options)
     : m_kinematic_model(kinematic_model)
@@ -104,7 +100,7 @@ void Mpc::set_initial_twist(const Pose2D<double>::TangentType& initial_twist)
     m_initial_twist = initial_twist;
 }
 
-std::vector<Mpc::Setpoint> Mpc::get_optimal_path() const
+std::vector<Setpoint> Mpc::get_optimal_path() const
 {
     /// TODO: Assert solution is found.
     std::vector<Setpoint> setpoints{};

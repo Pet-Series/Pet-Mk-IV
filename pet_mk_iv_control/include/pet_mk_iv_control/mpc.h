@@ -12,6 +12,7 @@
 
 #include "pet_mk_iv_control/kinematic_model.h"
 #include "pet_mk_iv_control/pose2d.h"
+#include "pet_mk_iv_control/setpoint.h"
 
 namespace pet::control
 {
@@ -30,15 +31,6 @@ public:
 
         double reference_loss_factor = 20.0;
         double velocity_loss_factor = 1.0;
-    };
-
-    struct Setpoint
-    {
-        double time_stamp;
-        Pose2D<double> pose;
-
-        Setpoint() = default;
-        Setpoint(double t_time_stamp, Pose2D<double> t_pose);
     };
 
 public:
