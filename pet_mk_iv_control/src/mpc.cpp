@@ -69,11 +69,7 @@ std::vector<Setpoint> Mpc::get_optimal_path() const
 
 void Mpc::solve()
 {
-    if (!m_reference_path_is_set) {
-        constexpr auto error_text = "Reference path must be set before calling Mpc::solve()!";
-        ROS_ERROR(error_text);
-        throw error_text;
-    }
+    ROS_ASSERT_MSG(m_reference_path_is_set, "Reference path must be set before calling Mpc::solve()!");
 
     generate_initial_values();
 
