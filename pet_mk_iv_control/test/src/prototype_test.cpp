@@ -59,7 +59,7 @@ int main(int argc, char** argv)
     const double yaw_vel = 0.0;
     const double x_vel   = 0.4;
     const double y_vel   = 0.0;
-    const pet::control::Pose2D<double>::TangentType initial_twist{yaw_vel, x_vel, y_vel};
+    const auto initial_twist = pet::control::Pose2D<double>::TangentType{yaw_vel, x_vel, y_vel};
 
     const auto reference_path = pet::control::create_reference_path();
 
