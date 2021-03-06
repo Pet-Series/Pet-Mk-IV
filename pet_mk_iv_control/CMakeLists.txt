@@ -64,6 +64,7 @@ add_library(mpc SHARED
 target_include_directories(mpc
   PUBLIC
     include
+  PRIVATE
     ${catkin_INCLUDE_DIRS}
 )
 
@@ -72,8 +73,8 @@ target_link_libraries(mpc
     Eigen3::Eigen
     Ceres::ceres
     ugl::math
-    ${catkin_LIBRARIES}
   PRIVATE
+    ${catkin_LIBRARIES}
     project_options
     project_warnings
 )

@@ -9,13 +9,6 @@
 
 #include <ceres/ceres.h>
 
-#include <geometry_msgs/PoseStamped.h>
-#include <geometry_msgs/TwistStamped.h>
-#include <nav_msgs/Path.h>
-
-#include <ugl_ros/convert_tf2.h>
-#include <ugl_ros/convert_ugl.h>
-
 #include "pet_mk_iv_control/kinematic_model.h"
 #include "pet_mk_iv_control/pose2d.h"
 #include "pet_mk_iv_control/residuals.h"
@@ -52,26 +45,9 @@ void Mpc::set_reference_path(const LinearTrajectory& reference_path)
     m_reference_path_is_set = true;
 }
 
-void Mpc::set_initial_pose(const geometry_msgs::PoseStamped& initial_pose_ros)
-{
-    /// TODO: Transform initial_pose into correct tf frame.
-    Pose2D<double> initial_pose{};
-    initial_pose.position.x() = initial_pose_ros.pose.position.x;
-    initial_pose.position.y() = initial_pose_ros.pose.position.y;
-    initial_pose.rotation = SO2<double>::from_quaternion(tf2::fromMsg(initial_pose_ros.pose.orientation));
-    set_initial_pose(initial_pose);
-}
-
 void Mpc::set_initial_pose(const Pose2D<double>& initial_pose)
 {
     m_initial_pose = initial_pose;
-}
-
-void Mpc::set_initial_twist(const geometry_msgs::TwistStamped& initial_twist_ros)
-{
-    /// TODO: Transform initial_twist into correct tf frame.
-    const auto& twist = initial_twist_ros.twist;
-    set_initial_twist(Pose2D<double>::TangentType{twist.angular.z, twist.linear.x, twist.linear.y});
 }
 
 void Mpc::set_initial_twist(const Pose2D<double>::TangentType& initial_twist)

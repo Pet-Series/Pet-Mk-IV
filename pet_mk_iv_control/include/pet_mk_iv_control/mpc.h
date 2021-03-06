@@ -4,10 +4,6 @@
 #include <utility>
 #include <vector>
 
-#include <geometry_msgs/PoseStamped.h>
-#include <geometry_msgs/TwistStamped.h>
-#include <nav_msgs/Path.h>
-
 #include <ceres/ceres.h>
 
 #include "pet_mk_iv_control/kinematic_model.h"
@@ -39,10 +35,8 @@ public:
 
     void set_reference_path(const LinearTrajectory& reference_path);
 
-    void set_initial_pose(const geometry_msgs::PoseStamped& initial_pose);
     void set_initial_pose(const Pose2D<double>& initial_pose);
 
-    void set_initial_twist(const geometry_msgs::TwistStamped& initial_twist);
     void set_initial_twist(const Pose2D<double>::TangentType& initial_twist);
 
     std::vector<Setpoint> get_optimal_path() const;
