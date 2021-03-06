@@ -8,6 +8,7 @@
 #include "pet_mk_iv_control/kinematic_model.h"
 #include "pet_mk_iv_control/pose2d.h"
 #include "pet_mk_iv_control/setpoint.h"
+#include "pet_mk_iv_control/trajectory.h"
 
 namespace pet::control
 {
@@ -20,7 +21,7 @@ Mpc create_mpc_solver()
     return Mpc{model, options};
 }
 
-std::vector<Setpoint> create_reference_path()
+LinearTrajectory create_reference_path()
 {
     const Pose2D<double> initial_pose = Pose2D<double>::Identity();
 
@@ -38,7 +39,7 @@ std::vector<Setpoint> create_reference_path()
         reference_path.emplace_back(dt*i, pose);
     }
 
-    return reference_path;
+    return LinearTrajectory{reference_path};
 }
 
 } // namespace pet::control
@@ -72,7 +73,7 @@ int main(int argc, char** argv)
     ros::Publisher reference_path_publisher = nh.advertise<nav_msgs::Path>("reference_path", 10, true);
     ros::Publisher optimal_path_publisher = nh.advertise<nav_msgs::Path>("optimal_path", 10, true);
 
-    reference_path_publisher.publish(pet::control::to_path_msg(reference_path));
+    reference_path_publisher.publish(pet::control::to_path_msg(reference_path.get_control_points()));
     optimal_path_publisher.publish(pet::control::to_path_msg(optimal_path));
 
     ros::spin();

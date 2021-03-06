@@ -13,6 +13,7 @@
 #include "pet_mk_iv_control/kinematic_model.h"
 #include "pet_mk_iv_control/pose2d.h"
 #include "pet_mk_iv_control/setpoint.h"
+#include "pet_mk_iv_control/trajectory.h"
 
 namespace pet::control
 {
@@ -36,8 +37,7 @@ public:
 public:
     Mpc(const KinematicModel& kinematic_model, const Options& options);
 
-    void set_reference_path(const nav_msgs::Path& reference_path_ros);
-    void set_reference_path(const std::vector<Setpoint>& reference_path);
+    void set_reference_path(const LinearTrajectory& reference_path);
 
     void set_initial_pose(const geometry_msgs::PoseStamped& initial_pose);
     void set_initial_pose(const Pose2D<double>& initial_pose);

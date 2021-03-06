@@ -20,6 +20,7 @@
 #include "pet_mk_iv_control/pose2d.h"
 #include "pet_mk_iv_control/residuals.h"
 #include "pet_mk_iv_control/setpoint.h"
+#include "pet_mk_iv_control/trajectory.h"
 
 namespace pet::control
 {
@@ -34,42 +35,20 @@ Mpc::Mpc(const KinematicModel& kinematic_model, const Options& options)
 {
 }
 
-void Mpc::set_reference_path(const nav_msgs::Path& reference_path_ros)
+void Mpc::set_reference_path(const LinearTrajectory& reference_path)
 {
-    ROS_ASSERT_MSG(!reference_path_ros.poses.empty(), "Provided reference path must be non-empty!");
-    /// TODO: Transform reference_path into correct tf frame.
-    std::vector<Setpoint> reference_path{};
-    reference_path.reserve(reference_path_ros.poses.size());
-    const auto t0 = reference_path_ros.poses.front().header.stamp;
-    std::transform(
-        std::cbegin(reference_path_ros.poses), std::cend(reference_path_ros.poses),
-        std::back_insert_iterator(reference_path),
-        [&](const geometry_msgs::PoseStamped& in_pose) {
-            Setpoint setpoint;
-            setpoint.time_stamp = (in_pose.header.stamp - t0).toSec();
-            setpoint.pose.position.x() = in_pose.pose.position.x;
-            setpoint.pose.position.y() = in_pose.pose.position.y;
-            setpoint.pose.rotation = SO2<double>::from_quaternion(tf2::fromMsg(in_pose.pose.orientation));
-            return setpoint;
-        }
-    );
-    set_reference_path(reference_path);
-}
-
-void Mpc::set_reference_path(const std::vector<Setpoint>& reference_path)
-{
-    ROS_ASSERT_MSG(!reference_path.empty(), "Provided reference path must be non-empty!");
-
-    /// TODO: Interpolate between poses in reference_path so that m_reference_path have desired timestep and size.
     m_reference_path.clear();
     m_reference_path.reserve(m_problem_size);
-    std::transform(
-        std::cbegin(reference_path), std::cend(reference_path),
-        std::back_insert_iterator(m_reference_path),
-        [](const Setpoint& setpoint) {
-            return setpoint.pose;
+    for (int i = 0; i < m_problem_size; ++i)
+    {
+        const double t = i * m_options.time_step;
+        if (t > reference_path.duration()) {
+            // If entire time horizon is not specified, just stay stationary at end pose.
+            m_reference_path.push_back(reference_path.end());
         }
-    );
+        const Pose2D<double> pose = reference_path.pose(t);
+        m_reference_path.push_back(pose);
+    }
     m_reference_path_is_set = true;
 }
 
