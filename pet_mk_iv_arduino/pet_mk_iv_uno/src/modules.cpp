@@ -23,7 +23,18 @@ ConfigResult configure_modules()
         return ConfigResult::TimerRegistrationError;
     }
 
-    static pet::UltrasoundModule ultrasound_module{};
+    constexpr int kSensorCount = 3;
+    constexpr int ultrasound_pins[kSensorCount] = {
+        A0, 
+        A1, 
+        A2
+    };
+    constexpr const char* frame_ids[kSensorCount] = {
+        "dist_sensor_right",
+        "dist_sensor_middle",
+        "dist_sensor_left"
+    };
+    static pet::UltrasoundModule<kSensorCount> ultrasound_module{ultrasound_pins, frame_ids};
     if (!g_timer.register_module(&ultrasound_module)) {
         return ConfigResult::TimerRegistrationError;
     }
