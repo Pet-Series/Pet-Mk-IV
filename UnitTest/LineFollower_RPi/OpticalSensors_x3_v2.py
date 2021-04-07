@@ -5,7 +5,7 @@
 # |Module | Desc GPIO    |      |
 # |       | Header       |Pins  |
 # +-------+--------------+------+
-# |SensorL| GPIO17	 |P1-11 |
+# |SensorL| GPIO17	     |P1-11 |
 # |SensorC| GPIO27       |P1-13 |
 # |SensorR| GPIO22       |P1-15 |
 # |       |              |      |
