@@ -8,7 +8,7 @@
 # |Module | Desc GPIO    |      |
 # |PCB    | Header       |Pins  |
 # +-------+--------------+------+
-# |GROUND | Ground	 |P1-06 |
+# |GROUND | Ground	     |P1-06 |
 # |TRIGGER| GPIO23       |P1-16 |
 # |ECHO   | GPIO24       |P1-18 |
 # |       | Conv. 5V->3V |      |
