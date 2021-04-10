@@ -21,6 +21,7 @@ Test images: A picture to the right (HTML formatted (48x48px))
 
 <hr />
 <br />
+
 Test table with images
    1️⃣ | 2️⃣ | 3️⃣
  -----|------|------
