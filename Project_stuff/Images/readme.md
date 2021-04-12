@@ -1,5 +1,5 @@
 # Photo log book and image library
-- **Photos:**
+## **Photos:**
 <table style="width:100%;background-color:#dddddd">
   <tr>
     <th>Images</th>
@@ -41,7 +41,7 @@
 <hr />
 <br />
 
-- **Drawing/Schemas:**
+## **Drawing/Schemas:**
 <table style="width:100%">
   <tr>
     <th>Images</th> 
@@ -63,7 +63,8 @@
 <hr />
 <br />
  
-Test images: A picture to the right (HTML formatted (48x48px))
+## Test images: 
+### A picture to the right (HTML formatted (48x48px))
 <a href="url"><img src="https://github.com/favicon.ico" align="right" height="48" width="48" ></a>
 <hr />
 <br />
@@ -88,5 +89,5 @@ Test images: A picture to the right (HTML formatted (48x48px))
 <hr />
 <br />
 
-Avatar
+### Avatar
 ![](https://avatars3.githubusercontent.com/u/31112269?v=4&s=200)
