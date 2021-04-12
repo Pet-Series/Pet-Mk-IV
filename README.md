@@ -48,7 +48,7 @@ The main objective/scope for this repository is to control the part of the softw
   - [x] **Display:** LCD 1602 via I2C interface: PC8574T
   - [x] **Sensor:** IMU GY-521/MPU6050(6 axis) via I2C
   - [x] **Sensor:** Camera RPi Camera module 1.0
-  - [ ] **USB Power bank** 1.5A
+  - [X] **USB Power bank** 1.5A
 - [X] **Sub-ECU #1:** Arduino UNO R3
   - [X] **Power by:** Via RPi (1x USB Power bank 1.5A)
   - [x] **Sensor:** 3x HC-SR04 ultrasonic ranging sensor for Obstacle detection
