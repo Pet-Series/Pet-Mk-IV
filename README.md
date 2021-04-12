@@ -48,6 +48,7 @@ The main objective/scope for this repository is to control the part of the softw
   - [x] **Display:** LCD 1602 via I2C interface: PC8574T
   - [x] **Sensor:** IMU GY-521/MPU6050(6 axis) via I2C
   - [x] **Sensor:** Camera RPi Camera module 1.0
+  - [ ] **USB Power bank** 1.5A
 - [X] **Sub-ECU #1:** Arduino UNO R3
   - [X] **Power by:** Via RPi (1x USB Power bank 1.5A)
   - [x] **Sensor:** 3x HC-SR04 ultrasonic ranging sensor for Obstacle detection
@@ -62,28 +63,29 @@ The main objective/scope for this repository is to control the part of the softw
   - [X] **Engines:** 2x Electrical engines (Controlled via "L298N Dual H Bridge"@Sub-ECU #1: Arduino UNO R3)
 
 # Images
-## Photos (photo log book)
-<table style="width:100%">
-  <tr>
-    <td><img src="/Project_stuff/Images/2019-09-09_122618.jpg" width="350px"></td>
-    <td><img src="/Project_stuff/Images/2019-09-09_122725.jpg" width="350px"></td>
- </tr>
-</table>
+ ## Photos (photo log book)
+ * <table style="width:100%">
+   <tr>
+     <td><img src="/Project_stuff/Images/2019-09-09_122618.jpg" width="350px"></td>
+     <td><img src="/Project_stuff/Images/2019-09-09_122725.jpg" width="350px"></td>
+   </tr>
+ </table>
 
 ## Drawing/Schemas:
-<table style="width:100%">
-  <tr>
-    <td><img src="/Project_stuff/Images/Pet-Mk.IV Circuit Diagram - UNO.jpeg" width="350px"><br>Circuit Diagram - UNO</td>
-    <td><img src="/Project_stuff/Images/Pet-Mk.IV Circuit Diagram - NANO.jpeg" width="350px"><br>Circuit Diagram - NANO</td>
-    <td><img src="/Project_stuff/Images/Pet-Mk.IV Circuit Diagram - RPi.jpeg" width="350px"><br>Circuit Diagram - RPi</td>
-  </tr>
-  <tr>
-    <td><img src="/Project_stuff/Images/Pet-Mk.III_CircuitDiagram[PowerDistributionSchema].jpg" width="350px"><br>PowerDistributionSchema</td>
-    <td><img src="/Project_stuff/Images/Pet-Mk.III_CircuitDiagram[PowerDistributionBoard].jpg" width="350px"><br>PowerDistributionBoard</td>
-    <td></td>
-  </tr>
-</table>
-- More images: [./Project_stuff/Images](/Project_stuff/Images/readme.md)
+* <table style="width:100%">
+    <tr>
+     <td><img src="/Project_stuff/Images/Pet-Mk.IV Circuit Diagram - UNO.jpeg" width="350px"><br>Circuit Diagram - UNO</td>
+     <td><img src="/Project_stuff/Images/Pet-Mk.IV Circuit Diagram - NANO.jpeg" width="350px"><br>Circuit Diagram - NANO</td>
+     <td><img src="/Project_stuff/Images/Pet-Mk.IV Circuit Diagram - RPi.jpeg" width="350px"><br>Circuit Diagram - RPi</td>
+    </tr>
+    <tr>
+      <td><img src="/Project_stuff/Images/Pet-Mk.III_CircuitDiagram[PowerDistributionSchema].jpg" width="350px"><br>PowerDistributionSchema</td>
+      <td><img src="/Project_stuff/Images/Pet-Mk.III_CircuitDiagram[PowerDistributionBoard].jpg" width="350px"><br>PowerDistributionBoard</td>
+      <td></td>
+    </tr>
+ </table>
+ 
+* More images: [Project_stuff/Images](/Project_stuff/Images/readme.md)
 
 # External references
 - ROS.org
