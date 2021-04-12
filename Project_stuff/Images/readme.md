@@ -1,3 +1,5 @@
+# Photo log book and image library
+- **Photos:**
 <table style="width:100%;background-color:#dddddd">
   <tr>
     <th>Images</th>
@@ -5,33 +7,33 @@
     <th>admirers and ponder this 🤩</th>
   </tr>
   <tr>
-    <td><img src="/Project_stuff/Images/2019-09-09_121443-01.jpg" width="350px"></td>
-    <td><img src="/Project_stuff/Images/2019-09-09_121443-01.jpg" width="350px"></td>
-    <td><img src="/Project_stuff/Images/2019-09-09_121458-01.jpg" width="350px"></td>
+    <td><img src="./2019-09-09_121443-01.jpg" width="350px"></td>
+    <td><img src="./2019-09-09_121443-01.jpg" width="350px"></td>
+    <td><img src="./2019-09-09_121458-01.jpg" width="350px"></td>
   </tr>
   <tr>
-    <td><img src="/Project_stuff/Images/2019-09-09_121510-01.jpg" width="350px"></td>
-    <td><img src="/Project_stuff/Images/2019-09-09_121606-01.jpg" width="350px"></td>
-    <td><img src="/Project_stuff/Images/2019-09-09_121625-01.jpg" width="350px"></td>
+    <td><img src="./2019-09-09_121510-01.jpg" width="350px"></td>
+    <td><img src="./2019-09-09_121606-01.jpg" width="350px"></td>
+    <td><img src="./2019-09-09_121625-01.jpg" width="350px"></td>
   </tr>
   <tr>
-    <td><img src="/Project_stuff/Images/2019-09-09_121635-01.jpg" width="350px"></td>
-    <td><img src="/Project_stuff/Images/2019-09-09_121702-01.jpg" width="350px"></td>
-    <td><img src="/Project_stuff/Images/2019-09-09_121806-01.jpg" width="350px"></td>
+    <td><img src="./2019-09-09_121635-01.jpg" width="350px"></td>
+    <td><img src="./2019-09-09_121702-01.jpg" width="350px"></td>
+    <td><img src="./2019-09-09_121806-01.jpg" width="350px"></td>
   </tr>
    <tr>
-    <td><img src="/Project_stuff/Images/2019-09-09_122618.jpg" width="350px"></td>
-    <td><img src="/Project_stuff/Images/2019-09-09_122725.jpg" width="350px"></td>
-    <td><img src="/Project_stuff/Images/2019-10-31_183025-01.jpeg" width="350px">
+    <td><img src="./2019-09-09_122618.jpg" width="350px"></td>
+    <td><img src="./2019-09-09_122725.jpg" width="350px"></td>
+    <td><img src="./2019-10-31_183025-01.jpeg" width="350px">
     </td>
   </tr>
   <tr>
-    <td><img src="/Project_stuff/Images/2019-10-31_183025-01.jpeg" width="350px"></td>
-    <td><img src="/Project_stuff/Images/2020-04-05_191520.jpg" width="350px"></td>
-    <td><img src="/Project_stuff/Images/2020-04-06_223849-01.jpeg" width="350px"></td>
+    <td><img src="./2019-10-31_183025-01.jpeg" width="350px"></td>
+    <td><img src="./2020-04-05_191520.jpg" width="350px"></td>
+    <td><img src="./2020-04-06_223849-01.jpeg" width="350px"></td>
   </tr>
    <tr>
-    <td><img src="/Project_stuff/Images/2020-05-15_123445.jpg" width="350px"></td>
+    <td><img src="./2020-05-15_123445.jpg" width="350px"></td>
     <td></td>
     <td></td>
   </tr>
@@ -39,6 +41,7 @@
 <hr />
 <br />
 
+- **Drawing/Schemas:**
 <table style="width:100%">
   <tr>
     <th>Images</th> 
@@ -46,9 +49,14 @@
     <th>📑</th>
   </tr>
   <tr>
-    <td><img src="/Project_stuff/Images/Pet-Mk.IV Circuit Diagram - UNO.jpeg" width="350px"></td>
-    <td><img src="/Project_stuff/Images/Pet-Mk.IV Circuit Diagram - NANO.jpeg" width="350px"></td>
-    <td><img src="/Project_stuff/Images/Pet-Mk.IV Circuit Diagram - RPi.jpeg" width="350px"></td>
+    <td><img src="./Pet-Mk.IV Circuit Diagram - UNO.jpeg" width="350px"><br>Circuit Diagram - UNO</td>
+    <td><img src="./Pet-Mk.IV Circuit Diagram - NANO.jpeg" width="350px"><br>Circuit Diagram - NANO</td>
+    <td><img src="./Pet-Mk.IV Circuit Diagram - RPi.jpeg" width="350px"><br>Circuit Diagram - RPi</td>
+  </tr>
+  <tr>
+    <td><img src="./Pet-Mk.III_CircuitDiagram[PowerDistributionSchema].jpg" width="350px"><br>PowerDistributionSchema</td>
+    <td><img src="./Pet-Mk.III_CircuitDiagram[PowerDistributionBoard].jpg" width="350px"><br>PowerDistributionBoard</td>
+    <td></td>
   </tr>
 </table>
 
