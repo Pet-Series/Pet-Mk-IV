@@ -1,1 +1,1 @@
-Physical representatio of Pet Mark IV as 3D-model
+The virtual digital twin of Pet Mark IV as an 3D-model.
