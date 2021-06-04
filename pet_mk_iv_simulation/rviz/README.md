@@ -1,0 +1,1 @@
+Folder for user saved RViz configuerations
