@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<robot>
+
+  <!--adding colur to the robot in gazebo this will not visualized in rviz -->
+  <!-- 
+    Reference: http://wiki.ros.org/simulator_gazebo/Tutorials/ListOfMaterials
+    Reference: http://gazebosim.org/tutorials?tut=color_model
+  -->
+  <gazebo reference="base_link">
+    <material>Gazebo/White</material>
+  </gazebo>
+
+  <gazebo reference="body_base_link">
+    <material>Gazebo/Brown</material>
+  </gazebo>
+<!--
+  <gazebo reference="front_left_wheel">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+  
+  <gazebo reference="front_right_wheel">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo reference="rear_left_wheel">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+  
+  <gazebo reference="rear_right_wheel">
+     <material>Gazebo/Grey</material>
+  </gazebo>
+-->
+<!--
+  <gazebo reference="front_middle_HCSR04_link">
+    <material>Gazebo/DarkYellow</material>
+  </gazebo>
+
+  <gazebo reference="front_left_HCSR04_link">
+    <material>Gazebo/DarkYellow</material>
+  </gazebo>
+
+  <gazebo reference="front_right_HCSR04_link">
+    <material>Gazebo/DarkYellow</material>
+  </gazebo>
+-->
+
+  <!-- **************************************************************************** 
+   differencial drive Gazebo-controller, suscribe to cmd_vel and move the robot in the gazebo world 
+   Reference: http://gazebosim.org/tutorials?tut=ros_gzplugins
+  -->
+  <gazebo>
+    <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+      <legacyMode>false</legacyMode> <!-- Set to true to swap right and left wheels, defaults to true -->
+      <alwaysOn>true</alwaysOn>      <!-- ??? Is this valid for this Gazebo plugin??? -->
+      <updateRate>10</updateRate>    <!-- Plugin update rate in Hz -->
+      <leftJoint>left_front_wheel_joint</leftJoint>    <!-- Name of left joint, defaults to `left_joint` -->
+      <rightJoint>right_front_wheel_joint</rightJoint> <!-- Name of right joint, defaults to `right_joint` -->
+      <wheelSeparation>0.54</wheelSeparation>    <!-- The distance from the center of one wheel to the other, in meters, defaults to 0.34 m -->
+      <wheelDiameter>0.26</wheelDiameter>        <!-- Diameter of the wheels, in meters, defaults to 0.15 m -->
+      <wheelAcceleration>1.0</wheelAcceleration> <!-- Wheel acceleration, in rad/s^2, defaults to 0.0 rad/s^2 -->
+      <wheelTorque>5</wheelTorque>               <!-- Maximum torque which the wheels can produce, in Nm, defaults to 5 Nm -->
+      <!-- <torque>10</torque> -->
+      <publishWheelTF>true</publishWheelTF> <!-- Set to true to publish transforms for the wheel links, defaults to false -->
+      <publishTf>1</publishTf>              <!-- defaults to 1 -->
+      <publishWheelJointState>true</publishWheelJointState> <!-- Set to true to publish sensor_msgs/JointState on /joint_states for the wheel joints, defaults to false -->
+      <commandTopic>cmd_vel</commandTopic> <!-- Topic to receive geometry_msgs/Twist message commands, defaults to `cmd_vel` -->
+      <publishOdom>true</publishOdom>       <!-- ??? Set to true to publish transforms for the odometry, defaults to true -->
+      <publishOdomTF>true</publishOdomTF>   <!-- ??? Set to true to publish transforms for the odometry, default is true -->
+      <odometryTopic>odom</odometryTopic>    <!-- Topic to publish nav_msgs/Odometry messages, defaults to `odom` -->
+      <odometryFrame>odom</odometryFrame>    <!-- Odometry frame, defaults to `odom` -->
+      <odometrySource>1</odometrySource> <!-- Odometry source, 0 for ENCODER, 1 for WORLD, defaults to WORLD, default is 1 -->
+      <robotBaseFrame>base_link</robotBaseFrame> <!-- Robot frame to calculate odometry from, defaults to `base_footprint` -->
+    </plugin>
+  </gazebo>
+
+</robot>

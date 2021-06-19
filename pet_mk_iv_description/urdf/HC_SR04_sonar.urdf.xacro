@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+ 
+  <!--
+    *****************************************************************
+    <workspace>/src/pet_mk_iv_description/urdf/HC_SR04_sonar.urdf.xacro
+    author: "SeniorKullken" <stefan.kull@gmail.com>
+    licens: MIT
+       
+    Usage example:
+      <robot>
+        ....
+        <xacro:include filename="$(find pet_mk_iv_description)/urdf/HC_SR04_sonar.urdf.xacro"/>
+        <xacro:HC_SR04 sensor_prefix="front_middle" 
+                 topic="range_sensors/front_middle"
+                 origin_xyz="0.5 0.0 ${sonar_center_hight}"
+                 origin_rpy="0 0 0"/>
+        <xacro:HC_SR04 sensor_prefix="front_left" 
+                 topic="range_sensors/front_left"
+                 origin_xyz="0.4 0.25 ${sonar_center_hight}"
+                 origin_rpy="0 0 0.785375"/>
+        ....
+      </robot>
+
+    Xacro common info:
+      The entirety of the code below is reproduced whenever the macro is called.
+      We use 'params' to add additional arguments to the macro call, 
+      which can be simple parameters, or entire code blocks.
+      Reference: http://wiki.ros.org/xacro for more details.
+      Reference: http://sdformat.org/spec?ver=1.8&elem=sensor
+    *****************************************************************
+  -->
+  <xacro:macro name="HC_SR04" params="sensor_prefix topic origin_xyz origin_rpy">
+    <xacro:property name="sonar_array" value="5"/> <!-- Array 5x5  -->
+    <xacro:property name="sensor_gazebo_color" value="Gazebo/DarkYellow"/>
+    <xacro:property name="sensor_rviz_color"   value="white"/>
+
+    <xacro:property name="sonar_cyl_diameter"  value="0.016"/> <!-- x=16mm  -->
+    <xacro:property name="sonar_cyl_depth"     value="0.012"/> <!-- y=12mm  -->
+    <xacro:property name="sonar_cyl_cen_cen" value="0.025"/> <!-- x=16mm  -->
+
+    <xacro:property name="pcb_thicknes"  value="0.0015"/> <!-- Boxx=1.5mm -->
+    <xacro:property name="pcb_width"     value="0.045"/>  <!-- Box y=45mm  -->
+    <xacro:property name="pcb_hight"     value="0.020"/>  <!-- Box z=20mm  -->
+    
+    <link name="${sensor_prefix}_HCSR04_link">
+      <!-- Build visual sonar backboard/pcb -->
+      <visual>
+        <origin xyz="${-pcb_thicknes/2} 0.00 0.00" rpy="0 0 0"/>
+        <geometry>
+          <box size= "${pcb_thicknes} ${pcb_width} ${pcb_hight}"/>
+        </geometry>
+        <material name="${sensor_rviz_color}"/>
+      </visual>
+
+      <!-- Build visual left cylinder (transmitter?) -->
+      <visual>
+        <origin xyz="${sonar_cyl_depth/2} -${sonar_cyl_cen_cen/2} 0.00" rpy="0 1.5707 0"/>
+        <geometry>
+          <cylinder radius="${sonar_cyl_diameter/2}" length="${sonar_cyl_depth}"/>
+        </geometry>
+        <material name="${sensor_rviz_color}"/>
+      </visual>
+      <!-- Build visual right cylinder (reciver?) -->
+      <visual>
+        <origin xyz="${sonar_cyl_depth/2} ${sonar_cyl_cen_cen/2} 0.00" rpy="0 1.5707 0"/>
+        <geometry>
+          <cylinder radius="${sonar_cyl_diameter/2}" length="${sonar_cyl_depth}"/>
+        </geometry>
+        <material name="${sensor_rviz_color}"/>
+      </visual>
+      <inertial>
+        <mass value="1e-5" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+      </inertial>
+    </link>
+
+    <joint name="${sensor_prefix}_HCSR04_joint" type="fixed">
+      <axis xyz="0 1 0" />
+      <origin xyz="${origin_xyz}" rpy="${origin_rpy}" />
+      <parent link="base_link"/>
+      <child link="${sensor_prefix}_HCSR04_link"/>
+    </joint>
+    
+    <!-- /TODO Gazeb0-simulator description...=> Move to Gazebo package? -->
+    <gazebo reference="${sensor_prefix}_HCSR04_link">        
+      <sensor type="ray" name="TeraRanger"> <!--type="ray" name="TeraRanger"// type="ultrasonic" name="HC-SR04">-->
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>true</visualize>
+        <update_rate>10</update_rate>
+        <ray>
+          <scan>
+              <horizontal>
+                <samples>${sonar_array}</samples>
+                <resolution>1</resolution> 
+                <min_angle>-0.14835</min_angle>
+                <max_angle>0.14835</max_angle>
+              </horizontal>
+              <vertical>
+                <samples>${sonar_array}</samples>
+                <resolution>1</resolution> 
+                <min_angle>-0.14835</min_angle>
+                <max_angle>0.14835</max_angle> 
+              </vertical>
+          </scan>
+          <range>
+              <min>0.01</min>
+              <max>2</max>
+              <resolution>0.02</resolution>
+          </range>
+        </ray>
+
+        <plugin filename="libgazebo_ros_range.so" name="gazebo_ros_range">
+          <gaussianNoise>0.005</gaussianNoise>
+          <alwaysOn>true</alwaysOn>
+          <updateRate>10</updateRate>
+          <topicName>${topic}</topicName>
+          <frameName>${sensor_prefix}_HCSR04_link</frameName>
+          <radiation>ULTRASONIC</radiation>
+          <fov>0.2967</fov>  <!--Sensor field of view(fov).  -->
+        </plugin>
+      </sensor>  
+    </gazebo>
+
+    <gazebo reference="${sensor_prefix}_HCSR04_link">
+      <material>${sensor_gazebo_color}</material>
+    </gazebo>
+
+  </xacro:macro>
+</robot>

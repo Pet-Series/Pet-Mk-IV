@@ -1,0 +1,166 @@
+<?xml version='1.0'?>
+
+<robot name="Pet Mk.IV" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!--
+    *****************************************************************
+    <workspace>/src/pet_mk_iv_description/urdf/pet_mk_iv.urdf.xacro 
+    author: "SeniorKullken" <stefan.kull@gmail.com>
+    licens: MIT
+       
+    Main rover/robot/vehicle description.
+
+    Xacro common info:
+      The entirety of the code below is reproduced whenever the macro is called.
+      We use 'params' to add additional arguments to the macro call, 
+      which can be simple parameters, or entire code blocks.
+      Reference: http://wiki.ros.org/xacro
+      Reference: http://wiki.ros.org/urdf/XML/robot
+      Reference: http://sdformat.org/spec?ver=1.8
+    *****************************************************************
+  -->
+  <xacro:include filename="$(find pet_mk_iv_description)/urdf/pet_mk_iv_gazebo.urdf.xacro" />
+  <xacro:include filename="$(find pet_mk_iv_description)/urdf/materials.xacro"/>
+  <xacro:include filename="$(find pet_mk_iv_description)/urdf/HC_SR04_sonar.urdf.xacro"/>
+  <xacro:include filename="$(find pet_mk_iv_description)/urdf/wheel.urdf.xacro"/>
+
+  <xacro:property name="robot_weight"       value="0.9"/>    <!-- unit kg  -->
+  <xacro:property name="sonar_center_hight" value="0.060"/>   <!-- unit m  -->
+
+
+  <xacro:property name="chassis_length"   value="0.075"/>   <!--   -->
+  <xacro:property name="chassis_width"    value="0.065"/>   <!--   -->
+  <xacro:property name="chassis_height"   value="0.020"/>  <!--   -->
+  <xacro:property name="chassis_dist_ground_top"   value="0.028"/>  <!-- n/a -->
+  <xacro:property name="chassis_ground_clearance" value="0.006"/>   <!-- n/a  -->
+
+  <xacro:property name="body_length" value="0.180"/>   <!--   -->
+  <xacro:property name="body_width" value="0.100"/>   <!--   -->
+  <xacro:property name="body_hight" value="0.060"/>   <!--   -->
+
+
+  <xacro:property name="wheel_diameter" value="0.038"/> <!-- unit: m -->
+  <xacro:property name="wheel_width" value="0.018"/> <!-- unit: m -->
+  <xacro:property name="wheel_axis_distance" value="0.048"/>   <!--   -->
+  <xacro:property name="wheel_axis_width" value="0.085"/>   <!--   -->
+  <xacro:property name="wheel_axis_height" value="${wheel_diameter/2}"/>   <!--   -->
+
+  <!-- ******** Robot Chassis and base_link **************
+    This link is the skelleton base the hole rover/robot.
+    Sometimes called 'base_footprint', but we call it 'base_link'
+  -->
+  <link name='base_link'>
+    <pose>0 0 0 0 0 0</pose>
+    
+    <visual name='base_link_visual'>
+      <origin xyz="0.007 0 ${chassis_height/2}" rpy=" 0 0 0"/>
+      <geometry>
+        <box size= "${chassis_length} ${chassis_width} ${chassis_height}"/>
+      </geometry>
+      <material name="green"/>  <!-- Color in RViz -->
+    </visual>
+    <collision name='base_link_collision'>
+      <origin xyz="0.007 0 ${chassis_height/2}" rpy=" 0 0 0"/>
+      <geometry>
+        <box size= "${chassis_length} ${chassis_width} ${chassis_height}"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <!-- ******* Robot Inertials: Creates link + joint vs."base_link" ******* -->
+  <link name='base_link_inertial'>
+    <pose>0 0 0 0 0 0</pose>
+    <inertial>
+      <mass value="${robot_weight}"/>
+      <origin xyz="0.0 0 0.0" rpy=" 0 0 0"/>
+      <inertia
+          ixx="0.1" ixy="0" ixz="0"
+          iyy="0.1" iyz="0"
+          izz="0.1"/>
+    </inertial>
+  </link>
+
+  <joint name="base_link_inertial_joint" type="fixed">
+    <axis xyz="1 0 0"/>
+    <origin xyz="0 0 0.060" rpy="0 0 0" />
+    <parent link="base_link"/>
+    <child link="base_link_inertial"/>
+  </joint>
+
+  <!-- ******* Robot Body: Creates link + joint vs."base_link" ******* -->
+  <link name='body_base_link'>
+    <pose>0 0 0 0 0 0</pose>
+  
+    <visual>  
+      <origin xyz="0 0 0" rpy="1.5707 0 3.1415"/>
+      <!-- /TODO: "package://pet_mk_iv_description" => "$(find pet_mk_iv_description) ????? -->
+      <geometry>     
+        <mesh 
+          filename="package://pet_mk_iv_description/mesh/Pet Mk.IV Assy v4.stl" 
+          scale="0.001 0.001 0.001" /> <!-- From mm to m -->
+      </geometry>
+      <material name="brown"/>   <!-- Color in RViz -->
+    </visual>
+
+    <visual name='body_grip_link_visual'>
+      <origin xyz="0 0 ${body_hight/2+0.055}" rpy=" 0 0 0"/>
+      <geometry>
+        <box size= "0.015 0.135 0.070"/>  <!-- Cube of Robot Grip -->
+      </geometry>
+      <material name="green"/>
+    </visual>
+<!--
+    <collision name='main_body_collision'>
+      <origin xyz="0 0 ${body_hight/2}" rpy=" 0 0 0"/>
+      <geometry>
+        <box size= "${body_length} ${body_width} ${body_hight}"/>
+      </geometry>
+    </collision>
+-->
+    <collision name='main_body_grip_collision'>
+      <origin xyz="0 0 ${body_hight/2}" rpy=" 0 0 0"/>
+      <geometry>
+        <box size= "0.015 0.135 0.070"/>  <!-- Cube of Robot Grip -->
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="body_base_link_joint" type="fixed">
+    <axis xyz="1 0 0"/>
+    <origin xyz="0 0 ${chassis_height}" rpy="0 0 0" />
+    <parent link="base_link"/>
+    <child link="body_base_link"/>
+  </joint>
+
+  <!-- ******* Call WHEEL MACRO: Creates link + joint vs."base_link" ******* -->
+  <xacro:wheel  wheel_prefix="front_left"  
+                origin_xyz=" ${wheel_axis_distance/2}  ${wheel_axis_width/2} ${chassis_height/2}" 
+                origin_rpy="0 0 0"/>
+  <xacro:wheel   wheel_prefix="front_right" 
+                origin_xyz=" ${wheel_axis_distance/2} -${wheel_axis_width/2} ${chassis_height/2}" 
+                origin_rpy="0 0 0"/>
+  <xacro:wheel  wheel_prefix="rear_left"   
+                origin_xyz="-${wheel_axis_distance/2}  ${wheel_axis_width/2} ${chassis_height/2}" 
+                origin_rpy="0 0 0"/>
+  <xacro:wheel  wheel_prefix="rear_right"  
+                origin_xyz="-${wheel_axis_distance/2} -${wheel_axis_width/2} ${chassis_height/2}" 
+                origin_rpy="0 0 0"/>
+
+
+  <!-- ******* Call SENSOR MACRO: Creates link + joint vs."base_link" + Connect to libgazebo_ros_range.so  ******* -->
+  <xacro:HC_SR04 sensor_prefix="front_middle" 
+                 topic="range_sensors/front_middle"
+                 origin_xyz="0.095 0.0 ${sonar_center_hight}"
+                 origin_rpy="0 0 0"/>
+
+  <xacro:HC_SR04 sensor_prefix="front_left" 
+                 topic="range_sensors/front_left"
+                 origin_xyz="0.077 0.042 ${sonar_center_hight}"
+                 origin_rpy="0 0 0.785375"/>
+
+  <xacro:HC_SR04 sensor_prefix="front_right" 
+                 topic="range_sensors/front_right"
+                 origin_xyz="0.077 -0.042 ${sonar_center_hight}"
+                 origin_rpy="0 0 -0.785375"/>
+
+</robot>
+
