@@ -1,5 +1,5 @@
 /*
-  <arduino_1xUltraSoundSensors(HC-04).ino>
+  <arduino_1xUltraSoundSensors(HC-SR04).ino>
   Hardware/Unit test for Pet Mark V (five)
   
   Hardware setup:
