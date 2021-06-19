@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # Behaviour:
+# 1) IR-remote [Play], [Pause] and [Stop] overroule them all
 # 1) Run straight a head.
-# 2a) Rule "a": Avoid colliding with obstacle by using distance sensors to desice if turn left vs. right (e.g. Ultrasonic HC-04).
+# 2a) Rule "a": Avoid colliding with obstacle by using distance sensors to desice if turn left vs. right (e.g. Ultrasonic HC-SR04).
 # 2b) Rule "b": Stop when detecting line by using line follower sensors.
-# 2c) Display reaction on LCD
+# 2c) Display selected action on LCD-display.
 from __future__ import division
 
 import rospy
@@ -27,7 +28,7 @@ class MissionNode(object):
 
         self.is_stopped = True
 
-        # Subscribe for Ultra Sonic distance sensors
+        # Subscribe for UltraSonic distance sensors
         self.dist_sensors_left   = -1 # Infinity-"mm"
         self.dist_sensors_middle = -1 # Infinity-"mm"
         self.dist_sensors_right  = -1 # Infinity-"mm"
