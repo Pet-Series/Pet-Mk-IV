@@ -53,8 +53,8 @@
       <legacyMode>false</legacyMode> <!-- Set to true to swap right and left wheels, defaults to true -->
       <alwaysOn>true</alwaysOn>      <!-- ??? Is this valid for this Gazebo plugin??? -->
       <updateRate>10</updateRate>    <!-- Plugin update rate in Hz -->
-      <leftJoint>left_front_wheel_joint</leftJoint>    <!-- Name of left joint, defaults to `left_joint` -->
-      <rightJoint>right_front_wheel_joint</rightJoint> <!-- Name of right joint, defaults to `right_joint` -->
+      <leftJoint>front_left_wheel_joint</leftJoint>    <!-- Name of left joint, defaults to `left_joint` -->
+      <rightJoint>front_right_wheel_joint</rightJoint> <!-- Name of right joint, defaults to `right_joint` -->
       <wheelSeparation>0.54</wheelSeparation>    <!-- The distance from the center of one wheel to the other, in meters, defaults to 0.34 m -->
       <wheelDiameter>0.26</wheelDiameter>        <!-- Diameter of the wheels, in meters, defaults to 0.15 m -->
       <wheelAcceleration>1.0</wheelAcceleration> <!-- Wheel acceleration, in rad/s^2, defaults to 0.0 rad/s^2 -->

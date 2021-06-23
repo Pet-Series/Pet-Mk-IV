@@ -73,9 +73,20 @@
       <mass value="${robot_weight}"/>
       <origin xyz="0.0 0 0.0" rpy=" 0 0 0"/>
       <inertia
-          ixx="0.1" ixy="0" ixz="0"
-          iyy="0.1" iyz="0"
-          izz="0.1"/>
+          ixx="0.007" 
+          ixy="-2.0E-08" 
+          ixz="0.000014"
+          iyy="0.0007" 
+          iyz="4.6E-09"
+          izz="0.0011"/>
+<!-- froom Tianbot-Mini
+          ixx="6.9553958488565E-04"
+          ixy="-1.99945013904458E-08"
+          ixz="1.43938674591944E-05"
+          iyy="7.30544716315262E-04"
+          iyz="4.63385578966379E-09"
+          izz="0.0011040368246549"
+-->
     </inertial>
   </link>
 
@@ -108,6 +119,29 @@
       </geometry>
       <material name="green"/>
     </visual>
+
+    <xacro:property name="body_thicknes_upper_deck" value="0.020"/>
+    <xacro:property name="body_hight_upper_deck" value="0.060"/>
+
+    <xacro:property name="body_thicknes_lower_deck" value="0.030"/>
+    <xacro:property name="body_hight_lower_deck" value="${body_thicknes_lower_deck/2}"/>
+    
+    <collision name='body_upper_deck_collision'>
+      <origin xyz="0 0 ${body_hight_upper_deck}" rpy=" 0 0 0"/>
+      <geometry>
+        <box size= "${body_length} ${body_width} ${body_thicknes_upper_deck}"/>
+      </geometry>
+      <material name="green"/>
+    </collision>
+
+    <collision name='body_lower_deck_collision'>
+      <origin xyz="0 0 ${body_hight_lower_deck}" rpy=" 0 0 0"/>
+      <geometry>
+        <box size= "${body_length} ${body_width} ${body_thicknes_lower_deck}"/>
+      </geometry>
+      <material name="green"/>
+    </collision>
+
 <!--
     <collision name='main_body_collision'>
       <origin xyz="0 0 ${body_hight/2}" rpy=" 0 0 0"/>
@@ -117,7 +151,7 @@
     </collision>
 -->
     <collision name='main_body_grip_collision'>
-      <origin xyz="0 0 ${body_hight/2}" rpy=" 0 0 0"/>
+      <origin xyz="0 0 ${body_hight/2+0.055}" rpy=" 0 0 0"/>
       <geometry>
         <box size= "0.015 0.135 0.070"/>  <!-- Cube of Robot Grip -->
       </geometry>

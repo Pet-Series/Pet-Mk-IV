@@ -53,12 +53,31 @@
       
       <inertial>
         <origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
-        <mass value="5"/>
+        <mass value="0.01" />
         <inertia
-          ixx=".1" ixy="0.0" ixz="0.0"
-          iyy=".1" iyz="0.0"
-          izz=".1"/>
+          ixx="2.40384090487514E-05"
+          ixy="9.21491839222917E-12"
+          ixz="1.16650464760408E-11"
+          iyy="4.21578178329362E-05"
+          iyz="2.56744598636029E-11"
+          izz="2.40355678533584E-05"/>
       </inertial>
+<!-- from Tianbot-Mini: Left wheel
+          ixx="2.40384090487514E-05"
+          ixy="9.21491839222917E-12"
+          ixz="1.16650464760408E-11"
+          iyy="4.21578178329362E-05"
+          iyz="2.56744598636029E-11"
+          izz="2.40355678533584E-05"
+-->
+<!-- from Tianbot-Mini: Right wheel
+          ixx="2.40403731664504E-05"
+          ixy="1.93558318570861E-11"
+          ixz="-1.9701375781678E-11"
+          iyy="4.21599888385316E-05"
+          iyz="3.15208827782047E-12"
+          izz="2.4035775665164E-05"
+-->
     </link>
 
     <joint type="continuous" name="${wheel_prefix}_wheel_joint">
