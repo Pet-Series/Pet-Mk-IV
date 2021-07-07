@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  \licens       Software License Agreement (MIT)
+  \file         <workspace>/src/pet_mk_iv_description/urdf/sensor_RPi_cameraV2.urdf.xacro
+  \authors      stefan.kull@gmail.com (Github ID 'SeniorKullken')
+  \repository   https://github.com/kullken/Pet-Mk-IV
+  \repository   https://github.com/kullken/pet_mcu_base
+  \copyright    
+  \description  Raspberry Pi Camera V2
+                - origin_xyz: Front/center of the camera lens.
+   ____________________________________________________________________________
+  \usage
+      <robot>
+      <xacro:include filename="$(find pet_mk_iv_description)/urdf/sensor_RPi_cameraV2.urdf.xacro"/>
+        ....
+      <xacro:RPi_camera sensor_prefix="fronta" 
+                    topic="camera_front"
+                    origin_xyz="${body_length/2+0.005} 0.0 0.095"
+                    origin_rpy="0 0 0"/>
+        ....
+      </robot>
+  ____________________________________________________________________________
+
+  Xacro common info:
+    The entirety of the code below is reproduced whenever the macro is called.
+    We use 'params' to add additional arguments to the macro call, 
+    which can be simple parameters, or entire code blocks.
+
+  \reference http://wiki.ros.org/xacro
+  \reference http://wiki.ros.org/urdf/XML/robot
+  \reference http://sdformat.org/
+  \reference http://gazebosim.org/tutorials?tut=ros_gzplugins#Camera
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="RPi_camera" params="sensor_prefix topic origin_xyz origin_rpy">
+    <xacro:property name="sensor_gazebo_color" value="Gazebo/DarkYellow"/>
+    <xacro:property name="sensor_rviz_color"   value="white"/>
+
+    <xacro:property name="camera_cyl_diameter"  value="0.007"/> <!-- D=7mm  -->
+    <xacro:property name="camera_cyl_depth"     value="0.006"/> <!-- L=6mm  -->
+    <xacro:property name="camera_cyl_cen_pcb"   value="0.003"/> <!-- Offset=3mm  -->
+
+    <xacro:property name="camera_house_thicknes"  value="0.004"/>  <!-- Box x=4mm -->
+    <xacro:property name="camera_house_width"     value="0.009"/>  <!-- Box y=9mm -->
+    <xacro:property name="camera_house_height"    value="0.008"/>  <!-- Box z=8mm -->
+
+    <xacro:property name="pcb_thicknes"  value="0.0015"/> <!-- Box x=1.5mm -->
+    <xacro:property name="pcb_width"     value="0.025"/>  <!-- Box y=25mm  -->
+    <xacro:property name="pcb_height"    value="0.024"/>  <!-- Box z=24mm  -->
+  
+    
+    <link name='${sensor_prefix}_camera_link'>
+     <visual name='${sensor_prefix}_camera_visual_pcb'>
+        <origin xyz="${-pcb_thicknes/2-camera_cyl_depth} 0.00 ${-camera_cyl_cen_pcb}" rpy="0 0 0"/>
+        <geometry>
+          <box size= "${pcb_thicknes} ${pcb_width} ${pcb_height}"/>
+        </geometry>
+        <material name="${sensor_rviz_color}"/>
+      </visual>
+
+      <visual name='${sensor_prefix}_camera_visual_house'>
+        <origin xyz="${-camera_house_thicknes/2-0.002} 0.00 0.00" rpy="0 0 0"/>
+        <geometry>
+          <box size= "${camera_house_thicknes} ${camera_house_width} ${camera_house_height}"/>
+        </geometry>
+        <material name="${sensor_rviz_color}"/>
+      </visual>
+      
+      <visual name='${sensor_prefix}_camera_visual_lens'>
+        <origin xyz="${-camera_cyl_depth/2} 0.00 0.00" rpy="0 1.5707 0"/>
+        <geometry>
+          <cylinder radius="${camera_cyl_diameter/2}" length="${camera_cyl_depth}"/>
+        </geometry>
+        <material name="${sensor_rviz_color}"/>
+      </visual>
+
+      <inertial>
+        <mass value="1e-5" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+      </inertial>
+    </link>
+
+    <joint name='${sensor_prefix}_camera_joint' type="fixed">
+      <axis xyz="0 1 0" />
+      <origin xyz="${origin_xyz}" rpy="${origin_rpy}" />
+      <parent link="base_link"/>
+      <child link="${sensor_prefix}_camera_link"/>
+    </joint>
+    
+    <!--
+       \todo Gazebo-simulator plugin-description...=> Move to a separate Gazebo package?
+    -->
+    <gazebo reference="${sensor_prefix}_camera_link">
+      <sensor type="camera" name='${sensor_prefix}_camera_sensor'>
+        <update_rate>30.0</update_rate>
+        <camera name="${sensor_prefix}_camera">
+          <horizontal_fov>1.3962634</horizontal_fov>
+          <image>
+            <width>800</width>
+            <height>800</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>300</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <!--  Noise is sampled independently per pixel on each frame.
+                  That pixel's noise value is added to each of its color
+                  channels, which at that point lie in the range [0,1].  -->
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+        <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>0.0</updateRate>
+          <!--  generates the following rostopics
+                /${topic}/camera_info
+                /${topic}/image_raw                 -->
+          <cameraName>${topic}</cameraName>
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+          <frameName>${sensor_prefix}_camera_link</frameName>
+          <hackBaseline>0.07</hackBaseline>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
+        </plugin>
+      </sensor>
+    </gazebo>
+
+    <gazebo reference="${sensor_prefix}_camera_link">
+      <material>${sensor_gazebo_color}</material>
+    </gazebo>
+
+  </xacro:macro>
+</robot>

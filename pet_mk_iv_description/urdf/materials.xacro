@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<robot>
+<!--
+  /usage    <xacro:include filename="$(find pet_mk_iv_description)/urdf/materials.xacro"/>
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <material name="black">
     <color rgba="0.0 0.0 0.0 1.0"/>

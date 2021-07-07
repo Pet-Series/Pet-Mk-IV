@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  \licens       Software License Agreement (MIT)
+  \file         <workspace>/src/pet_mk_iv_description/urdf/visual_raspberryPi3B_sbc.urdf.xacro
+  \authors      stefan.kull@gmail.com (Github ID 'SeniorKullken')
+  \repository   https://github.com/kullken/Pet-Mk-IV
+  \repository   https://github.com/kullken/pet_mcu_base
+  \copyright    
+  \description  .xacro macro that insert a visual Raspberry Pi Model 3B Motheboard/SBC
+                origin_xyz: In the middle of the PCB, Botton of the PCB .
+  ____________________________________________________________________________
+  \usage
+      <robot>
+        ....
+      <xacro:include filename="$(find pet_mk_iv_description)/urdf/visual_raspberryPi3B_sbc.urdf.xacro"/>
+        ....
+      <xacro:visual_raspberryPi3B_sbcc name="raspiqll4" 
+                    origin_xyz="0.005 0.0 ${body_height_upper_deck+0.016}"
+                    origin_rpy="0 0 ${PI/2}"/>
+        ....
+      </robot>
+  ____________________________________________________________________________
+  
+  Xacro common info:
+    The entirety of the code below is reproduced whenever the macro is called.
+    We use 'params' to add additional arguments to the macro call, 
+    which can be simple parameters, or entire code blocks.
+
+  \reference http://wiki.ros.org/xacro
+  \reference http://wiki.ros.org/urdf/XML/robot
+  \reference http://sdformat.org/
+--> 
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="visual_raspberryPi3B_sbc" params="name origin_xyz origin_rpy">
+ 
+    <xacro:property name="sensor_gazebo_color" value="Gazebo/GreenTransparent"/> <!-- "Gazebo/Green" -->
+    <xacro:property name="sensor_rviz_color"   value="green"/>
+
+    <xacro:property name="pcb_thicknes"  value="0.0015"/> <!-- Box x=1.5mm -->
+    <xacro:property name="pcb_width"     value="0.056"/>  <!-- Box y=56mm  -->
+    <xacro:property name="pcb_length"    value="0.085"/>  <!-- Box z=85mm  -->
+  
+    
+    <link name="${name}">
+      <!-- Insert visual Raspberry PI pcb -->
+      <visual>
+        <origin xyz="0.00 0.00 ${pcb_thicknes/2}" rpy="0 0 0"/>
+        <geometry>
+          <box size= "${pcb_length} ${pcb_width} ${pcb_thicknes}"/>
+        </geometry>
+        <material name="${sensor_rviz_color}"/>
+      </visual>
+
+       <!-- Insert visual Raspberry PI USB-socket #1 -->
+      <visual>
+        <origin xyz="0.038 0.017 ${pcb_thicknes+0.008}" rpy="0 0 0"/>
+        <geometry>
+          <box size= "0.017 0.014 0.016"/>
+        </geometry>
+        <material name="${sensor_rviz_color}"/>
+      </visual>
+
+      <!-- Insert visual Raspberry PI USB-socket #2 -->
+      <visual>
+        <origin xyz="0.035 -0.017 ${pcb_thicknes+0.008}" rpy="0 0 0"/>
+        <geometry>
+          <box size= "0.021 0.015 0.014"/>
+        </geometry>
+        <material name="${sensor_rviz_color}"/>
+      </visual>
+
+      <!-- Insert visual Raspberry PI Ethernet-socket -->
+      <visual>
+        <origin xyz="0.038 0.000 ${pcb_thicknes+0.008}" rpy="0 0 0"/>
+        <geometry>
+          <box size= "0.017 0.014 0.016"/>
+        </geometry>
+        <material name="${sensor_rviz_color}"/>
+      </visual>
+      
+      <!-- Insert visual Raspberry PI Power-micro-USB-socket -->
+      <visual>
+        <origin xyz="-0.035 -0.028 ${pcb_thicknes+0.0015}" rpy="0 0 0"/>
+        <geometry>
+          <box size= "0.007 0.005 0.003"/>
+        </geometry>
+        <material name="${sensor_rviz_color}"/>
+      </visual>
+
+      <!-- Insert visual Raspberry PI Power indicator/LED -->
+      <!--
+          \todo   Visual LED-powerindicator does not work as expected.
+      -->
+      <visual name="power_led_visual">
+        <origin xyz="-${pcb_length/2} -0.023 ${pcb_thicknes+0.001}" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.001"/>
+        </geometry>
+        <material name="LED material">
+          <ambient>0 0 0 1</ambient>
+          <diffuse>0 0 0 1</diffuse>
+          <specular>0 0 0 0</specular>
+          <emissive>0 1 0 1</emissive>
+        </material>
+      </visual>
+
+      <inertial>
+        <mass value="1e-5" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+      </inertial>
+    </link>
+
+    <joint name="${name}_joint" type="fixed">
+      <axis xyz="0 1 0" />
+      <origin xyz="${origin_xyz}" rpy="${origin_rpy}" />
+      <parent link="base_link"/>
+      <child link="${name}"/>
+    </joint>
+
+    <gazebo reference="${name}">
+      <material>${sensor_gazebo_color}</material>
+    </gazebo>
+
+  </xacro:macro>
+</robot>

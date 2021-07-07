@@ -1,12 +1,15 @@
-<?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <!--
-    *****************************************************************
-    <workspace>/src/pet_mk_iv_description/urdf/wheel.urdf.xacro
-    author: "SeniorKullken" <stefan.kull@gmail.com>
-    licens: MIT
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  \licens       Software License Agreement (MIT)
+  \file         <workspace>/src/pet_mk_iv_description/urdf/wheel.urdf.xacro
+  \authors      stefan.kull@gmail.com (Github ID 'SeniorKullken')
+  \repository   https://github.com/kullken/Pet-Mk-IV
+  \repository   https://github.com/kullken/pet_mcu_base
+  \copyright    
+  \description  .xacro macro that defines a wheel   
        
-    Usage example:
+  ____________________________________________________________________________
+  \usage
       <robot>
         ....
         <xacro:include filename="$(find pet_mk_iv_description)/urdf/wheel.urdf.xacro"/>
@@ -17,27 +20,31 @@
                       origin_xyz="${wheel_axis_distance/2} -${wheel_axis_width/2} ${chassis_height/2}"
                       origin_rpy="0 0 0"/>
       </robot>
-      
-    Xacro common info:
-      The entirety of the code below is reproduced whenever the macro is called.
-      We use 'params' to add additional arguments to the macro call, 
-      which can be simple parameters, or entire code blocks.
-      See http://wiki.ros.org/xacro for more details.
-    *****************************************************************
-  -->
-  <xacro:macro name="wheel" params="wheel_prefix origin_xyz origin_rpy">
+  ____________________________________________________________________________
+  \todo     Maybe refactor existing parameter interface. Adding WHEEL_WEIGHT and Inertial to the list of Xacro-params.
 
+  Xacro common info:
+    The entirety of the code below is reproduced whenever the macro is called.
+    We use 'params' to add additional arguments to the macro call, 
+    which can be simple parameters, or entire code blocks.>
+
+  \reference http://wiki.ros.org/xacro
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="wheel" params="wheel_prefix origin_xyz origin_rpy">
+  <xacro:property name="PI" value="3.14159265359"/>    <!-- unit n/a  -->
+  <xacro:property name="WHEEL_WEIGHT" value="0.02"/>   <!-- unit kg  -->  
 
     <link name="${wheel_prefix}_wheel">
       <visual> <!-- name="${wheel_prefix}_wheel_visual"> -->
-        <origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
+        <origin xyz="0 0 0" rpy="0.00 ${PI/2} ${PI/2}"/>
         <geometry>
           <cylinder radius="${wheel_diameter/2}" length="${wheel_width}"/>
         </geometry>
         <material name="black"/>    <!-- Color in RViz -->
       </visual>
       <visual> <!-- name="${wheel_prefix}_wheel_visual_2"> -->
-        <origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
+        <origin xyz="0 0 0" rpy="0.00 ${PI/2} ${PI/2}"/>
         <geometry>
           <cylinder radius="${wheel_diameter/4}" length="${wheel_width*1.10}"/>
         </geometry>
@@ -45,15 +52,15 @@
       </visual>
 
       <collision name="${wheel_prefix}_wheel_collision">
-        <origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
+        <origin xyz="0 0 0" rpy="0.00 ${PI/2} ${PI/2}"/>
         <geometry>
           <cylinder radius="${wheel_diameter/2}" length="${wheel_width}"/>
         </geometry>
       </collision>
       
       <inertial>
-        <origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
-        <mass value="0.01" />
+        <origin xyz="0 0 0" rpy="0.00 ${PI/2} ${PI/2}"/>
+        <mass value="${WHEEL_WEIGHT}" />
         <inertia
           ixx="2.40384090487514E-05"
           ixy="9.21491839222917E-12"
@@ -89,8 +96,12 @@
       <joint_properties damping="1.0" friction="1.0"/>
     </joint>
 
+    <!--
+       \todo Gazebo-simulator rel. description...=> Move to a separate Gazebo package?
+    -->
     <gazebo reference="${wheel_prefix}_wheel">
       <material>Gazebo/Grey</material>
     </gazebo>
+    
   </xacro:macro> 
 </robot>
