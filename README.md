@@ -62,12 +62,21 @@ The main objective/scope for this repository is to control the part of the softw
   - [x] **Power source:** 6x AAA-batteries (4+2 config => 6*1,2V=7,2V)
   - [X] **Engines:** 2x Electrical engines (Controlled via "L298N Dual H Bridge"@Sub-ECU #1: Arduino UNO R3)
 
-# Images
-## Photos (photo log book)
+# Pictures
+## Physical robot
 - <table style="width:100%">
       <tr>
         <td><img src="/Project_stuff/Images/2019-09-09_122618.jpg" width="350px"></td>
         <td><img src="/Project_stuff/Images/2019-09-09_122725.jpg" width="350px"></td>
+     </tr>
+   </table>
+
+## Virtual robot
+- <table style="width:100%">
+      <tr>
+        <td><img src="/Project_stuff/Images/Pet-Mk.IV_gazebo.png" width="350px">       <br>View from Gazebo</td>
+        <td><img src="/Project_stuff/Images/Pet-Mk.IV_rviz(no_TF).png" width="350px">  <br>View from RViz</td>
+        <td><img src="/Project_stuff/Images/Pet-Mk.IV_rviz(with_TF).png" width="350px" <br>View from RViz (with Links/TF)<td>
      </tr>
    </table>
 
