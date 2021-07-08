@@ -7,9 +7,12 @@ Folder: ~/ros_ws/src/Pet-Mk-IV/pet_mk_iv_simulation/src/pet_description
 
 * This package contains the description of our robots and end effectors in terms of kinematics, joint limits, visual surfaces and collision space. 
 * The collision space is a simplified version of the visual description used to improve performance of collision checks. 
-* The descriptions are based on the URDF format according to the URDF XML documentation. Also using .xacro-macro format od .urdf files.
+* The descriptions are based on the URDF format according to the URDF XML documentation. Also using .xacro-macro format files.
 <table style="width:100%;background-color:#dddddd">
   <tr>
+     <td>
+        <img src="/Project_stuff/Images/Pet-Mk.IV_gazebo.png" width="350px">
+    </td>
     <td>
         <img src="/Project_stuff/Images/2021-06-16_Pet.Mk.IV-PololuZumoChassie_base_link_tree.png" width="350px">
     </td>
