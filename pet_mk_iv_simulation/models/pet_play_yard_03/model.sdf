@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+    <model name='pet_play_yard_03'>
+      <static>1</static>
+      <link name='link'>   
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>     
+        <visual name='visual'>
+          <cast_shadows>0</cast_shadows>
+          <transparency>0</transparency>
+          <geometry>
+            <mesh>
+              <uri>model://pet_play_yard_03/mesh/pet_play_yard_03.dae</uri> 
+            </mesh>
+          </geometry>          
+        </visual>
+
+        <collision name='collision'>
+          <geometry>
+           <mesh>
+              <uri>model://pet_play_yard_03/mesh/pet_play_yard_03.dae</uri> 
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+
+      </link>
+      <pose>0 0 0 0 -0 0</pose>
+    </model>
+</sdf>
