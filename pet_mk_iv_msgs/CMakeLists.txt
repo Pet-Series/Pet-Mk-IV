@@ -9,7 +9,9 @@ project(pet_mk_iv_msgs)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED
   COMPONENTS
+  actionlib_msgs
   std_msgs
+  geometry_msgs
   message_generation
 )
 
@@ -49,11 +51,12 @@ find_package(catkin REQUIRED
 # Generate messages in the 'msg' folder
 add_message_files(
   FILES
-  TripleBoolean.msg
-  EngineCommand.msg
   DistanceMeasurement.msg
+  EngineCommand.msg
   IrRemote.msg
   LightBeacon.msg
+  LineDetection.msg
+  TripleBoolean.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -64,16 +67,17 @@ add_message_files(
 # )
 
 ## Generate actions in the 'action' folder
-# add_action_files(
-#   FILES
-#   Action1.action
-#   Action2.action
-# )
+add_action_files(
+  FILES
+  SetVelocity.action
+)
 
 # Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
+  actionlib_msgs
   std_msgs
+  geometry_msgs
 )
 
 ################################################
@@ -108,7 +112,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES pet_mk_iv_msgs
-#  CATKIN_DEPENDS other_catkin_pkg
+  CATKIN_DEPENDS actionlib_msgs
   DEPENDS message_runtime
 )
 

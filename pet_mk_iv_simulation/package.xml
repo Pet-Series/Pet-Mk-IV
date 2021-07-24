@@ -7,25 +7,26 @@
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="sk@todo.todo">sk</maintainer>
+  <maintainer email="stefan.kull@gmail.com">sk</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
   <!-- Commonly used license strings: -->
   <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
-  <license>TODO</license>
+  <license>MIT</license>
 
 
-  <!-- Url tags are optional, but multiple are allowed, one per tag -->
+<!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
-  <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/pet_mk_iv_simulation</url> -->
+  <url type="website">http://github.com/kullken/Pet-Mk-IV</url>
+  <url type="repository">http://github.com/kullken/Pet-Mk-IV</url>
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
   <!-- Authors do not have to be maintainers, but could be -->
   <!-- Example: -->
-  <!-- <author email="jane.doe@example.com">Jane Doe</author> -->
+  <author  email="karl.viktor.kull@gmail.com">Kullken</author>
+  <author  email="stefan.kull@gmail.com"     >SeniorKullken</author>
 
 
   <!-- The *depend tags are used to specify dependencies -->
@@ -58,6 +59,7 @@
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <!-- Other tools can request additional information be placed here -->
-
+    <gazebo_ros gazebo_model_path="${prefix}/models"/>
+    <gazebo_ros gazebo_media_path="${prefix}/models"/>
   </export>
 </package>
