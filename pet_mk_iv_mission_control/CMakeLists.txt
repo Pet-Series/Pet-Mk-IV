@@ -9,6 +9,13 @@ project(pet_mk_iv_mission_control)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   rospy
+  actionlib
+  actionlib_msgs
+  behaviortree_cpp_v3
+  behaviortree_ros
+  geometry_msgs
+  pet_mk_iv_msgs
+  roscpp
 )
 
 ## System dependencies are found with CMake's conventions
@@ -113,40 +120,57 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
+# include_directories(
+#   # include
+#   ${catkin_INCLUDE_DIRS}
+# )
+
+add_executable(my_tree 
+  my_tree/my_tree.cpp
 )
 
-## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/pet_mk_iv_mission_control.cpp
-# )
+target_include_directories(my_tree
+  PRIVATE  
+    my_tree
+    ${catkin_INCLUDE_DIRS}
+)
 
-## Add cmake target dependencies of the library
-## as an example, code may need to be generated before libraries
-## either from message generation or dynamic reconfigure
-# add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(my_tree
+  PRIVATE
+    ${catkin_LIBRARIES}
+)
 
-## Declare a C++ executable
-## With catkin_make all packages are built within a single CMake context
-## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/pet_mk_iv_mission_control_node.cpp)
+# SetVelocityActionServer
+add_executable(set_velocity_action_server 
+  src/set_velocity_action_server.cpp
+)
 
-## Rename C++ executable without prefix
-## The above recommended prefix causes long target names, the following renames the
-## target back to the shorter version for ease of user use
-## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
-# set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
+target_include_directories(set_velocity_action_server
+  PRIVATE  
+    include
+    ${catkin_INCLUDE_DIRS}
+)
 
-## Add cmake target dependencies of the executable
-## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(set_velocity_action_server
+  PRIVATE
+    ${catkin_LIBRARIES}
+)
 
-## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
+# SetVelocityActionServer
+add_executable(set_velocity_behavior_node 
+  src/set_velocity_behavior_node.cpp
+)
+
+target_include_directories(set_velocity_behavior_node
+  PRIVATE  
+    include
+    ${catkin_INCLUDE_DIRS}
+)
+
+target_link_libraries(set_velocity_behavior_node
+  PRIVATE
+    ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##

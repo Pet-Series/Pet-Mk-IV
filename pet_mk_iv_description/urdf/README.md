@@ -1,4 +1,15 @@
-# Robot Description
+# README: /pet_mk_iv_description/urdf/ #
+
+ROS Package folder in the https://github.com/kullken/Pet-Mk-IV repository.</br>
+
+## **What is this folder for?** ###
+
+Robot Descriptions using the .sdf, .urdf or .xacro syntax.
+Used, among other things, by Gazebo (3D Visual/Collision), RViz (3D Visual).  
+* http://wiki.ros.org/xacro
+* http://wiki.ros.org/urdf/XML/robot
+* http://sdformat.org/
+
 ## **Robot Chassis & Body/Frame**
 <table style="width:100%;background-color:#dddddd">
   <tr>
