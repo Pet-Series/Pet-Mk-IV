@@ -4,8 +4,8 @@
   \file         <workspace>/src/pet_mk_iv_description/urdf/sensor_fc_123_lineDetector.urdf.xacro
   \authors      stefan.kull@gmail.com (Github ID 'SeniorKullken')
   \repository   https://github.com/kullken/Pet-Mk-IV
-  \repository   https://github.com/kullken/pet_mcu_base
-  \copyright    
+  \repository   https://github.com/kullken/pet_mcu_common
+  \copyright
   \description  FC-123 breakout board using CTRT5000 Infrared sensors for tracing (aka. "Line Follower")
                 origin_xyz: At the bottom. Between IR diode & IR receiver    
   ____________________________________________________________________________

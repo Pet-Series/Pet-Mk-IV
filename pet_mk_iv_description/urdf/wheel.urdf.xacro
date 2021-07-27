@@ -4,10 +4,10 @@
   \file         <workspace>/src/pet_mk_iv_description/urdf/wheel.urdf.xacro
   \authors      stefan.kull@gmail.com (Github ID 'SeniorKullken')
   \repository   https://github.com/kullken/Pet-Mk-IV
-  \repository   https://github.com/kullken/pet_mcu_base
-  \copyright    
-  \description  .xacro macro that defines a wheel   
-       
+  \repository   https://github.com/kullken/pet_mcu_common
+  \copyright
+  \description  .xacro macro that defines a wheel
+
   ____________________________________________________________________________
   \usage
       <robot>

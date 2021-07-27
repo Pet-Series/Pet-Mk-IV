@@ -28,17 +28,17 @@ The main objective/scope for this repository is to control the part of the softw
  - [X] cmake upload firmware from RPi > Arduino system  (No use of Arduino IDE)
  - [X] SSH authentication vs. Github repositories
  - [X] Clone of Git-repo https://github.com/kullken/Pet-Mk-IV  <- This repo!
- - [X] Clone of Git-repo https://github.com/kullken/pet_mcu_base
- 
+ - [X] Clone of Git-repo https://github.com/kullken/pet_mcu_common
+
 ### Target Environment: Sub-ECU/MCU #1
  - [X] Arduino UNO R3 via serial/USB-cable -> RPi
- - [X] Firmware <- https://github.com/kullken/pet_mcu_base
+ - [X] Firmware <- https://github.com/kullken/pet_mcu_common
 
 ### Target Environment: Sub-ECU/MCU #2
  - [X] Arduino Nano via serial/USB-cable -> RPi
- - [X] Firmware <- https://github.com/kullken/pet_mcu_base
+ - [X] Firmware <- https://github.com/kullken/pet_mcu_common
 
- 
+
 ### Installing
      ...
 

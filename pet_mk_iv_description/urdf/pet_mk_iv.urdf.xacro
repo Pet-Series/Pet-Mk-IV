@@ -4,8 +4,8 @@
   \file         <workspace>/src/pet_mk_iv_description/urdf/pet_mk_iv.urdf.xacro
   \authors      stefan.kull@gmail.com (Github ID 'SeniorKullken')
   \repository   https://github.com/kullken/Pet-Mk-IV
-  \repository   https://github.com/kullken/pet_mcu_base
-  \copyright    
+  \repository   https://github.com/kullken/pet_mcu_common
+  \copyright
   \description  Main rover/robot/vehicle description.
   \usage        $ roslaunch rover_gazebo gazebo_world.launch
   \usage        $ roslaunch pet_mk_iv_description rviz.launch

@@ -4,9 +4,9 @@
   \file         pet_mk_iv_gazebo.urdf.xacro
   \authors      stefan.kull@gmail.com (Github ID 'SeniorKullken')
   \repository   https://github.com/kullken/Pet-Mk-IV
-  \repository   https://github.com/kullken/pet_mcu_base
-  \copyright    
-  \description  Adding colur to the robot in gazebo this will not visualized in rviz 
+  \repository   https://github.com/kullken/pet_mcu_common
+  \copyright
+  \description  Adding colur to the robot in gazebo this will not visualized in rviz
   ____________________________________________________________________________
  
   \usage      <xacro:include filename="$(find pet_mk_iv_description)/urdf/pet_mk_iv_gazebo.urdf.xacro" />

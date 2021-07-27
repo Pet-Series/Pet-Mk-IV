@@ -4,8 +4,8 @@
   \file         <workspace>/src/pet_mk_iv_description/urdf/sensor_hc_sr04_sonarRange.urdf.xacro
   \authors      stefan.kull@gmail.com (Github ID 'SeniorKullken')
   \repository   https://github.com/kullken/Pet-Mk-IV
-  \repository   https://github.com/kullken/pet_mcu_base
-  \copyright    
+  \repository   https://github.com/kullken/pet_mcu_common
+  \copyright
   \description  HC-SR04 Ultrasound/Ulrasonic range sensor: Emitter + Receiver on a breakout board.
                 origin_xyz: In the middle of the PCB, front side of PCB    
   ____________________________________________________________________________
