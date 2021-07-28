@@ -1,0 +1,16 @@
+name: learn-github-actions
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup ROS
+        uses: ros-tooling/setup-ros@v0.2
+        with:
+          required-ros-distributions: melodic
+      - name: Build package
+        uses: ros-tooling/action-ros-ci@v0.2
+        with:
+          package-name: pet_mk_iv_arduino
+          target-ros1-distro: melodic
