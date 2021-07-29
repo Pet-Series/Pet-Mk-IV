@@ -1,10 +1,23 @@
 #!/usr/bin/env python
+# Pet-series
+# (c) xxx
+# License: MIT
+#
+# Integration test script that includes the following capabilites
+# a) Velocity(engine) control.
+# b) Forward & sideways(45 deg) obstacle detection (via Ultrassonic sensors).
+# c) Downward ground / line detectors.
+# d) IR-remote controll for [Play], [Pause] and [Stop].
+#
+# Author: "SeniroKullken" <stefan.kull@gmail.com> with assist of "Kullken" <karl.viktor.kull@gmail.com>
+#
 # Behaviour:
 # 1) IR-remote [Play], [Pause] and [Stop] overroule them all
 # 1) Run straight a head.
 # 2a) Rule "a": Avoid colliding with obstacle by using distance sensors to desice if turn left vs. right (e.g. Ultrasonic HC-SR04).
 # 2b) Rule "b": Stop when detecting line by using line follower sensors.
 # 2c) Display selected action on LCD-display.
+#
 from __future__ import division
 
 import rospy

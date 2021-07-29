@@ -22,7 +22,7 @@
 
 <robot name="Pet Mk.IV" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:include filename="$(find pet_mk_iv_description)/urdf/materials.xacro"/>
+  <xacro:include filename="$(find pet_mk_iv_description)/urdf/materials.xacro"/>    <!-- Import Rviz colors -->
   <xacro:include filename="$(find pet_mk_iv_description)/urdf/pet_mk_iv_gazebo.urdf.xacro" />
   <xacro:include filename="$(find pet_mk_iv_description)/urdf/sensor_hc_sr04_sonarRange.urdf.xacro"/>
   <xacro:include filename="$(find pet_mk_iv_description)/urdf/sensor_RPi_cameraV2.urdf.xacro"/>
@@ -32,9 +32,9 @@
   <xacro:include filename="$(find pet_mk_iv_description)/urdf/wheel.urdf.xacro"/>
   <xacro:include filename="$(find pet_mk_iv_description)/urdf/visual_raspberryPi3B_sbc.urdf.xacro"/>
 
-  <xacro:property name="robot_weight"       value="0.9"/>    <!-- unit kg  -->
+  <xacro:property name="robot_weight"    value="0.9"/>    <!-- unit kg  -->
   <xacro:property name="sonar_center_height" value="0.060"/>   <!-- unit m  -->
-  <xacro:property name="PI" value="3.14159265359"/>   <!-- unit n/a  -->
+  <xacro:property name="PI"              value="3.14159265359"/>   <!-- unit n/a  -->
 
   <xacro:property name="chassis_height"  value="0.020"/>   <!-- unit m  -->
 
@@ -128,7 +128,7 @@
 
     <visual name='Pet_Mk_IV_body_visual'>
       <origin xyz="0 0 0" rpy="${PI/2} 0 ${PI}"/>
-      <geometry>'
+      <geometry>
 <!--
       ???????????????????????????????????????????????????????????????????????????
       Works in Gazebo - But NOT Rviz!!!
