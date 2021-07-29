@@ -57,7 +57,7 @@ class LCDDisplay(object): # A ROS-subscriber node...
         self.row1_string = "Init.LCD row1" # Initial text on LCD Display
         self.row2_string = "Init.LCD row2" #     ---- " -----
         
-        # Subscribers (Topucs that is going to be consumed by this node)
+        # Subscribers (Topics that is going to be consumed by this node)
         self.row1_sub = rospy.Subscriber("~row1", String, self.row1_cb)
         self.row2_sub = rospy.Subscriber("~row2", String, self.row2_cb)
   
