@@ -1,0 +1,370 @@
+<sdf version='1.6'>
+  <!--
+    ".xacro" => SDF/URDF-macrofilee that need to be parsed.
+
+    Example - Via shell/command line:
+      $ rosrun xacro xacro src/Pet-Mk-IV/pet_mk_iv_simulation/worlds/pet_play_yard.world.xacro >  src/Pet-Mk-IV/pet_mk_iv_simulation/worlds/pet_play_yard.world 
+
+    Example - Via launch file:
+      <node name="xacro" pkg="xacro" type="xacro" args="$(find pet_mk_iv_simulation)/worlds/$(arg world).xacro -o $(find pet_mk_iv_simulation)/worlds/$(arg world)" />
+
+    http://wiki.ros.org/xacro 
+  -->
+
+  <world name='default' xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:property name="WALL_HEIGHT"    value="0.30"/>
+    <xacro:property name="WALL_THICKNESS" value="0.01"/>
+    <xacro:property name="WALL_LENGTH"    value="2.00"/>
+    <xacro:property name="PI"             value="3.14159265359"/> 
+
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type='adiabatic'/>
+    <physics name='default_physics' default='0' type='ode'>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+    
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>1</shadows>
+    </scene>
+    <audio>
+      <device>default</device>
+    </audio>
+    <wind/>
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <latitude_deg>0</latitude_deg>
+      <longitude_deg>0</longitude_deg>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+
+    <light name='sun' type='directional'>
+      <cast_shadows>1</cast_shadows>
+      <pose frame=''>0 0 10 0 -0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <!--
+      Add common floor plan
+    -->
+    <include>
+      <uri>model://ground_plane</uri>
+      <name>ground_plane</name>
+      <pose>0.00 0.00 0.00 0 0 0</pose>
+    </include>
+
+    <!--
+      Add Construction Cone
+    -->
+      <include>
+        <uri>model://construction_cone</uri>
+        <name>construction_cone</name>
+        <pose frame=''>0.10 -0.40 0.00 0 -0 0</pose>
+        <scale>0.2 0.2 0.2</scale>
+     </include>
+    
+    <!--
+      Add fences/walls and visual floor
+    -->
+    <model name='pet_play_yard-03'>
+      <pose frame=''>0.00 0.00 0.00 0 -0 0</pose>
+      <!--
+        Add uniqe visual floor plan
+      -->
+      <include>
+        <uri>model://pet_play_yard-floor03</uri>
+        <name>pet_play_yard-floor03</name>
+        <pose>0.00 0.00 0.00 0 0 0</pose>
+     </include>
+
+      <!--
+        x-tra obstacle inside play yard
+      -->
+      <link name='wall_obstacle-1'>
+        <pose frame=''>-0.000711 0.140953 0 0 -0 1.309</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+
+        <collision name='wall_obstacle-1_Collision'>
+          <geometry>
+            <box>
+              <size>0.5 ${WALL_THICKNESS} ${WALL_HEIGHT}</size>
+            </box>
+          </geometry>
+          <pose frame=''>0.00 0.00 ${WALL_HEIGHT/2} 0.0 -0.0 0.0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='wall_obstacle-1_Visual'>
+          <pose frame=''>0.00 0.00 ${WALL_HEIGHT/2} 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.5 ${WALL_THICKNESS} ${WALL_HEIGHT}</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/CeilingTiled</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+      </link>
+     
+      <!--
+        Add common: Front wall/fence
+      -->
+      <link name='wall_front'>
+        <pose frame=''>${WALL_THICKNESS/2+1.0} 0.00 0.00 0 -0 -${PI/2}</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <collision name='wall_front_Collision'>
+          <geometry>
+            <box>
+              <size>${WALL_LENGTH} ${WALL_THICKNESS} ${WALL_HEIGHT}</size>
+            </box>
+          </geometry>
+          <pose frame=''>0.00 0.00 ${WALL_HEIGHT/2} 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='wall_front_Visual'>
+          <pose frame=''>0.00 0.00 ${WALL_HEIGHT/2} 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>${WALL_LENGTH} ${WALL_THICKNESS} ${WALL_HEIGHT}</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>0.921569 0.807843 0.615686 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+
+      </link>
+      <!--
+        Add common: Right wall/fence
+      -->
+      <link name='wall_right'>
+        <pose frame=''>0.0 -${WALL_THICKNESS/2+1.0} 0.0 0 -0 ${PI}</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <collision name='wall_right_Collision'>
+          <geometry>
+            <box>
+              <size>${WALL_LENGTH} ${WALL_THICKNESS} ${WALL_HEIGHT}</size>
+            </box>
+          </geometry>
+          <pose frame=''>0.00 0.00 ${WALL_HEIGHT/2} 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='wall_right_Visual'>
+          <pose frame=''>0.00 0.00 ${WALL_HEIGHT/2} 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>${WALL_LENGTH} ${WALL_THICKNESS} ${WALL_HEIGHT}</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+      </link>
+
+      <!--
+        Add common: Rear Fence/Wall
+      -->
+      <link name='wall_rear'>
+        <pose frame=''>-${WALL_THICKNESS/2+1.0} 0.00 0.00 0 -0 ${PI/2}</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <collision name='wall_rear_Collision'>
+          <geometry>
+            <box>
+              <size>${WALL_LENGTH} ${WALL_THICKNESS} ${WALL_HEIGHT}</size>
+            </box>
+          </geometry>
+          <pose frame=''>0.00 0.00 ${WALL_HEIGHT/2} 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='wall_rear_Visual'>
+          <pose frame=''>0.00 0.00 ${WALL_HEIGHT/2} 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>${WALL_LENGTH} ${WALL_THICKNESS} ${WALL_HEIGHT}</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>0.760784 0.662745 0.627451 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+      </link>
+
+      <!--
+        Add common: Left Fence/Wall
+      -->
+      <link name='wall_left'>
+        <pose frame=''>0.0 ${WALL_THICKNESS/2+1.0} 0.00 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <collision name='wall_left_Collision'>
+          <geometry>
+            <box>
+              <size>${WALL_LENGTH} ${WALL_THICKNESS} ${WALL_HEIGHT}</size>
+            </box>
+          </geometry>
+          <pose frame=''>0.00 0.00 ${WALL_HEIGHT/2} 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='wall_left_Visual'>
+          <pose frame=''>0.00 0.00 ${WALL_HEIGHT/2} 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>${WALL_LENGTH} ${WALL_THICKNESS} ${WALL_HEIGHT}</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+      </link>
+      <static>1</static>
+    </model>
+
+    <state world_name='default'>
+      <sim_time>106 973000000</sim_time>
+      <real_time>107 738607561</real_time>
+      <wall_time>1625950624 327474118</wall_time>
+      <iterations>106973</iterations>
+      <model name='ground_plane'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      
+      <light name='sun'>
+        <pose frame=''>0 0 10 0 -0 0</pose>
+      </light>
+    </state>
+
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose frame=''>3.35879 2.49448 3.79038 0 0.641797 -2.36297</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+  </world>
+</sdf>

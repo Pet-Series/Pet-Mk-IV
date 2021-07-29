@@ -1,0 +1,13 @@
+material pet_play_yard-floor02
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture pet_play_yard-floor02.png
+      }
+    }
+  }
+}

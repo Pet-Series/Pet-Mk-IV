@@ -16,7 +16,7 @@
   \reference  http://gazebosim.org/tutorials?tut=ros_roslaunch
 -->
 <launch>
-
+  
   <!-- 
     These are the arguments you can pass to this launch file...
     For example: 
@@ -25,13 +25,20 @@
   --> 
   <arg name="spawn_x"   default="-0.100"/>  <!-- Default URDF robot coordinate -->
   <arg name="spawn_y"   default="0.350"/>   <!-- Default URDF robot coordinate -->
-  <arg name="spawn_z"   default="0.0"/>     <!-- Default URDF robot coordinate --> 
-  <arg name="world"     default="pet_play_yard_01.world"/> 
+  <arg name="spawn_z"   default="0.0"/>     <!-- Default URDF robot coordinate -->
+
+  <arg name="world"     default="pet_play_yard-02.world"/> 
   <arg name="paused"    default="false"/>
   <arg name="use_sim_time" default="true"/>
   <arg name="gui"       default="true"/>
   <arg name="headless"  default="false"/>
   <arg name="debug"     default="false"/>
+  <arg name="verbose"   default="true"/>  
+  
+  <!--
+    Parse/compile the world/context Description *.world.xacro => *.world
+  -->
+  <node name="xacro" pkg="xacro" type="xacro" args="$(find pet_mk_iv_simulation)/worlds/$(arg world).xacro -o $(find pet_mk_iv_simulation)/worlds/$(arg world)" />
   
   <!--
     Load the world/context Description
@@ -43,6 +50,7 @@
     <arg name="gui"         value="$(arg gui)"/>
     <arg name="headless"    value="$(arg headless)"/>
     <arg name="debug"       value="$(arg debug)"/>
+    <arg name="verbose"     value="$(arg verbose)"/>
   </include>
 
   <!--
@@ -58,7 +66,7 @@
   <node  name="mybot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
          args="-urdf -param robot_description -x $(arg spawn_x) -y $(arg spawn_y) -z $(arg spawn_z) -model rover" /> 
 
-  <!-- convert joint states to TF transforms for rviz, etc -->
+  <!-- Convert joint states to TF transforms for rviz, etc -->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
     <param name="use_gui" value="False"/>
   </node> 

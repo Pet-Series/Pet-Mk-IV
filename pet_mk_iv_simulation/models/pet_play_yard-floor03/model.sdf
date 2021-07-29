@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sdf version="1.5">
+  <model name="pet_play_yard-floor03">
+    <!-- Floorimage "up" = "-x" -->
+    <pose>0 0 0 0 0 0</pose>
+    <link name="pet_play_yard-floor03_floor">
+      <pose>0 0 0 0 0 3.1415</pose>
+
+      <visual name="visual_floor">
+        <geometry>
+          <box>
+            <!-- Floor size = 2x2m -->
+            <size>2.0 2.0 1e-5</size>
+          </box>
+        </geometry>
+
+        <material>
+          <script>
+            <uri>model://pet_play_yard-floor03/materials/scripts</uri>
+            <uri>model://pet_play_yard-floor03/materials/textures</uri>
+            <name>pet_play_yard-floor03</name>
+          </script>
+        </material>
+        <pose>0 0 0.001 0 0 0</pose>
+        <cast_shadows>1</cast_shadows>
+        <transparency>0</transparency>
+      </visual>
+
+      <collision name="collision_floor">
+        <pose>0 0 0.001 0 0 0</pose>
+        <geometry>
+          <box>
+            <!-- Floor size = 2x2m -->
+            <size>2.0 2.0 1e-5</size>
+          </box>
+        </geometry>
+      </collision>
+
+    </link>
+
+    <static>1</static>
+    <allow_auto_disable>1</allow_auto_disable>
+
+  </model>
+</sdf>

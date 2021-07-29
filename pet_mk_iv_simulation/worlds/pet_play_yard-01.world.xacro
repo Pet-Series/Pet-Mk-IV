@@ -1,6 +1,13 @@
 <sdf version='1.6'>
   <!--
     ".xacro" => SDF/URDF-macrofilee that need to be parsed.
+
+    Example - Via shell/command line:
+      $ rosrun xacro xacro src/Pet-Mk-IV/pet_mk_iv_simulation/worlds/pet_play_yard.world.xacro >  src/Pet-Mk-IV/pet_mk_iv_simulation/worlds/pet_play_yard.world 
+
+    Example - Via launch file:
+      <node name="xacro" pkg="xacro" type="xacro" args="$(find pet_mk_iv_simulation)/worlds/$(arg world).xacro -o $(find pet_mk_iv_simulation)/worlds/$(arg world)" />
+
     http://wiki.ros.org/xacro 
   -->
 
@@ -9,71 +16,7 @@
     <xacro:property name="WALL_THICKNESS" value="0.01"/>
     <xacro:property name="WALL_LENGTH"    value="2.00"/>
     <xacro:property name="PI"             value="3.14159265359"/> 
-    <!-- -->
-    <light name='sun' type='directional'>
-      <cast_shadows>1</cast_shadows>
-      <pose frame=''>0 0 10 0 -0 0</pose>
-      <diffuse>0.8 0.8 0.8 1</diffuse>
-      <specular>0.2 0.2 0.2 1</specular>
-      <attenuation>
-        <range>1000</range>
-        <constant>0.9</constant>
-        <linear>0.01</linear>
-        <quadratic>0.001</quadratic>
-      </attenuation>
-      <direction>-0.5 0.1 -0.9</direction>
-    </light>
-    <model name='ground_plane'>
-      <static>1</static>
-      <!--
-        Golv
-      -->
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>100 100</size>
-            </plane>
-          </geometry>
-          <surface>
-            <contact>
-              <collide_bitmask>65535</collide_bitmask>
-              <ode/>
-            </contact>
-            <friction>
-              <ode>
-                <mu>100</mu>
-                <mu2>50</mu2>
-              </ode>
-              <torsional>
-                <ode/>
-              </torsional>
-            </friction>
-            <bounce/>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <cast_shadows>0</cast_shadows>
-          <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>100 100</size>
-            </plane>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Grey</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-    </model>
+
     <gravity>0 0 -9.8</gravity>
     <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
     <atmosphere type='adiabatic'/>
@@ -99,29 +42,64 @@
       <elevation>0</elevation>
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
-    <!--
 
+    <light name='sun' type='directional'>
+      <cast_shadows>1</cast_shadows>
+      <pose frame=''>0 0 10 0 -0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <!--
+      Add common floor plan
     -->
-    <model name='pet_play_yard'>
+    <include>
+      <uri>model://ground_plane</uri>
+      <name>ground_plane</name>
+      <pose>0.00 0.00 0.00 0 0 0</pose>
+    </include>
+
+    <!--
+      Add Construction Cone
+    -->
+      <include>
+        <uri>model://construction_cone</uri>
+        <name>construction_cone</name>
+        <pose frame=''>0.10 -0.40 0.00 0 -0 0</pose>
+        <scale>0.2 0.2 0.2</scale>
+     </include>
+    
+    <!--
+      Add fences/walls and visual floor
+    -->
+    <model name='pet_play_yard-01'>
       <pose frame=''>0.00 0.00 0.00 0 -0 0</pose>
       <!--
-        Golv
+        Add uniqe visual floor plan
       -->
       <include>
-        <uri>model://floor</uri>
-        <name>floor</name>
-       <pose>0.00 0.00 0.00 0 0 0</pose>
-     </include> 
+        <uri>model://pet_play_yard-floor01</uri>
+        <name>pet_play_yard-floor01</name>
+        <pose>0.00 0.00 0.00 0 0 0</pose>
+     </include>
+
       <!--
-        Hinder Vägg/Rundingsmärke
+        x-tra obstacle inside play yard
       -->
-      <link name='Wall_16'>
+      <link name='wall_obstacle-1'>
         <pose frame=''>-0.000711 0.140953 0 0 -0 1.309</pose>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
 
-        <collision name='Wall_16_Collision'>
+        <collision name='wall_obstacle-1_Collision'>
           <geometry>
             <box>
               <size>0.5 ${WALL_THICKNESS} ${WALL_HEIGHT}</size>
@@ -142,7 +120,7 @@
             </friction>
           </surface>
         </collision>
-        <visual name='Wall_16_Visual'>
+        <visual name='wall_obstacle-1_Visual'>
           <pose frame=''>0.00 0.00 ${WALL_HEIGHT/2} 0 -0 0</pose>
           <geometry>
             <box>
@@ -163,14 +141,14 @@
       </link>
      
       <!--
-        Vägg
+        Add common: Front wall/fence
       -->
-      <link name='Wall_21_Front'>
+      <link name='wall_front'>
         <pose frame=''>${WALL_THICKNESS/2+1.0} 0.00 0.00 0 -0 -${PI/2}</pose>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
-        <collision name='Wall_21_Front_Collision'>
+        <collision name='wall_front_Collision'>
           <geometry>
             <box>
               <size>${WALL_LENGTH} ${WALL_THICKNESS} ${WALL_HEIGHT}</size>
@@ -191,7 +169,7 @@
             </friction>
           </surface>
         </collision>
-        <visual name='Wall_21_Front_Visual'>
+        <visual name='wall_front_Visual'>
           <pose frame=''>0.00 0.00 ${WALL_HEIGHT/2} 0 -0 0</pose>
           <geometry>
             <box>
@@ -212,14 +190,14 @@
 
       </link>
       <!--
-        Vägg
+        Add common: Right wall/fence
       -->
-      <link name='Wall_22_Right'>
+      <link name='wall_right'>
         <pose frame=''>0.0 -${WALL_THICKNESS/2+1.0} 0.0 0 -0 ${PI}</pose>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
-        <collision name='Wall_22_Right_Collision'>
+        <collision name='wall_right_Collision'>
           <geometry>
             <box>
               <size>${WALL_LENGTH} ${WALL_THICKNESS} ${WALL_HEIGHT}</size>
@@ -240,7 +218,7 @@
             </friction>
           </surface>
         </collision>
-        <visual name='Wall_22_Right_Visual'>
+        <visual name='wall_right_Visual'>
           <pose frame=''>0.00 0.00 ${WALL_HEIGHT/2} 0 -0 0</pose>
           <geometry>
             <box>
@@ -258,17 +236,17 @@
             <layer>0</layer>
           </meta>
         </visual>
-
       </link>
+
       <!--
-        Vägg
+        Add common: Rear Fence/Wall
       -->
-      <link name='Wall_23_Rear'>
+      <link name='wall_rear'>
         <pose frame=''>-${WALL_THICKNESS/2+1.0} 0.00 0.00 0 -0 ${PI/2}</pose>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
-        <collision name='Wall_23_Rear_Collision'>
+        <collision name='wall_rear_Collision'>
           <geometry>
             <box>
               <size>${WALL_LENGTH} ${WALL_THICKNESS} ${WALL_HEIGHT}</size>
@@ -289,7 +267,7 @@
             </friction>
           </surface>
         </collision>
-        <visual name='Wall_23_Rear_Visual'>
+        <visual name='wall_rear_Visual'>
           <pose frame=''>0.00 0.00 ${WALL_HEIGHT/2} 0 -0 0</pose>
           <geometry>
             <box>
@@ -307,17 +285,17 @@
             <layer>0</layer>
           </meta>
         </visual>
-
       </link>
+
       <!--
-        Vägg <model><link>...</model></link>)
+        Add common: Left Fence/Wall
       -->
-      <link name='Wall_24_Left'>
+      <link name='wall_left'>
         <pose frame=''>0.0 ${WALL_THICKNESS/2+1.0} 0.00 0 -0 0</pose>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
-        <collision name='Wall_24_Left_Collision'>
+        <collision name='wall_left_Collision'>
           <geometry>
             <box>
               <size>${WALL_LENGTH} ${WALL_THICKNESS} ${WALL_HEIGHT}</size>
@@ -338,7 +316,7 @@
             </friction>
           </surface>
         </collision>
-        <visual name='Wall_24_Left_Visual'>
+        <visual name='wall_left_Visual'>
           <pose frame=''>0.00 0.00 ${WALL_HEIGHT/2} 0 -0 0</pose>
           <geometry>
             <box>
@@ -356,61 +334,8 @@
             <layer>0</layer>
           </meta>
         </visual>
-
       </link>
       <static>1</static>
-    </model>
-    <!--
-      Construction Cone
-    -->
-    <model name='Construction Cone'>
-      <pose frame=''>0.50 -0.40 0.00 0 -0 0</pose>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <scale>1.0 1.0 1.0</scale>
-              <uri>model://construction_cone/meshes/construction_cone.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <scale>1.0 1.0 1.0</scale>
-              <uri>model://construction_cone/meshes/construction_cone.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <self_collide>0</self_collide>
-        <inertial>
-          <inertia>
-            <ixx>1</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>1</iyy>
-            <iyz>0</iyz>
-            <izz>1</izz>
-          </inertia>
-          <mass>1</mass>
-        </inertial>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-
     </model>
 
     <state world_name='default'>
