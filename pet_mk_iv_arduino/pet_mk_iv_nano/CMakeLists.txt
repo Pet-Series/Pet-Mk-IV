@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10.2)
 
 project(pet_mk_iv_nano)
 
-find_package(pet_mcu_base REQUIRED
+find_package(pet_mcu_common REQUIRED
   COMPONENTS
     core
     ir_remote_module

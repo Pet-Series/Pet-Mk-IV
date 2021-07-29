@@ -4,8 +4,8 @@
   \file         <workspace>/src/pet_mk_iv_description/urdf/sensor_RPi_cameraV2.urdf.xacro
   \authors      stefan.kull@gmail.com (Github ID 'SeniorKullken')
   \repository   https://github.com/kullken/Pet-Mk-IV
-  \repository   https://github.com/kullken/pet_mcu_base
-  \copyright    
+  \repository   https://github.com/kullken/pet_mcu_common
+  \copyright
   \description  Raspberry Pi Camera V2
                 - origin_xyz: Front/center of the camera lens.
    ____________________________________________________________________________

@@ -4,8 +4,8 @@
   \file         <workspace>/src/pet_mk_iv_description/urdf/visual_raspberryPi3B_sbc.urdf.xacro
   \authors      stefan.kull@gmail.com (Github ID 'SeniorKullken')
   \repository   https://github.com/kullken/Pet-Mk-IV
-  \repository   https://github.com/kullken/pet_mcu_base
-  \copyright    
+  \repository   https://github.com/kullken/pet_mcu_common
+  \copyright
   \description  .xacro macro that insert a visual Raspberry Pi Model 3B Motheboard/SBC
                 origin_xyz: In the middle of the PCB, Botton of the PCB .
   ____________________________________________________________________________

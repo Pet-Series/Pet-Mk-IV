@@ -4,8 +4,8 @@
   \file         <workspace>/src/rover_gazebo/launch/gazebo_world.launch
   \authors      stefan.kull@gmail.com (Github ID 'SeniorKullken')
   \repository   https://github.com/kullken/Pet-Mk-IV
-  \repository   https://github.com/kullken/pet_mcu_base
-  \copyright    
+  \repository   https://github.com/kullken/pet_mcu_common
+  \copyright
   \description  Gazebo launch file that spawn(inserts) Pet Mark IV into a simple world(play yard) from realrobotlab.
   ____________________________________________________________________________
   \usage
