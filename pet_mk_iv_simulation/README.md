@@ -1,6 +1,6 @@
 # README: /pet_mk_iv_simulation/ #
 
-ROS Packge folder in the https://github.com/kullken/Pet-Mk-IV repository.</br>
+ROS Packge folder in the https://github.com/Pet-Series/pet_mk_iv_simulation repository.</br>
 **/TODO**: Put this package into a separate GitHub-repo.
 
 ## **What is this folder for?** ##
@@ -24,7 +24,7 @@ Set up for simuation in Gazebo
 * PC with Ubuntu 20.04
 * ROS(1) melodic</br>
   /TODO: Upgrade to ROS(1) Noetic.
-* Clone of https://github.com/kullken/Pet-Mk-IV (this repo.)
+* Clone of https://github.com/Pet-Series/pet_mk_iv_simulation (this repo.)
 
 ### Who do I talk to? ###
 

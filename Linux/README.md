@@ -1,6 +1,6 @@
 # README #
 
-Folder in the https://github.com/kullken/Pet-Mk-IV repository.
+Folder in the https://github.com/Pet-Series/Pet-Mk-IV repository.
 Folder: ~/ros_ws/src/Pet-Mk-IV/pet_mk_iv_simulation/src/Linux
 
 ### What is this folder for? ###

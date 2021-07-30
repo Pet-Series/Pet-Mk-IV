@@ -1,6 +1,6 @@
 # README: /pet_mk_iv_description/ #
 
-ROS Package folder in the https://github.com/kullken/Pet-Mk-IV repository.</br>
+ROS Package folder in the https://github.com/Pet-Series/Pet-Mk-IV repository.</br>
 
 ## **What is this folder for?** ##
 
