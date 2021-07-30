@@ -1,0 +1,13 @@
+material sign_residential/sign
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture residential.png
+      }
+    }
+  }
+}

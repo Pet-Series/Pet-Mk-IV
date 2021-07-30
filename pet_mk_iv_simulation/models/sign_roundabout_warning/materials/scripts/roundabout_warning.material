@@ -1,0 +1,13 @@
+material sign_roundabout_warning/sign
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture roundabout_warning.png
+      }
+    }
+  }
+}

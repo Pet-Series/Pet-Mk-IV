@@ -1,0 +1,13 @@
+material sign_no_heavy_truck/sign
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture no_heavy_truck.png
+      }
+    }
+  }
+}

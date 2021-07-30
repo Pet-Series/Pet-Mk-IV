@@ -1,0 +1,13 @@
+material sign_airport/sign
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture airport.png
+      }
+    }
+  }
+}

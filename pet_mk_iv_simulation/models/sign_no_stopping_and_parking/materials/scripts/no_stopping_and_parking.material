@@ -1,0 +1,13 @@
+material sign_no_stopping_and_parking/sign
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture no_stopping_and_parking.png
+      }
+    }
+  }
+}

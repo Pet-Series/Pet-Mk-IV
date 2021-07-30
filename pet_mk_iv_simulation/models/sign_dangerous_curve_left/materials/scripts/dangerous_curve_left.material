@@ -1,0 +1,13 @@
+material sign_dangerous_curve_left/sign
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture dangerous_curve_left.png
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+material sign_road_narrows_from_left/sign
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture road_narrows_from_left.png
+      }
+    }
+  }
+}

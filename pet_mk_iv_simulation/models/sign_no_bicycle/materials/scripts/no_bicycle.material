@@ -1,0 +1,13 @@
+material sign_no_bicycle/sign
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture no_bicycle.png
+      }
+    }
+  }
+}
