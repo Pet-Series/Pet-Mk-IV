@@ -54,13 +54,8 @@
 
   <exec_depend>rospy</exec_depend>
 
-  <depend>actionlib</depend>
-  <depend>actionlib_msgs</depend>
-  <depend>behaviortree_cpp_v3</depend>
-  <depend>behaviortree_ros</depend>
   <depend>geometry_msgs</depend>
   <depend>pet_mk_iv_msgs</depend>
-  <depend>roscpp</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

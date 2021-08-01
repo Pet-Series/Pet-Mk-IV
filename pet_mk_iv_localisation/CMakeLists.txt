@@ -4,6 +4,7 @@ project(pet_mk_iv_localisation)
 find_package(catkin REQUIRED
   COMPONENTS
     geometry_msgs
+    pet_mk_iv_msgs
     roscpp
     rospy
     sensor_msgs

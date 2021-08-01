@@ -9,13 +9,8 @@ project(pet_mk_iv_mission_control)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   rospy
-  actionlib
-  actionlib_msgs
-  behaviortree_cpp_v3
-  behaviortree_ros
   geometry_msgs
   pet_mk_iv_msgs
-  roscpp
 )
 
 ## System dependencies are found with CMake's conventions
@@ -125,52 +120,6 @@ catkin_package(
 #   ${catkin_INCLUDE_DIRS}
 # )
 
-add_executable(my_tree 
-  my_tree/my_tree.cpp
-)
-
-target_include_directories(my_tree
-  PRIVATE  
-    my_tree
-    ${catkin_INCLUDE_DIRS}
-)
-
-target_link_libraries(my_tree
-  PRIVATE
-    ${catkin_LIBRARIES}
-)
-
-# SetVelocityActionServer
-add_executable(set_velocity_action_server 
-  src/set_velocity_action_server.cpp
-)
-
-target_include_directories(set_velocity_action_server
-  PRIVATE  
-    include
-    ${catkin_INCLUDE_DIRS}
-)
-
-target_link_libraries(set_velocity_action_server
-  PRIVATE
-    ${catkin_LIBRARIES}
-)
-
-# SetVelocityActionServer
-add_executable(set_velocity_behavior_node 
-  src/set_velocity_behavior_node.cpp
-)
-
-target_include_directories(set_velocity_behavior_node
-  PRIVATE  
-    include
-    ${catkin_INCLUDE_DIRS}
-)
-
-target_link_libraries(set_velocity_behavior_node
-  PRIVATE
-    ${catkin_LIBRARIES}
-)
 
 #############
 ## Install ##
