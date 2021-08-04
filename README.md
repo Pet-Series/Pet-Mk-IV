@@ -1,10 +1,21 @@
-<h1 align="center">Welcome to the Pet-Mk-IV repository👋</h1>
+<h1 align="center">Welcome to the Pet-Mk-IV repository</h1>
 
-# Source code to our Pet series micro robots #
+# Software/Setup Pet series micro robots #
 The main objective/scope for this repository is to control the part of the software (and parameter settings) that is unique for this Pet Mark IV (four) robot.
-- Simplification: As MCU we mainly using Arduino compatible hardware, like Arduino UNO and Arduino NANO. 
-- Standardisation: As system integration tool (Middle ware) we use ROS. Each MCU act as an ROS-serial device. 
-- Modularisation: We have tried to make the code as generic/common as possible. 
+<table>
+    <tr>Pet-Mk.IV during developing.
+      <td>
+        <img src="doc/pet_mk_iv-view_frontRight.jpg" width="350px">
+      </td>
+      <td>
+        <img src="doc/pet_mk_iv-view_rearRight.jpg" width="350px">
+      </td>
+    </tr>
+  </table>
+
+- **Simplification:** As MCU we mainly using Arduino compatible hardware, like Arduino UNO and Arduino NANO. 
+- **Standardisation:** As system integration tool (Middle ware) we use ROS. Each MCU act as an ROS-serial device. 
+- **Modularisation:** We have tried to make the code as generic/common as possible. 
 
 # Prerequisites
 ### Developing workstation (PC)
@@ -27,20 +38,26 @@ The main objective/scope for this repository is to control the part of the softw
     - **NewPing** Ultrasonic sensor Library for Arduino:	https://bitbucket.org/teckel12/arduino-new-ping/wiki/
  - [X] cmake upload firmware from RPi > Arduino system  (No use of Arduino IDE)
  - [X] SSH authentication vs. Github repositories
- - [X] Clone of Git-repo https://github.com/kullken/Pet-Mk-IV  <- This repo!
- - [X] Clone of Git-repo https://github.com/kullken/pet_mcu_common
+ - [X] Clone of Git-repo: </br> 
+    1.    `$ git clone https://github.com/Pet-Series/Pet-Mk-IV.git`  <- This repo!
+    1.    `$ git clone https://github.com/Pet-Series/pet_mcu_common.git`
+    1.    `$ git clone https://github.com/Pet-Series/ros_lcd_driver.git`
 
 ### Target Environment: Sub-ECU/MCU #1
  - [X] Arduino UNO R3 via serial/USB-cable -> RPi
- - [X] Firmware <- https://github.com/kullken/pet_mcu_common
+ - [X] Firmware:</br>
+    1. https://github.com/Pet-Series/pet_mcu_common
+    2. https://github.com/Pet-Series/Pet-Mk-IV/tree/master/pet_mk_iv_arduino/pet_mk_iv_uno
 
 ### Target Environment: Sub-ECU/MCU #2
  - [X] Arduino Nano via serial/USB-cable -> RPi
- - [X] Firmware <- https://github.com/kullken/pet_mcu_common
+ - [X] Firmware:</br>
+    1. https://github.com/Pet-Series/pet_mcu_common
+    2. https://github.com/Pet-Series/Pet-Mk-IV/tree/master/pet_mk_iv_arduino/pet_mk_iv_uno
 
 
-### Installing
-     ...
+## Installing/Setup ##
+    ...
 
 ## Mechanics & Hardware
 - [X] **Main ECU/CPU's:** Raspberry Pi 3
@@ -63,38 +80,52 @@ The main objective/scope for this repository is to control the part of the softw
   - [X] **Engines:** 2x Electrical engines (Controlled via "L298N Dual H Bridge"@Sub-ECU #1: Arduino UNO R3)
 
 # Pictures
-## Physical robot
-- <table style="width:100%">
-      <tr>
-        <td><img src="/Project_stuff/Images/2019-09-09_122618.jpg" width="350px"></td>
-        <td><img src="/Project_stuff/Images/2019-09-09_122725.jpg" width="350px"></td>
-     </tr>
-   </table>
+## Physical robot: Pet-Mk.IV in IRL
+<table>
+  <tr>
+    <td><img src="doc/pet_mk_iv-collage01.jpg" width="350px"></td>
+    <td><img src="doc/pet_mk_iv-collage02.jpg" width="350px"></td>
+  </tr>
+</table>
 
-## Virtual robot
-- <table style="width:100%">
-      <tr>
-        <td><img src="/Project_stuff/Images/Pet-Mk.IV_gazebo.png" width="350px">       <br>View from Gazebo</td>
-        <td><img src="/Project_stuff/Images/Pet-Mk.IV_rviz(no_TF).png" width="350px">  <br>View from RViz</td>
-        <td><img src="/Project_stuff/Images/Pet-Mk.IV_rviz(with_TF).png" width="350px" <br>View from RViz (with Links/TF)<td>
-     </tr>
-   </table>
+## Virtual robot: Pet-Mk.IV in RViz
+<table>
+  <tr>
+    <td><img src="doc/pet_mk_iv-gazebo.png"        width="350px"><br>View from Gazebo</td>
+    <td><img src="doc/pet_mk_iv-rviz(no_TF).png"   width="350px"><br>View from RViz</td>
+    <td><img src="doc/pet_mk_iv-rviz(with_TF).png" width="350px"><br>View from RViz (with Links/TF<td>
+  </tr>
+</table>
 
 ## Drawing/Schemas:
-- <table style="width:100%">
-     <tr>
-       <td><img src="/Project_stuff/Images/Pet-Mk.IV Circuit Diagram - UNO.jpeg"  width="350px"><br>Circuit Diagram - UNO</td>
-       <td><img src="/Project_stuff/Images/Pet-Mk.IV Circuit Diagram - NANO.jpeg" width="350px"><br>Circuit Diagram - NANO</td>
-       <td><img src="/Project_stuff/Images/Pet-Mk.IV Circuit Diagram - RPi.jpeg"  width="350px"><br>Circuit Diagram - RPi</td>
-    </tr>
-    <tr>
-       <td><img src="/Project_stuff/Images/Pet-Mk.III_CircuitDiagram[PowerDistributionSchema].jpg" width="350px"><br>PowerDistributionSchema</td>
-       <td><img src="/Project_stuff/Images/Pet-Mk.III_CircuitDiagram[PowerDistributionBoard].jpg"  width="350px"><br>PowerDistributionBoard</td>
-       <td></td>
-    </tr>
- </table>
+<table>
+  <tr>
+    <td>
+      <img src="doc/Pet-Mk.IV Circuit Diagram - UNO.jpeg"  width="350px"><br>
+      Circuit Diagram - UNO
+    </td>
+    <td>
+      <img src="doc/Pet-Mk.IV Circuit Diagram - NANO.jpeg" width="350px"><br>
+      Circuit Diagram - NANO
+    </td>
+    <td>
+      <img src="doc/Pet-Mk.IV Circuit Diagram - RPi.jpeg"  width="350px"><br>
+      Circuit Diagram - RPi
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="doc/Pet-Mk.III_CircuitDiagram[PowerDistributionSchema].jpg" width="350px"><br>
+      PowerDistributionSchema</td>
+    <td>
+      <img src="doc/Pet-Mk.III_CircuitDiagram[PowerDistributionBoard].jpg"  width="350px"><br>
+      PowerDistributionBoard
+    </td>
+      <td></td>
+  </tr>
+</table>
  
-### More images: [Project_stuff/Images](/Project_stuff/Images/readme.md)
+* More images: [/doc](doc/readme.md)
 
 # External references
 ## ROS.org
