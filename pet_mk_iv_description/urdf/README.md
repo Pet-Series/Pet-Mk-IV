@@ -1,14 +1,11 @@
 # README: /pet_mk_iv_description/urdf/ #
 
-ROS Package folder in the https://github.com/kullken/Pet-Mk-IV repository.</br>
+Sub-folder in the https://github.com/Pet-Series/Pet-Mk-IV repository.</br>
 
 ## **What is this folder for?** ###
 
 Robot Descriptions using the .sdf, .urdf or .xacro syntax.
 Used, among other things, by Gazebo (3D Visual/Collision), RViz (3D Visual).  
-* http://wiki.ros.org/xacro
-* http://wiki.ros.org/urdf/XML/robot
-* http://sdformat.org/
 
 ## **Robot Chassis & Body/Frame**
 <table style="width:100%">
@@ -50,17 +47,16 @@ Used, among other things, by Gazebo (3D Visual/Collision), RViz (3D Visual).
     <td>chassis_zumo.urdf.xacro<br/>
         <img src="/doc/pet_mk_iv-body_link_collision.png" width="350px">
     </td>
-    <td>**Pet Mk. IV body - Collision goemtry**</br>
-        Collision geometry for the robor, used by simulator applications.
+    <td>Pet Mk.IV body - Collision geometry</br>
+        Collision geometry for the robot, used by simulator applications.
     </td>
   </tr>
   <tr>
     <td>visual_raspberryPi3B_sbc.urdf.xacro.png<br/>
         <img src="/doc/pet_mk_iv-visual_raspberryPi3B_sbc.urdf.xacro.png" width="350px">
     </td>
-    <td>**Pet Mk. IV body - Collision goemtry**</br>
-        Visual geometry.</br>
-        `base_link` and `gemoetry`-link
+    <td>Raspberry PI3B - visual geometry**</br>
+        `base_link` and `geometry`-link
     </td>
   </tr>
 </table>
@@ -93,7 +89,7 @@ Used, among other things, by Gazebo (3D Visual/Collision), RViz (3D Visual).
         <img src="/doc/pet_mk_iv-sensor_RPi_cameraV2.urdf.xacro.png" width="350px"></td>
     <td>Raspberry PI Camera V2 sensor as .urdf/.xacro
         Used for optical detection and/or FPS-view feedback for remote driver.
-     </td>
+    </td>
   </tr>
   <tr>
     <td>sensor_mpu6050_imu.urdf.xacro<br/>
@@ -103,5 +99,13 @@ Used, among other things, by Gazebo (3D Visual/Collision), RViz (3D Visual).
         Used as movement/acceleration detector along X, Y ans Z axis(aka. "Line follower")</td>
   </tr>
 </table>
-<hr />
-        #robots #robotics #ros #urdf #rviz #gazebo #simulation #pololu #zumo
+
+<hr/>
+
+## **Nice to have - External references** ##
+* http://wiki.ros.org/xacro
+* http://wiki.ros.org/urdf/XML/robot
+* http://sdformat.org/
+
+<hr/>
+#robots #robotics #ros #urdf #rviz #gazebo #simulation #pololu #zumo

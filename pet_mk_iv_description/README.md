@@ -1,6 +1,6 @@
-# README: /pet_mk_iv_description/ #
+# README.md: /pet_mk_iv_description/ #
 
-ROS Package folder in the https://github.com/kullken/Pet-Mk-IV repository.</br>
+Sub-folder in the https://github.com/Pet-Series/Pet-Mk-IV repository.</br>
 
 ## **What is this folder for?** ##
 
@@ -13,7 +13,7 @@ ROS Package folder in the https://github.com/kullken/Pet-Mk-IV repository.</br>
         <img src="/doc/pet_mk_iv-gazebo.png" width="350px">
     </td>
     <td>
-        <img src="/doc/Pet-Mk-IV/doc/pet_mk_iv-chassis_PololuZumo_and_sensor_link_tree.png" width="350px">
+        <img src="/doc/pet_mk_iv-chassis_PololuZumo_and_sensor_link_tree.png" width="350px">
     </td>
     <td>
         <img src="/doc/pet_mk_iv-sensor_hc_sr04_sonarRange.urdf.xacro.png" width="350px">

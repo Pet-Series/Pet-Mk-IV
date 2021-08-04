@@ -1,5 +1,8 @@
 <h1 align="center">Welcome to the Pet-Mk-IV repository</h1>
 
+ROS repository in the https://github.com/Pet-Series Git-Organizations.</br>
+Containing multiply ROS-packages.
+
 # Software/Setup Pet series micro robots #
 The main objective/scope for this repository is to control the part of the software (and parameter settings) that is unique for this Pet Mark IV (four) robot.
 <table>
@@ -127,11 +130,6 @@ The main objective/scope for this repository is to control the part of the softw
  
 * More images: [/doc](doc/readme.md)
 
-# External references
-## ROS.org
-  - http://wiki.ros.org/
-  - http://wiki.ros.org/rosserial
-
 # Glossary
 **Buzzword** | **My interpretation**
 ---------|-----------------
@@ -143,7 +141,12 @@ The main objective/scope for this repository is to control the part of the softw
 **ROSserial** | [core of rosserial for ROS](https://github.com/ros-drivers/rosserial)
 **SBC** | [Single Board Computer](https://en.wikipedia.org/wiki/Single-board_computer)
 
+
+# External references
+- http://wiki.ros.org/
+- http://wiki.ros.org/rosserial
+
 For my own convenience - Some GitHub cheat sheets
-  - https://guides.github.com/features/mastering-markdown/
-  - https://help.github.com/en/github/writing-on-github/basic-writing-and-formatting-syntax
-  - https://www.webfx.com/tools/emoji-cheat-sheet/
+- https://guides.github.com/features/mastering-markdown/
+- https://help.github.com/en/github/writing-on-github/basic-writing-and-formatting-syntax
+- https://www.webfx.com/tools/emoji-cheat-sheet/

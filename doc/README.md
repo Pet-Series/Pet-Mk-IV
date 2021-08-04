@@ -1,4 +1,8 @@
-# Photo log book and image library
+# README: /doc/ 
+
+Sub-folder in the https://github.com/Pet-Series/Pet-Mk-IV repository.</br>
+Content: Photo log book and image library.
+
 ## **Photos:**
 <table style="width:100%">
   <tr>
