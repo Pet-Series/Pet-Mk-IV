@@ -9,7 +9,7 @@
 namespace pet
 {
 
-Timer<4> g_timer{};
+Timer<kMaxNumModules> g_timer{};
 
 ConfigResult configure_modules()
 {
