@@ -18,15 +18,24 @@ ConfigResult configure_modules()
         return ConfigResult::TimerRegistrationError;
     }
 
-    static pet::LineSensorModule line_follower_module{};
-    if (!g_timer.register_module(&line_follower_module)) {
+    static pet::LineSensorModule line_sensor_left{Pin{2}, "line_sensor/left"};
+    static pet::LineSensorModule line_sensor_middle{Pin{3}, "line_sensor/middle"};
+    static pet::LineSensorModule line_sensor_right{Pin{4}, "line_sensor/right"};
+
+    if (!g_timer.register_module(&line_sensor_left)) {
+        return ConfigResult::TimerRegistrationError;
+    }
+    if (!g_timer.register_module(&line_sensor_middle)) {
+        return ConfigResult::TimerRegistrationError;
+    }
+    if (!g_timer.register_module(&line_sensor_right)) {
         return ConfigResult::TimerRegistrationError;
     }
 
     constexpr int kSensorCount = 3;
     constexpr int ultrasound_pins[kSensorCount] = {
-        A0, 
-        A1, 
+        A0,
+        A1,
         A2
     };
     constexpr const char* frame_ids[kSensorCount] = {
