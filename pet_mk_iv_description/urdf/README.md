@@ -14,50 +14,105 @@ Used, among other things, by Gazebo (3D Visual/Collision), RViz (3D Visual).
     <th>.urdf/.xacro /.sdf</th>
   </tr>
   <tr>
-    <td>pet_mk_iv.urdf.xacro<br/>
+    <td>chassis_zumo.urdf.xacro<br/>
         <img src="/doc/pet_mk_iv-chassis_PololuZumo_link_tree.png" width="350px">
     </td>
     <td>Pololu Zumo Chassis - Link tree</br>
         Chassis with battery compartment & hatch + two engines.</br>
         `base_link` and `body_base_link`
-    </td>
+ 
+```xml
+<xacro:macro name="chassis_zumo" params="name" >
+  ...
+  <link name='${name}'>
+  ...
+  <visual name='Zumo_Chassis_visual'>
+  ...
+  <collision name='Zumo_Chassis_visual_collision'>
+```
+
+   </td>
   </tr>
   <tr>
     <td>wheel.urdf.xacro<br/>
         <img src="/doc/pet_mk_iv-wheel.urdf.xacro.png" width="350px"></td>
     <td>Pololu Zumo Chassis wheel - Link tree</br>
         Belt drive wheels.</br>
-        `base_link` and `xxx_wheel`-link
-    </td>
+        `xxx_wheel`-link relative to `base_link`
+
+```xml
+<xacro:macro name="wheel" params="wheel_prefix origin_xyz origin_rpy">
+  ...
+  <link name="${wheel_prefix}_wheel">
+    ...
+    <visual name="${wheel_prefix}_wheel_visual">
+    <visual name="${wheel_prefix}_wheel_visual_2">
+    ...
+    <collision name="${wheel_prefix}_wheel_collision">
+```
+
+   </td>
   </tr>
   <tr>
-    <td>chassis_zumo.urdf.xacro<br/>
+    <td>pet_mk_iv.urdf.xacro<br/>
         <img src="/doc/pet_mk_iv-chassis_PololuZumo_and_wheel_link_tree.png" width="350px"></td>
     <td> Showing Chassis & Wheels</br>
-        `base_link` and `body_base_link`
-  </tr>
+        `body_base_link` relative to `base_link`
+    
+```xml
+<link name='body_base_link'>
+  ...
+  <link name='base_link_inertial'>
+```          
+   </tr>
   <tr>
-    <td>chassis_zumo.urdf.xacro<br/>
+    <td>pet_mk_iv.urdf.xacro<br/>
         <img src="/doc/pet_mk_iv-body_link_visual.png" width="350px"></td>
-    <td> **Pet Mk. IV body - Visual goemtry**</br>
-        Visual geometry for the robot
-    </td>
+    <td> Pet Mk. IV body - Visual goemtry</br>
+        Visual geometry for the robot upper-/lower deck.</br>
+        
+```xml
+<link name='body_base_link'>
+  ...
+  <visual name='Pet_Mk_IV_body_visual'>
+  ...
+  <visual name='Pet_Mk_IV_body_grip_link_visual'>
+```
+   </td>
   </tr>
   <tr>
-    <td>chassis_zumo.urdf.xacro<br/>
+    <td>pet_mk_iv.urdf.xacro<br/>
         <img src="/doc/pet_mk_iv-body_link_collision.png" width="350px">
     </td>
     <td>Pet Mk.IV body - Collision geometry</br>
-        Collision geometry for the robot, used by simulator applications.
-    </td>
+        Collision geometry for the robot, used by simulator applications.</br>
+
+```xml
+<link name='body_base_link'>
+  ...
+  <collision name='Pet_Mk_IV_body_grip_collision'>
+  ...
+  <collision name='Pet_Mk_IV_body_upper_deck_collision'>
+  ...
+  <collision name='Pet_Mk_IV_body_lower_deck_collision'>
+```
+   </td>
   </tr>
   <tr>
     <td>visual_raspberryPi3B_sbc.urdf.xacro.png<br/>
         <img src="/doc/pet_mk_iv-visual_raspberryPi3B_sbc.urdf.xacro.png" width="350px">
     </td>
     <td>Raspberry PI3B - visual geometry**</br>
-        `base_link` and `geometry`-link
-    </td>
+        `name`-link  relative to `base_link`
+        
+```xml
+<xacro:macro name="visual_raspberryPi3B_sbc" params="name origin_xyz origin_rpy">
+  ...
+  <link name="${name}">
+    ...
+    <visual name="power_led_visual">
+```
+   </td>
   </tr>
 </table>
 
