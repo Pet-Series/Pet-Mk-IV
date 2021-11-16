@@ -6,9 +6,9 @@
 #
 # Launch sequence:
 # 1. $ roslaunch pet_mk_iv_simulation pet_play_yard-02.launch
-# 2. $ rosrun pet_mk_iv_mission_control test_line_detect_gazebo.py 
-# 3. $ rosrun topic_tools transform /cmd_vel /gazebo/cmd_vel geometry_msgs/Twist 'm.twist'
-#      This command must be be started AFTER someone publish /cmd_vel (TwistStamped)
+# 2. $ rosrun pet_mk_iv_mission_control testrun_00_line-stop.py 
+#
+# TODO: Parametric linesAre=LineDetection.DARK or linesAre=LineDetection.LIGHT
 #
 from __future__ import division
 

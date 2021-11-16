@@ -8,9 +8,10 @@
 #
 # Launch sequence:
 # 1. $ roslaunch pet_mk_iv_simulation pet_play_yard-03.launch
-# 2. $ rosrun pet_mk_iv_mission_control testrun_01_gazebo.py 
-# 3. $ rosrun topic_tools transform /cmd_vel /gazebo/cmd_vel geometry_msgs/Twist 'm.twist'
-#      This command must be be started AFTER someone publish /cmd_vel (TwistStamped)
+# 2. $ rosrun pet_mk_iv_mission_control testrun_01_avoid-wall-line-stop.py 
+#
+# TODO: Parametric linesAre=LineDetection.DARK or linesAre=LineDetection.LIGHT
+#
 from __future__ import division
 
 import rospy
@@ -108,7 +109,7 @@ class MissionNode(object):
     def check_for_stop(self, msg):
         # Stop criteria #1: Any line detected -> STOP!
         # TODO: Parametric linesAre=LineDetection.DARK or linesAre=LineDetection.LIGHT
-        if (   self.line_detection_left  ==LineDetection.DARK
+        if (    self.line_detection_left  ==LineDetection.DARK
              or self.line_detection_middle==LineDetection.DARK
              or self.line_detection_right ==LineDetection.DARK
            ):
@@ -117,9 +118,10 @@ class MissionNode(object):
             self.stop_handler()
 
         # Stop criteria #2: All distance sensors to close to obstacle -> STOP!
-        elif (0 < self.range_sensor_middle_left < MissionNode.kForwardDistance and
-            0 < self.range_sensor_front_left   < MissionNode.kSideDistance and
-            0 < self.range_sensor_front_right  < MissionNode.kSideDistance ):
+        elif (    0 < self.range_sensor_middle_left < MissionNode.kForwardDistance
+              and 0 < self.range_sensor_front_left   < MissionNode.kSideDistance
+              and 0 < self.range_sensor_front_right  < MissionNode.kSideDistance 
+             ):
             rospy.logwarn("STOP! <= Obstacles all over the place")
             self.row1_pub.publish("STOP")
             self.row2_pub.publish("..road blocked..")
