@@ -31,12 +31,13 @@
   <xacro:include filename="$(find pet_mk_iv_description)/urdf/chassis_zumo.urdf.xacro"/>
   <xacro:include filename="$(find pet_mk_iv_description)/urdf/wheel.urdf.xacro"/>
   <xacro:include filename="$(find pet_mk_iv_description)/urdf/visual_raspberryPi3B_sbc.urdf.xacro"/>
+  <xacro:include filename="$(find pet_mk_iv_description)/urdf/visual_LCD1602.urdf.xacro"/>
 
-  <xacro:property name="robot_weight"       value="0.9"/>    <!-- unit kg  -->
-  <xacro:property name="sonar_center_height" value="0.060"/>   <!-- unit m  -->
-  <xacro:property name="PI" value="3.14159265359"/>   <!-- unit n/a  -->
+  <xacro:property name="robot_weight"        value="0.9"/>    <!-- unit kg  -->
+  <xacro:property name="sonar_center_height" value="0.060"/>  <!-- unit m  -->
+  <xacro:property name="PI" value="3.14159265359"/>           <!-- unit n/a  -->
 
-  <xacro:property name="chassis_height"  value="0.020"/>   <!-- unit m  -->
+  <xacro:property name="chassis_height"  value="0.020"/>      <!-- unit m  -->
 
 <!-- 
   Future implementation... Not used yet!
@@ -275,5 +276,11 @@
                 origin_xyz="0.005 -0.005 0.095"
                 origin_rpy="0 0 ${PI/2}"/>
 
+  <!-- 
+    Call COSMETIC BODY PART MACRO's: Creates link + joint vs."base_link"
+  -->
+  <xacro:visual_LCD1602 display_name="display_LCD1602" 
+                origin_xyz="-0.055 -0.009 0.095"
+                origin_rpy="0 0 0"/>
 </robot>
 
