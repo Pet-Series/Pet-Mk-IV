@@ -147,14 +147,51 @@
       <material name='brown'/>   <!-- Color in RViz -->
     </visual>
 
-    <visual name='Pet_Mk_IV_body_grip_link_visual'>
-      <origin xyz="0 0 ${body_height/2+0.055}" rpy=" 0 0 0"/>
+    <visual name='Pet_Mk_IV_body_grip_rightBracket_link_visual'>
+      <origin xyz="0 ${+0.132/2} ${body_height-0.004-0.002+0.070/2}" rpy=" 0 0 0"/>
       <geometry>
-        <box size= "0.015 0.135 0.070"/>  
+        <box size= "0.015 0.002 0.070"/>    <!-- Right vertical bracket holding grip -->
       </geometry>
-      <material name="green"/>
+      <material name="blue"/>
     </visual>
-    
+
+    <visual name='Pet_Mk_IV_body_grip_leftBracket_link_visual'>
+      <origin xyz="0 ${-0.132/2} ${body_height-0.004-0.002+0.070/2}" rpy=" 0 0 0"/>
+      <geometry>
+        <box size= "0.015 0.002 0.070"/>    <!-- Left vertical bracket holding grip -->
+      </geometry>
+      <material name="blue"/>
+    </visual>
+   
+    <visual name='Pet_Mk_IV_body_grip_bracket_link_visual'>
+      <origin xyz="0 0 ${body_height-0.004-0.002}" rpy=" 0 0 0"/>
+      <geometry>
+        <box size= "0.015 0.132 0.002"/>    <!-- Horizontal bracket -->
+      </geometry>
+      <material name="blue"/>
+    </visual> 
+
+    <visual name='Pet_Mk_IV_body_grip_horisontal_link_visual'>
+      <origin xyz="0 0 ${body_height+0.056}" rpy=" 0 0 0"/>
+      <geometry>
+        <box size= "0.009 0.132 0.015"/>    <!-- Horizontal beam/grip -->
+      </geometry>
+      <material name="brown"/>
+    </visual> 
+
+    <visual name='Pet_Mk_IV_body_lightBeacon_link_visual'>
+      <origin xyz="0 ${body_width/2} ${body_height+0.072}" rpy=" 0 0 0"/>
+      <geometry>
+        <cylinder radius="0.006" length="0.018"/>    <!-- LightBeacon -->
+      </geometry>
+      <material name="LED material">
+        <ambient>0 0 0 1</ambient>
+        <diffuse>0 0 0 1</diffuse>
+        <specular>0 0 0 0</specular>
+        <emissive>0 1 0 1</emissive>
+      </material>
+    </visual> 
+
     <collision name='Pet_Mk_IV_body_grip_collision'>
       <origin xyz="0 0 ${body_height/2+0.055}" rpy=" 0 0 0"/>
       <geometry>
