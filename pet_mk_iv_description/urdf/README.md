@@ -114,6 +114,20 @@ Used, among other things, by Gazebo (3D Visual/Collision), RViz (3D Visual).
 ```
    </td>
   </tr>
+  <tr>
+    <td>visual_LCD1602.urdf.xacro<br/>
+        <img src="/doc/pet_mk_iv-visual_LCD1602.urdf.xacro.png" width="350px">
+    </td>
+    <td>LCD1602 PCB with I2C-piggy back**</br>
+        `name`-link  relative to `base_link`
+        
+```xml
+<xacro:macro name="visual_LCD1602" params="display_name origin_xyz origin_rpy">
+  ...
+  <link name="${name}">
+```
+   </td>
+  </tr>
 </table>
 
 ## **Robot Sensors**
