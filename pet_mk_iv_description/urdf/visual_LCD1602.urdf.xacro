@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  \licens       Software License Agreement (MIT)
+  \file         <workspace>/src/pet_mk_iv_description/urdf/sensor_mpu6050_imu.urdf.xacro
+  \authors      stefan.kull@gmail.com (Github ID 'SeniorKullken')
+  \repository   https://github.com/kullken/Pet-Mk-IV
+  \repository   https://github.com/kullken/pet_mcu_common
+  \copyright
+  \description  .xacro macro that defines a IMU sensor MPU6050 break out board
+                origin_xyz: In the middle of the PCB, Botton of the PCB.
+  ____________________________________________________________________________
+  \usage
+      <robot>
+        ....
+      <xacro:include filename="$(find pet_mk_iv_description)/urdf/visual_LCD1602.urdf.xacro"/>
+        ....
+      <xacro:visual_LCD1602 name="LCD1602" 
+                    origin_xyz="0.005 -0.055 0.095"
+                    origin_rpy="0 0 0"/>
+        ....
+      </robot>
+  ____________________________________________________________________________
+
+  Xacro common info:
+    The entirety of the code below is reproduced whenever the macro is called.
+    We use 'params' to add additional arguments to the macro call, 
+    which can be simple parameters, or entire code blocks.
+    
+  \reference http://wiki.ros.org/xacro
+  \reference http://wiki.ros.org/urdf/XML/robot
+  \reference http://sdformat.org/
+  \reference http://gazebosim.org/tutorials?tut=ros_gzplugins#IMUsensor(GazeboRosImuSensor)
+  \reference https://github.com/chrisspen/ros_mpu6050_node
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="visual_LCD1602" params="display_name origin_xyz origin_rpy">
+    <xacro:property name="sensor_gazebo_color" value="Gazebo/GreenTransparent"/> <!-- "Gazebo/Green" -->
+    <xacro:property name="sensor_rviz_color"   value="green"/>
+
+    <xacro:property name="pcb_length"    value="0.036"/>  <!-- Box x=36mm  -->
+    <xacro:property name="pcb_width"     value="0.080"/>  <!-- Box y=80mm  -->
+    <xacro:property name="pcb_thicknes"  value="0.0015"/> <!-- Box z=1.5mm -->
+
+    <link name="${display_name}_link">
+      <!-- Insert visual pcb vor the LCD1602-display -->
+      <visual name="${display_name}_visual_pcb">
+        <origin xyz="0.00 0.00 ${pcb_thicknes/2}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${pcb_length} ${pcb_width} ${pcb_thicknes}"/>
+        </geometry>
+        <material name="${sensor_rviz_color}"/>
+      </visual>
+
+      <!-- Insert visual LCD-display on top of pcb -->
+      <visual name="${display_name}_visual_chip">
+        <origin xyz="0.00 0.00 ${pcb_thicknes}" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.024 0.0645 0.007"/>  
+        </geometry>
+        <material name="${sensor_rviz_color}"/>
+      </visual>
+
+      <inertial>
+        <mass value="1e-5" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+      </inertial>
+    </link>
+
+    <joint name="${display_name}_joint" type="fixed">
+      <axis xyz="0 1 0" />
+      <origin xyz="${origin_xyz}" rpy="${origin_rpy}" />
+      <parent link="base_link"/>
+      <child link="${display_name}_link"/>
+    </joint>
+
+    <gazebo reference="${display_name}_link">
+      <material>${sensor_gazebo_color}</material>
+    </gazebo>
+
+  </xacro:macro>
+</robot>
