@@ -29,6 +29,7 @@ The main objective/scope for this repository is to control the part of the softw
       </td>
     </tr>
   </table>
+  
 # Prerequisites
 ### Developing workstation (PC)
  - [X] Visual Studio Code@ Local PC: https://code.visualstudio.com/
