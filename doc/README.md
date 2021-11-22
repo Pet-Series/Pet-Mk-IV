@@ -3,11 +3,11 @@
 Sub-folder in the https://github.com/Pet-Series/Pet-Mk-IV repository.</br>
 Content: Photo log book and image library.
 
-## **Photos:**
+## **Photos of Pet-Mk.IV**
 <table style="width:100%">
   <tr>
     <th>Images</th>
-    <th>...from 📸 log book</th>
+    <th>Idol portrait from 📸 log-book</th>
     <th>admirers and ponder this 🤩</th>
   </tr>
   <tr>
@@ -28,17 +28,34 @@ Content: Photo log book and image library.
    <tr>
     <td><img src="./pet_mk_iv-collage01.jpg" width="350px"></td>
     <td><img src="./pet_mk_iv-collage02.jpg" width="350px"></td>
-    <td><img src="./pet_mk_iv-with_7inch_LCD_screen.jpg" width="350px">
-    </td>
+    <td><img src="./pet_mk_iv-with_7inch_LCD_screen.jpg" width="350px"></td>
   </tr>
   <tr>
     <td><img src="./pet_mk_iv-build_phase10.jpg" width="350px"></td>
     <td><img src="./pet_mk_iv-build_phase20.jpg" width="350px"></td>
     <td><img src="./pet_mk_iv-making_cabels.jpg" width="350px"></td>
-
   </tr>
-
 </table>
+
+## **Images of the virtual twin:**
+<table style="width:100%">
+  <tr>
+    <th>Images</th>
+    <th>Idol rendering from RViz and Gazebo</th>
+    <th></th>
+  </tr>
+  <tr>
+    <td><img src="./pet_mk_iv-Gazebo-frontLeft.png" width="350px"></td>
+    <td><img src="./pet_mk_iv-Gazebo-rearRight.png" width="350px"></td>
+    <td><img src="./pet_mk_iv-gazebo.png" width="350px"></td>
+  </tr>
+  <tr>
+    <td><img src="./pet_mk_iv-rviz(no_TF).png" width="350px"></td>
+    <td><img src="./pet_mk_iv-rviz(with_TF).png" width="350px"></td>
+    <td</td>
+  </tr>
+</table>
+
 <hr />
 <br />
 
