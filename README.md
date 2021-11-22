@@ -19,7 +19,16 @@ The main objective/scope for this repository is to control the part of the softw
 - **Simplification:** As MCU we mainly using Arduino compatible hardware, like Arduino UNO and Arduino NANO. 
 - **Standardisation:** As system integration tool (Middle ware) we use ROS. Each MCU act as an ROS-serial device. 
 - **Modularisation:** We have tried to make the code as generic/common as possible. 
-
+<table>
+    <tr>The virtual twin of Pet-Mk.IV
+      <td>
+        <img src="doc/pet_mk_iv-Gazebo-frontLeft.png" width="350px">
+      </td>
+      <td>
+        <img src="doc/pet_mk_iv-Gazebo-rearRight.png" width="350px">
+      </td>
+    </tr>
+  </table>
 # Prerequisites
 ### Developing workstation (PC)
  - [X] Visual Studio Code@ Local PC: https://code.visualstudio.com/
