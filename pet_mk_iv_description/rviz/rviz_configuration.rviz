@@ -4,23 +4,17 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /Status1
+        - /RobotModel1/Status1
         - /RobotModel1/Links1/base_link1
         - /RobotModel1/Links1/base_link_inertial1
-        - /RobotModel1/Links1/front_left_HCSR04_link1
-        - /RobotModel1/Links1/front_left_wheel1
-        - /RobotModel1/Links1/front_middle_HCSR04_link1
-        - /RobotModel1/Links1/front_right_HCSR04_link1
-        - /RobotModel1/Links1/front_right_wheel1
-        - /RobotModel1/Links1/rear_left_wheel1
-        - /RobotModel1/Links1/rear_right_wheel1
         - /TF1/Frames1
         - /TF1/Tree1
         - /Odometry1/Covariance1/Position1
         - /Odometry1/Covariance1/Orientation1
-        - /Camera (Line Follower LEFT)1/Visibility1
-      Splitter Ratio: 0.563126266002655
-    Tree Height: 408
+        - /Camera (Front RPi V2)1/Visibility1
+        - /Camera (Line Follower RIGHT)1/Visibility1
+      Splitter Ratio: 0.7011494040489197
+    Tree Height: 239
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -77,7 +71,7 @@ Visualization Manager:
         Link Tree Style: Links in Alphabetic Order
         base_link:
           Alpha: 1
-          Show Axes: false
+          Show Axes: true
           Show Trail: true
           Value: true
         base_link_inertial:
@@ -85,6 +79,11 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
         body_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        display_LCD1602_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -183,6 +182,8 @@ Visualization Manager:
           Value: true
         body_base_link:
           Value: true
+        display_LCD1602_link:
+          Value: true
         front_camera_link:
           Value: true
         front_left_HCSR04_link:
@@ -229,6 +230,8 @@ Visualization Manager:
               {}
             body_base_link:
               {}
+            display_LCD1602_link:
+              {}
             front_camera_link:
               {}
             front_left_HCSR04_link:
@@ -267,7 +270,7 @@ Visualization Manager:
       Enabled: true
       Name: Range (Front Left HC-SR04)
       Queue Size: 100
-      Topic: /range_sensors/front_left
+      Topic: /range_sensor/front_left
       Unreliable: false
       Value: true
     - Alpha: 0.5
@@ -277,7 +280,7 @@ Visualization Manager:
       Enabled: true
       Name: Range (Front Middel HC-SR04)
       Queue Size: 100
-      Topic: /range_sensors/front_middle
+      Topic: /range_sensor/front_middle
       Unreliable: false
       Value: true
     - Alpha: 0.5
@@ -287,7 +290,7 @@ Visualization Manager:
       Enabled: true
       Name: Range (Front Right HC-SR04)
       Queue Size: 100
-      Topic: /range_sensors/front_right
+      Topic: /range_sensor/front_right
       Unreliable: false
       Value: true
     - Angle Tolerance: 0.10000000149011612
@@ -350,15 +353,15 @@ Visualization Manager:
     - Class: rviz/Camera
       Enabled: true
       Image Rendering: background and overlay
-      Image Topic: /line_sensors/left/image_raw
+      Image Topic: /line_sensor/left/image_raw
       Name: Camera (Line Follower LEFT)
       Overlay Alpha: 0.5
-      Queue Size: 2
+      Queue Size: 1
       Transport Hint: raw
       Unreliable: false
       Value: true
       Visibility:
-        Camera (Front RPi V2): false
+        Camera (Front RPi V2): true
         Camera (Line Follower MID): false
         Camera (Line Follower RIGHT): false
         Grid: false
@@ -373,7 +376,7 @@ Visualization Manager:
     - Class: rviz/Camera
       Enabled: true
       Image Rendering: background and overlay
-      Image Topic: /line_sensors/mid/image_raw
+      Image Topic: /line_sensor/mid/image_raw
       Name: Camera (Line Follower MID)
       Overlay Alpha: 0.5
       Queue Size: 2
@@ -396,7 +399,7 @@ Visualization Manager:
     - Class: rviz/Camera
       Enabled: true
       Image Rendering: background and overlay
-      Image Topic: /line_sensors/right/image_raw
+      Image Topic: /line_sensor/right/image_raw
       Name: Camera (Line Follower RIGHT)
       Overlay Alpha: 0.5
       Queue Size: 2
@@ -444,25 +447,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.7212680578231812
+      Distance: 1.1741344928741455
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.5861302614212036
-        Y: -0.7014045715332031
-        Z: -0.3673739731311798
+        X: -0.08869888633489609
+        Y: -0.12897302210330963
+        Z: -0.1965094953775406
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.43039846420288086
+      Pitch: 0.6753984093666077
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.8103851079940796
+      Yaw: 0.6853852272033691
     Saved: ~
 Window Geometry:
   Camera (Front RPi V2):
@@ -475,10 +478,10 @@ Window Geometry:
     collapsed: false
   Displays:
     collapsed: false
-  Height: 1412
+  Height: 1025
   Hide Left Dock: false
   Hide Right Dock: true
-  QMainWindow State: 000000ff00000000fd0000000400000000000001b5000004ebfc020000000dfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d0000021b000000c900fffffffb0000002a00430061006d0065007200610020002800460072006f006e007400200052005000690020005600320029010000025e000000b60000001600fffffffb0000003600430061006d00650072006100200028004c0069006e006500200046006f006c006c006f0077006500720020004c0045004600540029010000031a000000ac0000001600fffffffb0000003400430061006d00650072006100200028004c0069006e006500200046006f006c006c006f0077006500720020004d00490044002901000003cc000000aa0000001600fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000003800430061006d00650072006100200028004c0069006e006500200046006f006c006c006f0077006500720020005200490047004800540029010000047c000000ac0000001600fffffffb0000002a00430061006d0065007200610020002800460072006f006e00740020005200500069002000560032002901000003c6000000d300000000000000000000000100000117000004bffc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d000004bf000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000009bd00000039fc0100000002fb0000000800540069006d00650100000000000009bd000002eb00fffffffb0000000800540069006d0065010000000000000450000000000000000000000802000004eb00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000001b500000368fc020000000dfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d00000172000000c900fffffffb0000002a00430061006d0065007200610020002800460072006f006e00740020005200500069002000560032002901000001b50000007d0000001600fffffffb0000003600430061006d00650072006100200028004c0069006e006500200046006f006c006c006f0077006500720020004c00450046005400290100000238000000760000001600fffffffb0000003400430061006d00650072006100200028004c0069006e006500200046006f006c006c006f0077006500720020004d00490044002901000002b4000000750000001600fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000003800430061006d00650072006100200028004c0069006e006500200046006f006c006c006f0077006500720020005200490047004800540029010000032f000000760000001600fffffffb0000002a00430061006d0065007200610020002800460072006f006e00740020005200500069002000560032002901000003c6000000d300000000000000000000000100000117000004bffc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d000004bf000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000073d00000039fc0100000002fb0000000800540069006d006501000000000000073d000002eb00fffffffb0000000800540069006d00650100000000000004500000000000000000000005820000036800000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -487,6 +490,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: true
-  Width: 2493
-  X: 67
-  Y: 0
+  Width: 1853
+  X: 331
+  Y: 1467
