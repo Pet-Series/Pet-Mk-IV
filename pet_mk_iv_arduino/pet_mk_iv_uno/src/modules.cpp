@@ -38,12 +38,12 @@ ConfigResult configure_modules()
         A1,
         A2
     };
-    constexpr const char* frame_ids[kSensorCount] = {
-        "dist_sensor_right",
-        "dist_sensor_middle",
-        "dist_sensor_left"
+    constexpr const char* sensor_ids[kSensorCount] = {
+        "range_sensor/right",
+        "range_sensor/middle",
+        "range_sensor/left"
     };
-    static pet::UltrasoundModule<kSensorCount> ultrasound_module{ultrasound_pins, frame_ids};
+    static pet::UltrasoundModule<kSensorCount> ultrasound_module{ultrasound_pins, sensor_ids};
     if (!g_timer.register_module(&ultrasound_module)) {
         return ConfigResult::TimerRegistrationError;
     }
