@@ -46,9 +46,9 @@ class MissionNode(object):
         self.range_sensor_front_right  = -1
         self.range_sensor_front_middle = -1
         self.range_sensor_front_left   = -1
-        self.range_sensor_front_right_sub  = rospy.Subscriber("range_sensor/front_right",  Range, self.callback_range_sensor_front_right )
-        self.range_sensor_front_middle_sub = rospy.Subscriber("range_sensor/front_middle", Range, self.callback_range_sensor_front_middle)
-        self.range_sensor_front_left_sub   = rospy.Subscriber("range_sensor/front_left",   Range, self.callback_range_sensor_front_left  )
+        self.range_sensor_front_right_sub  = rospy.Subscriber("range_sensor/right",  Range, self.callback_range_sensor_front_right )
+        self.range_sensor_front_middle_sub = rospy.Subscriber("range_sensor/middle", Range, self.callback_range_sensor_front_middle)
+        self.range_sensor_front_left_sub   = rospy.Subscriber("range_sensor/left",   Range, self.callback_range_sensor_front_left  )
 
         # Init Subscribers for Line Detection/Follower sensors
         self.line_detection_right  = None
@@ -78,9 +78,9 @@ class MissionNode(object):
         self.beacon_msg = LightBeacon()
         self.beacon_msg.mode = LightBeacon.ROTATING_SLOW
 
-        rospy.wait_for_message("range_sensor/front_right",  Range)
-        rospy.wait_for_message("range_sensor/front_middle", Range)
-        rospy.wait_for_message("range_sensor/front_left",   Range)
+        rospy.wait_for_message("range_sensor/right",  Range)
+        rospy.wait_for_message("range_sensor/middle", Range)
+        rospy.wait_for_message("range_sensor/left",   Range)
 
         rospy.wait_for_message("line_sensor/right",  LineDetection)
         rospy.wait_for_message("line_sensor/middle", LineDetection)
