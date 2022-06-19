@@ -8,6 +8,7 @@ find_package(pet_mcu_common REQUIRED
     engine_module
     line_sensor_module
     ultrasound_module
+    ultrasound_legacy_module
 )
 
 include(${ROSSERIAL_ARDUINO_TOOLCHAIN})
@@ -33,7 +34,7 @@ function(target_copy_property TARGET_FROM TARGET_TO PROPERTY)
 endfunction()
 
 add_library(pet_mk_iv_uno_deps INTERFACE)
-foreach(DEPENDENCY pet::mcu_core pet::ros_lib pet::ultrasound_module pet::new_ping pet::engine_module pet::line_sensor_module)
+foreach(DEPENDENCY pet::mcu_core pet::ros_lib pet::ultrasound_module pet::ultrasound_legacy_module pet::new_ping pet::engine_module pet::line_sensor_module)
   target_copy_property(${DEPENDENCY} pet_mk_iv_uno_deps INTERFACE_SOURCES)
   target_copy_property(${DEPENDENCY} pet_mk_iv_uno_deps INTERFACE_INCLUDE_DIRECTORIES)
 endforeach()

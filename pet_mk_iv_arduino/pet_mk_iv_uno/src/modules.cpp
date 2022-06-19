@@ -4,7 +4,7 @@
 
 #include "engine_module.h"
 #include "line_sensor_module.h"
-#include "ultrasound_module.h"
+#include "ultrasound_legacy_module.h"
 
 namespace pet
 {
@@ -32,19 +32,18 @@ ConfigResult configure_modules()
         return ConfigResult::TimerRegistrationError;
     }
 
-    constexpr int kSensorCount = 1;
-    // constexpr int kSensorCount = 3;
+    constexpr int kSensorCount = 3;
     constexpr int ultrasound_pins[kSensorCount] = {
-        // A0,
+        A0,
         A1,
-        // A2
+        A2
     };
     constexpr const char* sensor_ids[kSensorCount] = {
-        // "range_sensor/right",
+        "range_sensor/right",
         "range_sensor/middle",
-        // "range_sensor/left"
+        "range_sensor/left"
     };
-    static pet::UltrasoundModule<kSensorCount> ultrasound_module{ultrasound_pins, sensor_ids};
+    static pet::UltrasoundLegacyModule<kSensorCount> ultrasound_module{ultrasound_pins, sensor_ids};
     if (!g_timer.register_module(&ultrasound_module)) {
         return ConfigResult::TimerRegistrationError;
     }
