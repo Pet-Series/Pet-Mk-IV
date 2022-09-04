@@ -6,4 +6,6 @@
     <param name="port" value="$(arg port)"/>
     <param name="baud" value="$(arg baud)"/>
   </node>
+
+  <node pkg="pet_mk_iv_arduino" type="ultrasound_adapter_node" name="ultrasound_adapter" output="screen"/>
 </launch>

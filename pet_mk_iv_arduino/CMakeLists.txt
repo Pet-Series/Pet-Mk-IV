@@ -4,9 +4,11 @@ cmake_policy(SET CMP0048 NEW)
 project(pet_mk_iv_arduino)
 
 find_package(catkin REQUIRED COMPONENTS
+  pet_mk_iv_msgs
+  roscpp
   rosserial_arduino
   rosserial_client
-  pet_mk_iv_msgs
+  sensor_msgs
 )
 
 set(BUILD_SHARED_LIBS FALSE)
@@ -17,3 +19,4 @@ catkin_package()
 
 add_subdirectory(pet_mk_iv_nano)
 add_subdirectory(pet_mk_iv_uno)
+add_subdirectory(src)
