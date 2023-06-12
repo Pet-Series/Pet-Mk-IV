@@ -14,8 +14,8 @@
 #  Script is supposed to run once, like via /etc/rc.local
 # -----Prerequisite------------------------------
 #  Need to install the following Python lib.
-#  $ sudo pip3 install Adafruit-SSD1306
-#  $ sudo pip install Adafruit-SSD1306
+#  $ sudo pip3 install rpi_lcd
+#  $ sudo pip install rpi_lcd
 #
 # -----Prerequisite------------------------------
 #   $ sudo i2cdetect -y 1
