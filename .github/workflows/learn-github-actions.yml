@@ -1,0 +1,23 @@
+name: learn-github-actions
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Setup ROS
+        uses: ros-tooling/setup-ros@v0.2
+        with:
+          required-ros-distributions: melodic
+
+      - name: Build pet_mk_iv_arduino
+        uses: ros-tooling/action-ros-ci@v0.2
+        with:
+          package-name: pet_mk_iv_arduino
+          target-ros1-distro: melodic
+
+      - name: Build pet_mk_iv_msgs
+        uses: ros-tooling/action-ros-ci@v0.2
+        with:
+          package-name: pet_mk_iv_msgs
+          target-ros1-distro: melodic
