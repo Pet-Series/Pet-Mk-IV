@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+# Pet-Mk-IV ROS1 mission
+#  \licens       Software License Agreement (MIT)
+#  \authors      stefan.kull@gmail.com (Github ID 'SeniorKullken')
+#  \repository   https://github.com/Pet-Series
+#  \repository   https://github.com/Pet-Series/Pet-Mk-IV
+#  \description  Test the PWM coneccted light-beacon.
+#
 # Behaviour:
 # 1) Cycle through light baecon modes forever.
 from __future__ import division

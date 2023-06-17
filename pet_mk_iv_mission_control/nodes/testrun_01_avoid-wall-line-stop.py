@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+# Pet-Mk-IV ROS1 mission
+#  \licens       Software License Agreement (MIT)
+#  \authors      stefan.kull@gmail.com (Github ID 'SeniorKullken')
+#  \repository   https://github.com/Pet-Series
+#  \repository   https://github.com/Pet-Series/Pet-Mk-IV
+#  \description  Complete vehicle test level. All sensors & actuators will be active.
+# 
 # Behaviour:
 # 1) IR-remote [Play], [Pause] and [Stop] overroule them all
 # 2) Run straight a head.
@@ -37,7 +44,7 @@ class MissionNode(object):
     kSideDistance    = 0.15   # Unit = "m"
 
     def __init__(self):
-        rospy.init_node("mission_impossible")
+        rospy.init_node("testrun_01")
         rospy.loginfo("Node Init: Starting->")
 
         self.is_stopped = True
@@ -77,7 +84,7 @@ class MissionNode(object):
 
         self.beacon_msg = LightBeacon()
         self.beacon_msg.mode = LightBeacon.ROTATING_SLOW
-
+        
         rospy.wait_for_message("range_sensor/right",  Range)
         rospy.wait_for_message("range_sensor/middle", Range)
         rospy.wait_for_message("range_sensor/left",   Range)

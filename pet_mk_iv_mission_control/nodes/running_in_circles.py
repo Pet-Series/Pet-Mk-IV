@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# Status: ...not tested on latest platform.
 
 import rospy
 

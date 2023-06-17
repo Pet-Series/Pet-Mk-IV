@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+# Pet-Mk-IV ROS1 mission
+#  \licens       Software License Agreement (MIT)
+#  \authors      stefan.kull@gmail.com (Github ID 'SeniorKullken')
+#  \repository   https://github.com/Pet-Series
+#  \repository   https://github.com/Pet-Series/Pet-Mk-IV
+#  \description  Complete vehicle test level. Line senors, range sensors & motor will be active.
+#
 # Behaviour:
 # 1) IR-remote [Play], [Pause] and [Stop] overroule them all
 # 2) Follow a line on the floor. By swaying back and forth...
@@ -37,7 +44,7 @@ class MissionNode(object):
     kSideDistance    = 0.10   # Unit = "m"
 
     def __init__(self):
-        rospy.init_node("mission_impossible")
+        rospy.init_node("follow_the_line")
         rospy.loginfo("Node Init: Starting->")
 
         self.is_stopped = True
@@ -46,9 +53,9 @@ class MissionNode(object):
         self.range_sensor_front_right  = -1
         self.range_sensor_front_middle = -1
         self.range_sensor_front_left   = -1
-        self.range_sensor_front_right_sub  = rospy.Subscriber("range_sensor/front_right",  Range, self.callback_range_sensor_front_right )
-        self.range_sensor_front_middle_sub = rospy.Subscriber("range_sensor/front_middle", Range, self.callback_range_sensor_front_middle)
-        self.range_sensor_front_left_sub   = rospy.Subscriber("range_sensor/front_left",   Range, self.callback_range_sensor_front_left  )
+        self.range_sensor_front_right_sub  = rospy.Subscriber("range_sensor/right",  Range, self.callback_range_sensor_front_right )
+        self.range_sensor_front_middle_sub = rospy.Subscriber("range_sensor/middle", Range, self.callback_range_sensor_front_middle)
+        self.range_sensor_front_left_sub   = rospy.Subscriber("range_sensor/left",   Range, self.callback_range_sensor_front_left  )
 
         # Init Subscribers for Line Detection/Follower sensors
         self.line_detection_right  = None
@@ -78,18 +85,18 @@ class MissionNode(object):
         self.beacon_msg = LightBeacon()
         self.beacon_msg.mode = LightBeacon.ROTATING_SLOW
 
-        rospy.wait_for_message("range_sensor/front_right",  Range)
-        rospy.wait_for_message("range_sensor/front_middle", Range)
-        rospy.wait_for_message("range_sensor/front_left",   Range)
+        rospy.wait_for_message("range_sensor/right",  Range)
+        rospy.wait_for_message("range_sensor/middle", Range)
+        rospy.wait_for_message("range_sensor/left",   Range)
 
         rospy.wait_for_message("line_sensor/right",  LineDetection)
         rospy.wait_for_message("line_sensor/middle", LineDetection)
         rospy.wait_for_message("line_sensor/left",   LineDetection)
 
         # Wait For Messages - Not workig when starting Gazebo-simulation in "pause"
-        # rospy.wait_for_message("range_sensor/front_right",  Range, timeout=10)
-        # rospy.wait_for_message("range_sensor/front_middle", Range, timeout=10)
-        # rospy.wait_for_message("range_sensor/front_left",   Range, timeout=10)
+        # rospy.wait_for_message("range_sensor/right",  Range, timeout=10)
+        # rospy.wait_for_message("range_sensor/middle", Range, timeout=10)
+        # rospy.wait_for_message("range_sensor/left",   Range, timeout=10)
 
         # rospy.wait_for_message("line_sensor/right",  LineDetection, timeout=10)
         # rospy.wait_for_message("line_sensor/middle", LineDetection, timeout=10)

@@ -1,5 +1,11 @@
 #!/usr/bin/env python
-# Pet Mk. IV
+# Pet-Mk-IV ROS1 mission
+#  \licens       Software License Agreement (MIT)
+#  \authors      stefan.kull@gmail.com (Github ID 'SeniorKullken')
+#  \repository   https://github.com/Pet-Series
+#  \repository   https://github.com/Pet-Series/Pet-Mk-IV
+#  \description  Complete vehicle test level. Line senors & motor will be active.
+#
 # Behaviour
 # 1. Run in a straight line.
 # 2. When line detected - Then just stop!
@@ -20,7 +26,7 @@ from geometry_msgs.msg  import TwistStamped  # Linear velocity + Angular velocit
 class LineFollower(object):
 
     def __init__(self):
-        rospy.init_node("Line_detection_test")
+        rospy.init_node("line_detection_test")
         self.cmd_rate = rospy.Rate(100) # Hz
 
         # Subscribers
