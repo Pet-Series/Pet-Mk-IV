@@ -235,17 +235,17 @@
                  origin_rpy="0 0 0"/>
   
   <xacro:sensor_hc_sr04_sonarRange sensor_prefix="front_middle" 
-                 topic="range_sensor/front_middle"
+                 topic="range_sensor/middle"
                  origin_xyz="0.095 0.0 ${sonar_center_height}"
                  origin_rpy="0 0 0"/>
 
   <xacro:sensor_hc_sr04_sonarRange sensor_prefix="front_left" 
-                 topic="range_sensor/front_left"
+                 topic="range_sensor/left"
                  origin_xyz="0.077 0.042 ${sonar_center_height}"
                  origin_rpy="0 0 ${PI/4}"/>   <!-- +PI/4 = +45'deg -->
 
   <xacro:sensor_hc_sr04_sonarRange sensor_prefix="front_right" 
-                 topic="range_sensor/front_right"
+                 topic="range_sensor/right"
                  origin_xyz="0.077 -0.042 ${sonar_center_height}"
                  origin_rpy="0 0 -${PI/4}"/>  <!-- -PI/4 = -45'deg -->
 
@@ -260,7 +260,7 @@
                   origin_rpy="0 0 0"/>
 
   <xacro:sensor_fc_123_lineDetector sensor_prefix="mid" 
-                  topic="line_sensor/mid"
+                  topic="line_sensor/middle"
                   origin_xyz="0.050 0.000 0.002"
                   origin_rpy="0 0 0"/>
 
