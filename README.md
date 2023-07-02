@@ -1,12 +1,19 @@
-<h1 align="center">Welcome to the Pet-Mk-IV repository</h1>
+<h1 align="center">Welcome to the Pet-Mk.IV repository</h1>
 
-ROS repository in the https://github.com/Pet-Series Git-Organizations.</br>
-Containing multiply ROS-packages.
+ROS1 repository in the https://github.com/Pet-Series Git-Organizations.</br>
+Containing multiply ROS1-packages.
 
 # Software/Setup Pet series micro robots #
 The main objective/scope for this repository is to control the part of the software (and parameter settings) that is unique for this Pet Mark IV (four) robot.
+
+- **Simplification:** As MCU we mainly using Arduino compatible hardware, like Arduino UNO and Arduino NANO. Each MCU act as an ROS1-serial device.
+- **Standardisation:** As system integration tool (Middle ware) we use ROS1 ronning on a Raspberry PI 3 with Linux/Raspian.
+- **Modularisation:** We have tried to make the code as generic/common as possible. 
+- **Cheap:** Reuse left owers as much as possible.
+
+## Pet-Mk.IV in real life
 <table>
-    <tr>Pet-Mk.IV during developing.
+    <tr>Pet-Mk.IV IRL
       <td>
         <img src="doc/pet_mk_iv-view_frontRight.jpg" width="350px">
       </td>
@@ -15,12 +22,17 @@ The main objective/scope for this repository is to control the part of the softw
       </td>
     </tr>
   </table>
-
-- **Simplification:** As MCU we mainly using Arduino compatible hardware, like Arduino UNO and Arduino NANO. 
-- **Standardisation:** As system integration tool (Middle ware) we use ROS. Each MCU act as an ROS-serial device. 
-- **Modularisation:** We have tried to make the code as generic/common as possible. 
 <table>
-    <tr>The virtual twin of Pet-Mk.IV
+  <tr>
+    <td><img src="doc/pet_mk_iv-collage01.jpg" width="350px"></td>
+    <td><img src="doc/pet_mk_iv-collage02.jpg" width="350px"></td>
+  </tr>
+</table>
+
+## Pet-Mk.IV virtual twin
+<table>
+    <tr>The virtual twin of Pet-Mk.IV</br>
+        See more: https://github.com/Pet-Series/pet_mk_iv_simulation.git
       <td>
         <img src="doc/pet_mk_iv-Gazebo-frontLeft.png" width="350px">
       </td>
@@ -29,7 +41,14 @@ The main objective/scope for this repository is to control the part of the softw
       </td>
     </tr>
   </table>
-  
+ <table>
+  <tr>
+    <td><img src="doc/pet_mk_iv-gazebo.png"        width="350px"><br>View from Gazebo</td>
+    <td><img src="doc/pet_mk_iv-rviz(no_TF).png"   width="350px"><br>View from RViz</td>
+    <td><img src="doc/pet_mk_iv-rviz(with_TF).png" width="350px"><br>View from RViz (with Links/TF)<td>
+  </tr>
+</table>
+
 # Prerequisites
 ### Developing workstation (PC)
  - [X] Visual Studio Code@ Local PC: https://code.visualstudio.com/
@@ -92,23 +111,6 @@ The main objective/scope for this repository is to control the part of the softw
   - [x] **Power source:** 6x AAA-batteries (4+2 config => 6*1,2V=7,2V)
   - [X] **Engines:** 2x Electrical engines (Controlled via "L298N Dual H Bridge"@Sub-ECU #1: Arduino UNO R3)
 
-# Pictures
-## Physical robot: Pet-Mk.IV in IRL
-<table>
-  <tr>
-    <td><img src="doc/pet_mk_iv-collage01.jpg" width="350px"></td>
-    <td><img src="doc/pet_mk_iv-collage02.jpg" width="350px"></td>
-  </tr>
-</table>
-
-## Virtual robot: Pet-Mk.IV in RViz
-<table>
-  <tr>
-    <td><img src="doc/pet_mk_iv-gazebo.png"        width="350px"><br>View from Gazebo</td>
-    <td><img src="doc/pet_mk_iv-rviz(no_TF).png"   width="350px"><br>View from RViz</td>
-    <td><img src="doc/pet_mk_iv-rviz(with_TF).png" width="350px"><br>View from RViz (with Links/TF<td>
-  </tr>
-</table>
 
 ## Drawing/Schemas:
 <table>

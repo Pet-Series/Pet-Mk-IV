@@ -2,7 +2,7 @@
 <launch>
 
   <!-- Load the URDF into the ROS Parameter Server -->
-  <param name="robot_description" command="$(find xacro)/xacro.py '$(find pet_mk_iv_description)/urdf/pet_mk_iv.urdf.xacro'"/> 
+  <param name="robot_description" command="xacro '$(find pet_mk_iv_description)/urdf/pet_mk_iv.urdf.xacro'"/> 
 
   <!-- send fake joint values -->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
@@ -14,6 +14,5 @@
 
   <!-- Show in Rviz   -->
   <node name="rviz" pkg="rviz" type="rviz"  args="-d $(find pet_mk_iv_description)/rviz/rviz_configuration.rviz"/>
- 
 
 </launch>
